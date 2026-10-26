@@ -133,7 +133,7 @@ function renderGD(m,id){
 function renderSC(m,id){
   const s=SC[id];
   const body=s.kind==='ck'
-    ?`<div class="card"><div class="opts" style="grid-template-columns:1fr">${s.ck.map((c,i)=>`<label class="opt"><input type="checkbox" id="sc-${i}"><span><i>${c[1]>0?'+':''}${String(c[1]).replace('.',',')}</i>${esc(c[0])}</span></label>`).join('')}</div></div>`
+    ?`<div class="card"><div class="opts" style="grid-template-columns:1fr">${s.ck.map((c,i)=>`<label class="opt"><input type="checkbox" id="sc-${i}"><span>${s.np?'':`<i>${c[1]>0?'+':''}${String(c[1]).replace('.',',')}</i>`}${esc(c[0])}</span></label>`).join('')}</div></div>`
     :s.q.map((q,i)=>`<fieldset class="q"><legend><b>${i+1}.</b> ${esc(q.q)}</legend><div class="opts"${q.o.some(o=>o[0].length>28)?' style="grid-template-columns:1fr"':''}>${q.o.map((o,j)=>`<label class="opt"><input type="radio" name="sc-${i}" value="${j}"><span><i>${o[1]}</i>${esc(o[0])}</span></label>`).join('')}</div></fieldset>`).join('');
   m.innerHTML=`<section class="panel"><div class="ph"><h2>${esc(s.t)}</h2><span class="code">${esc(s.code)}</span></div>
     ${resultBox('sc-r')}${body}${copyBtn()}<div class="bar"><button class="btn small" id="clr" type="button">Limpar respostas</button></div>
