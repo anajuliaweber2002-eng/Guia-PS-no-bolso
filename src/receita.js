@@ -145,7 +145,7 @@ FN.receita={g:'geral',t:'Receita montada',code:'preencher e juntar remédios',k:
     <div id="rxb-list"></div>
     <details class="card"><summary class="lbl" style="cursor:pointer">+ Digitar em texto livre</summary><div class="field" style="margin-top:8px"><label for="rxb-free">Nome, dose e quantidade na 1ª linha; como tomar embaixo</label><textarea id="rxb-free" class="soap" rows="3" placeholder="Losartana 50 mg ———— 60 comprimidos&#10;Tomar 1 comprimido de 12/12 h, uso contínuo."></textarea></div>
       <div class="bar"><select id="rxb-via" aria-label="Via" style="width:auto">${VIAS.map(v=>`<option>${v}</option>`).join('')}</select><button class="btn small" id="rxb-add" type="button">Adicionar</button></div></details>
-    <div class="bar sticky-bar"><button class="btn primary" id="rxb-cp" type="button">Copiar</button><button class="btn" id="rxb-pr" type="button">Imprimir</button><button class="btn" id="rxb-clr" type="button">Limpar</button></div>
+    <div class="bar sticky-bar"><button class="btn primary" id="rxb-cp" type="button">Copiar</button><button class="btn" id="rxb-pr" type="button">Imprimir</button><button class="btn" id="rxb-wa" type="button">WhatsApp</button><button class="btn" id="rxb-clr" type="button">Limpar</button></div>
     <p class="note">Confira alergias, função renal, gestação e interações. Doses pediátricas por peso aparecem com “__” para você completar.</p>
     <div id="sheet" class="card atsheet rxsheet"></div></section>`;
   const F=()=>({med:$('#rb-med').value,d:$('#rb-d').value,iv:$('#rb-iv').value,dd:num($('#rb-dd').value),o:$('#rb-o').value});
@@ -165,6 +165,7 @@ FN.receita={g:'geral',t:'Receita montada',code:'preencher e juntar remédios',k:
   draw();
   $('#rxb-add').onclick=()=>{const t=$('#rxb-free').value.trim();if(!t)return;RXB.push({via:$('#rxb-via').value,txt:t.replace(/^\d+[.)]\s*/,'')});saveRxb();$('#rxb-free').value='';draw()};
   $('#rxb-cp').onclick=()=>{if(!RXB.length){toast('Receita vazia');return}copy(rxbAll())};
+  $('#rxb-wa').onclick=()=>{if(!RXB.length){toast('Receita vazia');return}waSend(rxbAll())};
   $('#rxb-clr').onclick=e=>confirm2(e.currentTarget,()=>{RXB=[];saveRxb();draw()});
   $('#rxb-pr').onclick=()=>{if(!RXB.length){toast('Receita vazia');return}const p=profGet(),d=new Date(),mes=['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'];
     $('#sheet').innerHTML=rxbGroups().map(([k,idx])=>`<div class="rxpg"><div class="ath">${esc(p.unidade||'Pronto Socorro')}</div><div class="att">${k==='C'?'RECEITUÁRIO DE CONTROLE ESPECIAL':'RECEITUÁRIO'}</div><div class="rxpac"><b>Paciente:</b>${RXP?` ${esc(RXP)}`:'<span></span>'}</div><pre class="rxp">${esc(rxbText(idx))}</pre><div class="atf">${esc(p.cidade||'________________')}, ${d.getDate()} de ${mes[d.getMonth()]} de ${d.getFullYear()}.<br><br>_______________________________________<br>${esc(p.medico||'Médico(a)')}${p.crm?' · CRM '+esc(p.crm):''}</div></div>`).join('');

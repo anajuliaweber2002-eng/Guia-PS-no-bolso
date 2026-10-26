@@ -21,6 +21,7 @@ const SICON={
  edit:'M4 20h4L19 9l-4-4L4 16z M13.5 6.5l4 4',
  airway:'M12 3v6 M8 9h8l-1 12H9z M5 13h3 M16 13h3',
  steth:'M6 3v6a5 5 0 0 0 10 0V3 M5 3h2 M15 3h2 M11 14v1.5a5 5 0 0 0 10 0V13 M21 11a2 2 0 1 0 0 .01',
+ timer:'M9 2h6 M12 5v2 M12 22a8 8 0 1 0 0-16 8 8 0 0 0 0 16z M12 10v4l2.5 2.5',
  rxt:'M12 3v7 M12 8l-3 3 M12 8l3 3 M8.5 6.5C5.5 7 4 11 4 16c0 3 1 4.5 3 4.5s3-1.5 3-3.5v-6 M15.5 6.5C18.5 7 20 11 20 16c0 3-1 4.5-3 4.5s-3-1.5-3-3.5v-6'
 };
 const icon=(k,sz=20)=>`<svg width="${sz}" height="${sz}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="${SICON[k]||SICON.box}"/></svg>`;
@@ -37,8 +38,9 @@ const SECTIONS=[
  {g:'Ferramentas',k:'ex',t:'Interpretação de exames',ic:'exames',ids:['gasocalc',...Object.keys(EX).filter(k=>!/^(ef_|efp_|ecg_|rxt_)/.test(k))]},
  {g:'Ferramentas',k:'ecg',t:'Interpretação de ECG',ic:'ecg',ids:['ecg_ps','ecg_passo','ecg_taqui','ecg_bradi','ecg_eixo','ecg_sobrec','ecg_bloq','ecg_isq','ecg_qt','ecg_padroes','fcecg','eixo','qtc','sve']},
  {g:'Ferramentas',k:'rxt',t:'Interpretação de RX de tórax',ic:'rxt',ids:['rxt_passo','rxt_pad','rxt_ex']},
- {g:'Ferramentas',k:'calc',t:'Calculadoras e escores',ic:'calc',ids:[...Object.keys(SC),...Object.keys(NC).filter(k=>!['fcecg','eixo','qtc','sve'].includes(k))]},
+ {g:'Ferramentas',k:'calc',t:'Calculadoras e escores',ic:'calc',ids:[...Object.keys(SC),...Object.keys(NC).filter(k=>!['fcecg','eixo','qtc','sve','vm'].includes(k))]},
  {g:'Ferramentas',k:'inf',t:'Infusões, IOT e pediatria',ic:'drip',ids:['drogas','iot','pedi']},
+ {g:'Ferramentas',k:'plant',t:'Ferramentas do plantão',ic:'timer',ids:['pcr','plantao','atestado','conv','vm']},
  {g:'Meu kit',k:'meu',t:'Minhas edições e dados',ic:'edit',ids:['meu']}
 ];
 const SECM=Object.fromEntries(SECTIONS.map(s=>[s.k,s]));
@@ -97,7 +99,7 @@ function renderRX(m,id){
     <div class="rec"><b>${alta?'Receituário':'Tipo'}:</b> ${esc(c.rec)}.</div>
     ${tocHTML(c.items.map((it,i)=>['rxa-'+i,esc(it.t)]))}
     ${c.items.map((it,i)=>`<article class="card rxcard" id="rxa-${i}"><h3>${esc(it.t)}${store.get(rxKey(id,i))!=null?' <span class="edtag">editada</span>':''}</h3><pre class="rx" id="rx-${i}">${esc(rxGet(id,i))}</pre>
-      <div class="bar"><button class="btn primary small" data-c="${i}" type="button">Copiar</button>${alta?`<button class="btn small" data-p="${i}" type="button">Imprimir receita</button><button class="btn small" data-rb="${i}" type="button">+ Receita</button>`:''}<button class="btn small" data-e="${i}" type="button">${icon('edit',14)} Editar</button></div>
+      <div class="bar"><button class="btn primary small" data-c="${i}" type="button">Copiar</button>${alta?`<button class="btn small" data-p="${i}" type="button">Imprimir receita</button><button class="btn small" data-rb="${i}" type="button">+ Receita</button>`:''}<button class="btn small" data-wa="${i}" type="button">WhatsApp</button><button class="btn small" data-e="${i}" type="button">${icon('edit',14)} Editar</button></div>
       <div class="edf" id="ed-${i}" hidden><textarea class="soap rxta" spellcheck="false" aria-label="Editar ${esc(it.t)}"></textarea><div class="bar"><button class="btn primary small" data-sv="${i}" type="button">Salvar</button><button class="btn small" data-x="${i}" type="button">Cancelar</button><button class="btn small danger" data-rs="${i}" type="button">Restaurar original</button></div></div>
       ${it.n?`<p class="note">${esc(it.n)}</p>`:''}${it.rec?`<p class="note"><b>Receituário:</b> ${esc(it.rec)}</p>`:''}</article>`).join('')}
     ${relHTML(c.rel)}
@@ -105,6 +107,7 @@ function renderRX(m,id){
     <div id="sheet" class="card atsheet rxsheet"></div></section>`;
   m.querySelectorAll('[data-c]').forEach(b=>b.onclick=()=>copy(rxGet(id,+b.dataset.c)));
   m.querySelectorAll('[data-p]').forEach(b=>b.onclick=()=>{const i=+b.dataset.p;printRx(rxGet(id,i),c.items[i].rec||c.rec)});
+  m.querySelectorAll('[data-wa]').forEach(b=>b.onclick=()=>waSend(rxGet(id,+b.dataset.wa)));
   m.querySelectorAll('[data-rb]').forEach(b=>b.onclick=()=>rxbAdd(rxGet(id,+b.dataset.rb)));
   m.querySelectorAll('[data-e]').forEach(b=>b.onclick=()=>{const i=+b.dataset.e,f=$('#ed-'+i),t=f.querySelector('textarea');f.hidden=false;t.value=rxGet(id,i);fit(t);t.oninput=()=>fit(t);t.focus()});
   m.querySelectorAll('[data-x]').forEach(b=>b.onclick=()=>{$('#ed-'+b.dataset.x).hidden=true});
