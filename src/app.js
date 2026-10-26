@@ -31,6 +31,7 @@ const SECTIONS=[
  {g:'Atendimento',k:'an',t:'Anamneses',ic:'soap',ids:Object.keys(AN)},
  {g:'Atendimento',k:'rx',t:'Prescrições no PS',ic:'presc',ids:byTipo('h')},
  {g:'Atendimento',k:'alta',t:'Receitas de alta',ic:'alta',ids:byTipo('a')},
+ {g:'Atendimento',k:'rxb',t:'Receita montada',ic:'edit',ids:['receita']},
  {g:'Atendimento',k:'cd',t:'Condutas padrão',ic:'urg',ids:Object.keys(CD)},
  {g:'Atendimento',k:'ef',t:'Exame físico',ic:'steth',ids:EF_IDS.filter(k=>EX[k])},
  {g:'Ferramentas',k:'ex',t:'Interpretação de exames',ic:'exames',ids:['gasocalc',...Object.keys(EX).filter(k=>!/^(ef_|efp_|ecg_|rxt_)/.test(k))]},
@@ -96,7 +97,7 @@ function renderRX(m,id){
     <div class="rec"><b>${alta?'Receituário':'Tipo'}:</b> ${esc(c.rec)}.</div>
     ${tocHTML(c.items.map((it,i)=>['rxa-'+i,esc(it.t)]))}
     ${c.items.map((it,i)=>`<article class="card rxcard" id="rxa-${i}"><h3>${esc(it.t)}${store.get(rxKey(id,i))!=null?' <span class="edtag">editada</span>':''}</h3><pre class="rx" id="rx-${i}">${esc(rxGet(id,i))}</pre>
-      <div class="bar"><button class="btn primary small" data-c="${i}" type="button">Copiar</button>${alta?`<button class="btn small" data-p="${i}" type="button">Imprimir receita</button>`:''}<button class="btn small" data-e="${i}" type="button">${icon('edit',14)} Editar</button></div>
+      <div class="bar"><button class="btn primary small" data-c="${i}" type="button">Copiar</button>${alta?`<button class="btn small" data-p="${i}" type="button">Imprimir receita</button><button class="btn small" data-rb="${i}" type="button">+ Receita</button>`:''}<button class="btn small" data-e="${i}" type="button">${icon('edit',14)} Editar</button></div>
       <div class="edf" id="ed-${i}" hidden><textarea class="soap rxta" spellcheck="false" aria-label="Editar ${esc(it.t)}"></textarea><div class="bar"><button class="btn primary small" data-sv="${i}" type="button">Salvar</button><button class="btn small" data-x="${i}" type="button">Cancelar</button><button class="btn small danger" data-rs="${i}" type="button">Restaurar original</button></div></div>
       ${it.n?`<p class="note">${esc(it.n)}</p>`:''}${it.rec?`<p class="note"><b>Receituário:</b> ${esc(it.rec)}</p>`:''}</article>`).join('')}
     ${relHTML(c.rel)}
@@ -104,6 +105,7 @@ function renderRX(m,id){
     <div id="sheet" class="card atsheet rxsheet"></div></section>`;
   m.querySelectorAll('[data-c]').forEach(b=>b.onclick=()=>copy(rxGet(id,+b.dataset.c)));
   m.querySelectorAll('[data-p]').forEach(b=>b.onclick=()=>{const i=+b.dataset.p;printRx(rxGet(id,i),c.items[i].rec||c.rec)});
+  m.querySelectorAll('[data-rb]').forEach(b=>b.onclick=()=>rxbAdd(rxGet(id,+b.dataset.rb)));
   m.querySelectorAll('[data-e]').forEach(b=>b.onclick=()=>{const i=+b.dataset.e,f=$('#ed-'+i),t=f.querySelector('textarea');f.hidden=false;t.value=rxGet(id,i);fit(t);t.oninput=()=>fit(t);t.focus()});
   m.querySelectorAll('[data-x]').forEach(b=>b.onclick=()=>{$('#ed-'+b.dataset.x).hidden=true});
   m.querySelectorAll('[data-sv]').forEach(b=>b.onclick=()=>{const i=+b.dataset.sv,v=$('#ed-'+i).querySelector('textarea').value;if(v.trim()&&v!==c.items[i].rx)store.set(rxKey(id,i),v);else store.del(rxKey(id,i));toast('Salvo neste aparelho');renderRX(m,id);addHead();addStar();focusCard('#rxa-'+i)});
