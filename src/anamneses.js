@@ -516,3 +516,180 @@ Conduta na alta:
 
 Paciente e acompanhante orientados, compreenderam e concordaram com a conduta.`}
 });
+
+/* Acréscimos: meningite, abdome agudo, IVAS, pediatria respiratória, faringite, tireotoxicose, peçonhentos */
+const AN_PED_ID=`IDENTIFICAÇÃO: [nome], [ ] anos e [ ] meses, [sexo], peso [ ] kg. Acompanhante/informante: [ ].
+CLASSIFICAÇÃO DE RISCO: [ ]`;
+const AN_PED_ANT=`ANTECEDENTES
+Gestação e parto: [termo/prematuro de __ semanas], peso ao nascer [ ]. Internações prévias: [ ]. Sibilância prévia: [ ].
+Doenças crônicas (cardiopatia, doença pulmonar, imunodeficiência): [nega]. Alergias: [nega]. Medicações: [ ].
+Vacinas: [em dia conforme caderneta]. Creche/escola: [ ]. Contatos com quadro semelhante: [ ]. Tabagismo passivo: [ ].`;
+Object.assign(AN,{
+an_menin:{g:'neuro',t:'Meningite (suspeita)',code:'G00–G03 · A39',rel:[['cd_menin','Conduta meningite'],['rx_menin','Prescrição meningite'],['ex_lcr','Líquor'],['glasgow','Glasgow']],body:an('Febre e dor de cabeça',
+`Paciente refere febre há [ ] [horas/dias] (até __ °C), associada a cefaleia [holocraniana, intensa], [rigidez/dor na nuca, vômitos, fotofobia, sonolência, confusão, convulsão, manchas na pele (petéquias/púrpura)]. Evolução: [rápida, em __ horas].
+Pródromos: [IVAS, otite, sinusite __]. Contato com caso de meningite: [ ]. Imunossupressão (HIV, corticoide, quimioterapia, esplenectomia, etilismo): [nega]. TCE ou neurocirurgia recente / fístula liquórica: [nega]. Vacinas (meningocócica, pneumocócica, Hib): [ ]. Viagem / aglomeração: [ ].`,
+`${EF_CV} TEC [ ] s.
+${EF_AR}
+${EF_ABD}
+NEURO: Glasgow [ ], [orientado / confuso / sonolento], pupilas [ ], déficit focal [ausente], rigidez de nuca [presente/ausente], Kernig [ ], Brudzinski [ ]. Fundo de olho: [sem papiledema].
+Pele: [sem lesões / petéquias e púrpura em __ (meningococcemia)]. Sinais de choque: [ ].`,
+`1. Meningite [bacteriana provável / viral provável / meningococcemia] — [com/sem] sinais de gravidade`,
+`- Precaução de gotículas
+- Hemoculturas e exames gerais; NÃO atrasar o antibiótico
+- Dexametasona 10 mg EV 15–20 min antes ou junto com a 1ª dose do antibiótico
+- Ceftriaxona 2 g EV de 12/12 h [+ ampicilina se > 50 anos / imunossuprimido]
+- [TC de crânio antes da punção se déficit focal, papiledema, convulsão, imunossupressão ou Glasgow < 10]
+- Punção lombar: citologia, bioquímica, Gram, cultura, látex/PCR
+- Notificação imediata à vigilância; quimioprofilaxia dos contatos íntimos`)},
+
+an_abdag:{g:'dig',t:'Abdome agudo',code:'R10.0',rel:[['cd_abdag','Conduta abdome agudo'],['rx_abdag','Prescrição abdome agudo'],['alvarado','Alvarado'],['an_abd','Dor abdominal (modelo geral)']],body:an('Dor na barriga forte',
+`Paciente refere dor abdominal há [ ] [horas/dias], de início [súbito/progressivo], inicialmente em [ ] e atualmente em [ ], tipo [cólica/contínua/em facada], intensidade [ ]/10, [que piora com movimento e tosse (peritonite)].
+Associada a [náuseas/vômitos (__ episódios, [alimentar/bilioso/fecaloide])/febre/parada de eliminação de flatos e fezes há __/distensão/diarreia/hematoquezia/icterícia/síncope].
+[Mulher: DUM __, atraso __, sangramento vaginal __, uso de DIU __.]
+Cirurgias abdominais prévias: [ ]. Hérnias: [ ]. FA / doença vascular (isquemia mesentérica): [ ]. Uso de AINE, corticoide, anticoagulante: [ ]. Litíase biliar conhecida: [ ]. Etilismo: [ ].`,
+`${EF_CV} TEC [ ] s.
+${EF_AR}
+ABD: [plano/distendido], [cicatrizes __], RHA [ausentes/diminuídos/aumentados/metálicos], timpanismo [ ], [flácido/defesa voluntária/abdome em tábua], dor à palpação em [ ], DB [positiva em __], Murphy [ ], Blumberg [ ], Rovsing [ ], psoas/obturador [ ], Giordano [ ], Jobert (perda da macicez hepática) [ ], massa pulsátil [ ], hérnias [redutíveis/encarceradas].
+Toque retal: [ampola vazia / fezes / sangue / dor]. [Exame ginecológico: ]`,
+`1. Abdome agudo [inflamatório (apendicite/colecistite/diverticulite/pancreatite) / obstrutivo / perfurativo / vascular / hemorrágico]
+2. [Sepse de foco abdominal: sim/não]`,
+`- Jejum, acesso venoso calibroso, monitorização
+- Analgesia (não atrasa diagnóstico) e antiemético
+- [SNG aberta em frasco se obstrução ou vômitos incoercíveis] [Sonda vesical se instável]
+- Exames: hemograma, PCR, Ur, Cr, Na, K, TGO, TGP, FA, GGT, bilirrubinas, lipase, lactato, gasometria, EAS, beta-hCG, coagulograma, tipagem
+- Imagem: [RX de abdome agudo (3 incidências) / USG / TC de abdome com contraste]
+- [Antibiótico: __]
+- Avaliação da cirurgia geral [urgente]`)},
+
+an_ivas:{g:'resp',t:'IVAS e resfriado comum',code:'J00 · J06 · J11',rel:[['cd_ivas','Conduta IVAS'],['rx_alta_ivas','Receita de alta IVAS'],['an_farin','Faringoamigdalite']],body:an('Gripe / resfriado',
+`Paciente refere há [ ] dias [coriza, obstrução nasal, espirros, dor de garganta, tosse (seca/produtiva), rouquidão, febre (até __ °C), mialgia, cefaleia, mal-estar].
+Nega dispneia, dor torácica, sonolência, desidratação, piora após melhora inicial. [Dor facial/secreção purulenta > 10 dias: __.] [Otalgia: __.]
+Grupo de risco para influenza (≥ 60 anos, gestante/puérpera, doença crônica, imunossupressão, obesidade IMC ≥ 40, indígena, < 5 anos): [ ]. Vacina da gripe [em dia / não vacinado]. Contatos doentes: [ ]. Teste para COVID-19/influenza: [ ].`,
+`${EF_CV}
+${EF_AR}
+Oroscopia: [hiperemia leve de orofaringe, sem exsudato]. Rinoscopia: [mucosa hiperemiada, secreção hialina]. Otoscopia: [normal]. Linfonodos cervicais: [ ].
+SpO2 [ ]% em ar ambiente.`,
+`1. [Resfriado comum / síndrome gripal / IVAS viral]
+2. [Sem sinais de síndrome respiratória aguda grave]`,
+`- Sintomáticos, hidratação, lavagem nasal com SF 0,9%
+- [Oseltamivir se síndrome gripal em grupo de risco (idealmente até 48 h, mas indicado mesmo após)]
+- Antibiótico não indicado
+- Afastamento e cuidados para não transmitir (máscara, higiene das mãos)
+- Retorno se falta de ar, febre > 3 dias, piora após melhora, sonolência`)},
+
+an_farin:{g:'inf',t:'Faringoamigdalite',code:'J02 · J03',rel:[['mcisaac','McIsaac (Centor)'],['cd_farin','Conduta faringoamigdalite'],['rx_alta_resp','Receitas de alta'],['rx_ped','Pediatria']],body:an('Dor de garganta',
+`Paciente refere dor de garganta há [ ] dias, [com/sem] febre (até __ °C), odinofagia, [dificuldade para engolir saliva, trismo, voz abafada (de "batata quente"), sialorreia], [cefaleia, dor abdominal, náuseas (comuns na criança)].
+Tosse: [ausente/presente]. Coriza, rouquidão, conjuntivite, aftas: [ ] (sugerem vírus). Exantema áspero: [ ]. Contato com caso de estreptococo: [ ]. Episódios no último ano: [ ]. Alergia à penicilina: [nega].`,
+`${EF_CV}
+Oroscopia: amígdalas [hipertrofiadas grau __], [hiperemiadas], [com exsudato purulento], [petéquias em palato], úvula [centrada], [abaulamento peritonsilar __], trismo [ausente].
+Linfonodos cervicais anteriores: [aumentados e dolorosos].
+${EF_AR}
+${EF_ABD} [Esplenomegalia: __ (mononucleose).]`,
+`1. Faringoamigdalite [bacteriana provável (estreptocócica) / viral]
+McIsaac: [ ] pontos
+2. [Sem complicação supurativa (abscesso periamigdaliano)]`,
+`- Analgesia e antitérmico
+- [Antibiótico: amoxicilina 10 dias ou penicilina benzatina dose única]
+- [Teste rápido para estreptococo, se disponível]
+- [Abscesso periamigdaliano: punção/drenagem e otorrino]
+- Retorno se piora, dificuldade para engolir saliva ou abrir a boca`)},
+
+an_tireo:{g:'endo',t:'Tireotoxicose / tempestade tireoidiana',code:'E05.5',rel:[['burch','Burch-Wartofsky'],['cd_tireo','Conduta tempestade tireoidiana'],['rx_tireo','Prescrição tempestade tireoidiana']],body:an('Coração acelerado',
+`Paciente refere [palpitações, tremores, sudorese, intolerância ao calor, perda de peso, diarreia, agitação, insônia, febre, dispneia, confusão] há [ ].
+Hipertireoidismo conhecido: [Graves / bócio nodular / tireoidite] em uso de [metimazol/PTU __], adesão [irregular/suspendeu há __]. Desencadeante: [infecção / cirurgia / trauma / parto / contraste iodado / amiodarona / iodo radioativo recente / suspensão de antitireoidiano / CAD].`,
+`${EF_CV} Ritmo [regular/irregular (FA)], FC [ ] bpm. [Sinais de IC: estase jugular, crepitantes, edema __.]
+${EF_AR}
+${EF_ABD} [Icterícia: __.]
+Tireoide: [bócio difuso / nódulo __], [sopro]. Olhos: [exoftalmia, retração palpebral].
+NEURO: [agitado / delirium / sonolento], tremor fino de extremidades. Pele: [quente e úmida].
+Temperatura: [ ] °C. Burch-Wartofsky: [ ] pontos.`,
+`1. [Tempestade tireoidiana / tireotoxicose iminente / tireotoxicose sem crise]
+2. Desencadeante: [ ]`,
+`- Monitorização, UTI se tempestade
+- Betabloqueador: propranolol
+- Antitireoidiano: PTU (ou metimazol)
+- Iodo (lugol) 1 hora após o antitireoidiano
+- Hidrocortisona
+- Resfriamento, paracetamol (evitar AAS)
+- TSH, T4 livre, T3, hemograma, eletrólitos, função hepática, glicemia, ECG, culturas
+- Tratar o desencadeante`)},
+
+an_bronq:{g:'crianca',t:'Bronquiolite',code:'J21',rel:[['cd_bronq','Conduta bronquiolite'],['rx_bronq','Prescrição bronquiolite']],body:`${AN_PED_ID}
+
+QP: "Cansaço e chiado"
+
+HDA: Mãe refere que há [ ] dias iniciou com coriza, obstrução nasal e tosse, evoluindo há [ ] dias com [cansaço, respiração rápida, chiado, gemência, pausas respiratórias (apneia)]. Febre: [ ] (até __ °C). Aceitação alimentar: [ ]% do habitual (mamadas: [ ]). Diurese: [preservada / diminuída, __ fraldas/dia]. Vômitos: [ ]. Episódios prévios de sibilância: [nenhum (1º episódio)].
+
+${AN_PED_ANT}
+
+EXAME FÍSICO
+Peso [ ] kg | FC [ ] bpm | FR [ ] irpm | SpO2 [ ]% em [ar ambiente] | Tax [ ] °C | TEC [ ] s
+Geral: [ativo e reativo / irritado / hipoativo], [hidratado / desidratado __], [acianótico].
+Respiratório: [batimento de asa de nariz], [tiragem subcostal / intercostal / de fúrcula], [gemência], MV [ ], [sibilos expiratórios difusos], [crepitantes finos difusos], [tempo expiratório prolongado].
+ACV: [RCR 2T, BNF, sem sopros].
+ABD: [flácido, sem visceromegalias].
+Oroscopia/otoscopia: [ ].
+
+HIPÓTESES DIAGNÓSTICAS
+1. Bronquiolite viral aguda [leve / moderada / grave]
+2. [Fatores de risco: prematuridade, < 3 meses, cardiopatia, doença pulmonar crônica, imunodeficiência]
+
+CONDUTA
+- Aspiração/lavagem nasal com SF 0,9% antes das mamadas
+- [O2 se SpO2 < 90–92%]
+- [Hidratação: oral fracionada / SNG / EV]
+- Sem broncodilatador, corticoide ou antibiótico de rotina
+- [Internação: __ / Alta com orientações e retorno em 24–48 h]
+${AN_FIM}`},
+
+an_crupe:{g:'crianca',t:'Crupe (laringite viral)',code:'J05.0',rel:[['westley','Westley'],['cd_crupe','Conduta crupe'],['rx_crupe','Prescrição crupe']],body:`${AN_PED_ID}
+
+QP: "Tosse de cachorro"
+
+HDA: Mãe refere que há [ ] dias iniciou coriza e febre baixa, evoluindo [à noite / há __ horas] com tosse rouca ("de cachorro"/"latido"), rouquidão e [ruído ao respirar (estridor) ao chorar / em repouso], [dificuldade para respirar], [agitação].
+Nega engasgo ou início súbito durante alimentação/brincadeira (corpo estranho). Nega sialorreia, dificuldade para engolir, posição em tripé, toxemia (epiglotite/traqueíte). Episódios prévios: [ ].
+
+${AN_PED_ANT}
+
+EXAME FÍSICO
+Peso [ ] kg | FC [ ] bpm | FR [ ] irpm | SpO2 [ ]% | Tax [ ] °C
+Geral: [ativo, reativo, corado, hidratado, acianótico].
+Respiratório: estridor inspiratório [ausente / à agitação / em repouso], retrações [ausentes / leves / moderadas / graves], entrada de ar [normal / diminuída], MV [ ].
+Nível de consciência: [normal / agitado / desorientado]. Cianose: [ausente].
+Westley: [ ] pontos.
+Oroscopia (sem forçar abaixador se suspeita de epiglotite): [ ].
+
+HIPÓTESES DIAGNÓSTICAS
+1. Laringotraqueíte viral aguda (crupe) [leve / moderada / grave]
+
+CONDUTA
+- Manter a criança calma, no colo do responsável
+- Dexametasona [0,15–0,6] mg/kg [VO/IM] dose única
+- [Nebulização com adrenalina se estridor em repouso]
+- [Observação 2–4 h após adrenalina]
+- [Alta se sem estridor em repouso, com orientações / internação se moderado-grave persistente]
+${AN_FIM}`},
+
+an_pecon:{g:'mental',t:'Acidente por animal peçonhento',code:'T63 · X20–X29',rel:[['cd_ofid','Conduta: serpentes'],['cd_aracn','Conduta: escorpião, aranhas e outros'],['rx_pecon','Soroterapia']],body:an('Picada de [cobra / escorpião / aranha / lagarta / abelha]',
+`Paciente refere [picada/mordida] por [serpente / escorpião / aranha / lagarta (taturana) / abelhas] há [ ] [horas], em [local do corpo], às [hora], em [zona rural / domicílio / __]. Animal [trazido / fotografado / descrito como __].
+Sintomas locais: [dor, edema, eritema, equimose, bolhas, sangramento local, parestesia, placa marmórea (aranha marrom)]. Progressão do edema: [ ].
+Sintomas sistêmicos: [sangramento (gengival, hematúria, hematêmese) / urina escura / ptose palpebral, visão turva ou dupla, "fácies miastênica" / dor muscular / sudorese, vômitos, sialorreia, agitação, priapismo (crianças - escorpião, armadeira) / dispneia / diarreia, bradicardia, hipotensão].
+Medidas antes da chegada: [torniquete, sucção, incisão, substâncias no local: __]. Soro já recebido: [ ]. Vacina antitetânica: [ ].`,
+`${EF_CV}
+${EF_AR}
+${EF_ABD}
+NEURO: [sem ptose, sem oftalmoplegia, sem fraqueza / ptose palpebral bilateral, oftalmoplegia, diplopia, dificuldade para deglutir].
+Local da picada: [marcas de presas __], edema até [ ] (segmentos acometidos: __), [equimose], [bolhas], [necrose], [sangramento], [sinais de síndrome compartimental].
+Sangramentos sistêmicos: [ ]. Diurese e cor da urina: [ ].
+Tempo de coagulação (TC): [ ] min [normal ≤ 10 min / incoagulável > 30 min].`,
+`1. Acidente [botrópico / crotálico / laquético / elapídico / escorpiônico / por Phoneutria / por Loxosceles / por Lonomia / por abelhas] — [leve / moderado / grave]
+2. [Complicações: __]`,
+`- Repouso, membro elevado e estendido; retirar anéis e adornos; não usar torniquete
+- Limpeza do local; analgesia; [lidocaína 2% sem vaso no local (escorpião)]
+- Exames: TC (tempo de coagulação), hemograma, coagulograma, CPK, Ur, Cr, eletrólitos, EAS
+- Soroterapia: [__ ampolas de soro __ EV] (ver tabela), com adrenalina e material de via aérea à beira-leito
+- Profilaxia antitetânica conforme esquema
+- Hidratação: diurese 1–2 mL/kg/h (crotálico: prevenir IRA por rabdomiólise)
+- Notificação compulsória (SINAN); CIATox 0800 722 6001
+- Observação mínima de [6–12 h (escorpião/aranha) / 24 h ou mais (serpentes)]`)}
+});

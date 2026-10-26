@@ -19,7 +19,9 @@ const SICON={
  drip:'M8 3h8v6a4 4 0 0 1-8 0z M12 13v3 M12 16c-2 2.5-3 4-3 5a3 3 0 0 0 6 0c0-1-1-2.5-3-5z',
  pedi:'M9 2h6 M10 2v3 M14 2v3 M8 9a4 4 0 0 1 8 0v10a2 2 0 0 1-2 2h-4a2 2 0 0 1-2-2z M8 13h3 M8 17h3',
  edit:'M4 20h4L19 9l-4-4L4 16z M13.5 6.5l4 4',
- airway:'M12 3v6 M8 9h8l-1 12H9z M5 13h3 M16 13h3'
+ airway:'M12 3v6 M8 9h8l-1 12H9z M5 13h3 M16 13h3',
+ steth:'M6 3v6a5 5 0 0 0 10 0V3 M5 3h2 M15 3h2 M11 14v1.5a5 5 0 0 0 10 0V13 M21 11a2 2 0 1 0 0 .01',
+ rxt:'M12 3v7 M12 8l-3 3 M12 8l3 3 M8.5 6.5C5.5 7 4 11 4 16c0 3 1 4.5 3 4.5s3-1.5 3-3.5v-6 M15.5 6.5C18.5 7 20 11 20 16c0 3-1 4.5-3 4.5s-3-1.5-3-3.5v-6'
 };
 const icon=(k,sz=20)=>`<svg width="${sz}" height="${sz}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="${SICON[k]||SICON.box}"/></svg>`;
 
@@ -30,8 +32,11 @@ const SECTIONS=[
  {g:'Atendimento',k:'rx',t:'Prescrições no PS',ic:'presc',ids:byTipo('h')},
  {g:'Atendimento',k:'alta',t:'Receitas de alta',ic:'alta',ids:byTipo('a')},
  {g:'Atendimento',k:'cd',t:'Condutas padrão',ic:'urg',ids:Object.keys(CD)},
- {g:'Ferramentas',k:'ex',t:'Interpretação de exames',ic:'exames',ids:['gasocalc',...Object.keys(EX)]},
- {g:'Ferramentas',k:'calc',t:'Calculadoras e escores',ic:'calc',ids:[...Object.keys(SC),...Object.keys(NC)]},
+ {g:'Atendimento',k:'ef',t:'Exame físico',ic:'steth',ids:EF_IDS.filter(k=>EX[k])},
+ {g:'Ferramentas',k:'ex',t:'Interpretação de exames',ic:'exames',ids:['gasocalc',...Object.keys(EX).filter(k=>!/^(ef_|efp_|ecg_|rxt_)/.test(k))]},
+ {g:'Ferramentas',k:'ecg',t:'Interpretação de ECG',ic:'ecg',ids:['ecg_ps','ecg_passo','ecg_taqui','ecg_bradi','ecg_eixo','ecg_sobrec','ecg_bloq','ecg_isq','ecg_qt','ecg_padroes','fcecg','eixo','qtc','sve']},
+ {g:'Ferramentas',k:'rxt',t:'Interpretação de RX de tórax',ic:'rxt',ids:['rxt_passo','rxt_pad','rxt_ex']},
+ {g:'Ferramentas',k:'calc',t:'Calculadoras e escores',ic:'calc',ids:[...Object.keys(SC),...Object.keys(NC).filter(k=>!['fcecg','eixo','qtc','sve'].includes(k))]},
  {g:'Ferramentas',k:'inf',t:'Infusões, IOT e pediatria',ic:'drip',ids:['drogas','iot','pedi']},
  {g:'Meu kit',k:'meu',t:'Minhas edições e dados',ic:'edit',ids:['meu']}
 ];
@@ -112,11 +117,16 @@ function renderGD(m,id){
     ${tocHTML(g.sec.map((x,i)=>['gd-'+i,x.h]))}
     ${g.sec.map((x,i)=>`<div class="card gd" id="gd-${i}"><div class="lbl lbl-row"><span>${x.h}</span><button class="btn small" data-c="${i}" type="button">Copiar</button></div>
       ${x.intro?`<p class="note" style="color:var(--fg)">${x.intro}</p>`:''}
+      ${x.svg?`<div class="gsvg">${x.svg}</div>`:''}
       ${x.li?`<ul class="gl">${x.li.map(l=>`<li>${l}</li>`).join('')}</ul>`:''}
-      ${x.rows?`<table class="scale pdt"><tbody>${x.rows.map(r=>`<tr><td>${r[0]}</td><td>${r[1]}</td></tr>`).join('')}</tbody></table>`:''}</div>`).join('')}
+      ${x.rows?`<table class="scale pdt"><tbody>${x.rows.map(r=>`<tr><td>${r[0]}</td><td>${r[1]}</td></tr>`).join('')}</tbody></table>`:''}
+      ${x.normal?`<div class="lbl">Texto para copiar (editável)</div><textarea class="soap efn" data-en="${i}" spellcheck="false" aria-label="${esc(strip(x.h))}: texto editável"></textarea><div class="bar"><button class="btn small" data-er="${i}" type="button">Restaurar texto</button></div>`:''}</div>`).join('')}
     ${relHTML(g.rel)}
     <p class="note">Resumo para consulta rápida. Confira o protocolo vigente da sua instituição.</p></section>`;
-  m.querySelectorAll('[data-c]').forEach(b=>b.onclick=()=>copy(gdText(g.sec[+b.dataset.c])));bindToc(m);bindGo(m)}
+  const ek=i=>'kitps:efn:'+id+':'+i,eg=i=>{const v=store.get(ek(i));return v!=null?v:g.sec[i].normal};
+  m.querySelectorAll('[data-en]').forEach(t=>{const i=+t.dataset.en;t.value=eg(i);fit(t);t.oninput=()=>{fit(t);if(t.value.trim()&&t.value!==g.sec[i].normal)store.set(ek(i),t.value);else store.del(ek(i))}});
+  m.querySelectorAll('[data-er]').forEach(b=>b.onclick=()=>confirm2(b,()=>{const i=+b.dataset.er,t=m.querySelector(`[data-en="${i}"]`);store.del(ek(i));t.value=g.sec[i].normal;fit(t);toast('Texto restaurado')}));
+  m.querySelectorAll('[data-c]').forEach(b=>b.onclick=()=>{const i=+b.dataset.c,x=g.sec[i];copy(x.normal?eg(i):gdText(x))});bindToc(m);bindGo(m)}
 
 function renderSC(m,id){
   const s=SC[id];
@@ -150,7 +160,7 @@ function renderNC(m,id){
   m.querySelectorAll('input,select').forEach(e=>{e.oninput=upd;e.onchange=upd});upd();bindCopy(()=>line)}
 
 function renderMEU(m){
-  const p=profGet(),ks=(()=>{try{return Object.keys(localStorage).filter(k=>/^kitps:(an|rx):/.test(k)).sort()}catch(e){return []}})();
+  const p=profGet(),ks=(()=>{try{return Object.keys(localStorage).filter(k=>/^kitps:(an|rx|efn):/.test(k)).sort()}catch(e){return []}})();
   const th=store.get('kitps:theme')||'auto';
   m.innerHTML=`<section class="panel"><div class="ph"><h2>Minhas edições e dados</h2><span class="code">salvo neste aparelho</span></div>
     <div class="card"><div class="lbl">Dados para a receita impressa</div><div class="grid2">
@@ -160,7 +170,7 @@ function renderMEU(m){
      <div class="field"><label for="pf-cidade">Cidade</label><input id="pf-cidade" value="${esc(p.cidade)}"></div></div></div>
     <div class="card"><div class="lbl">Aparência</div><div class="seg" role="tablist" aria-label="Tema">${[['auto','Automático'],['light','Claro'],['dark','Escuro']].map(([k,l])=>`<button type="button" role="tab" data-th="${k}" aria-selected="${th===k}">${l}</button>`).join('')}</div></div>
     <div class="card"><div class="lbl">Modelos que você editou (${ks.length})</div>
-     ${ks.length?`<div class="edlist">${ks.map(k=>{const [,tp,id,i]=k.split(':');const nm=tp==='an'?(AN[id]&&AN[id].t):(RX[id]&&RX[id].items[+i]&&RX[id].items[+i].t);return nm?`<div class="edrow"><button class="lnk" type="button" data-go="${id}">${esc(nm)}</button><span class="edtag">${tp==='an'?'Anamnese':'Prescrição'}</span></div>`:''}).join('')}</div>
+     ${ks.length?`<div class="edlist">${ks.map(k=>{const [,tp,id,i]=k.split(':');const nm=tp==='an'?(AN[id]&&AN[id].t):tp==='efn'?(EX[id]&&EX[id].t):(RX[id]&&RX[id].items[+i]&&RX[id].items[+i].t);return nm?`<div class="edrow"><button class="lnk" type="button" data-go="${id}">${esc(strip(nm))}</button><span class="edtag">${tp==='an'?'Anamnese':tp==='efn'?'Texto':'Prescrição'}</span></div>`:''}).join('')}</div>
      <div class="bar"><button class="btn small" id="exp" type="button">Copiar backup</button><button class="btn small danger" id="clr" type="button">Apagar todas as edições</button></div>`:'<p class="note">Nada ainda. Edite anamneses e prescrições: elas aparecem aqui.</p>'}
      <details><summary>Restaurar backup</summary><textarea class="soap" id="imp" rows="4" placeholder="Cole aqui o backup copiado"></textarea><div class="bar"><button class="btn small" id="impb" type="button">Restaurar</button></div></details></div></section>`;
   ['medico','crm','unidade','cidade'].forEach(k=>$('#pf-'+k).oninput=e=>store.set('kitps:'+k,e.target.value));
@@ -168,7 +178,7 @@ function renderMEU(m){
   bindGo(m);
   const ex=$('#exp');if(ex)ex.onclick=()=>{const o={};ks.forEach(k=>o[k]=store.get(k));copy(JSON.stringify(o))};
   const cl=$('#clr');if(cl)cl.onclick=()=>confirm2(cl,()=>{ks.forEach(k=>store.del(k));toast('Edições apagadas');renderMEU(m);addHead()});
-  $('#impb').onclick=()=>{try{const o=JSON.parse($('#imp').value);let n=0;Object.entries(o).forEach(([k,v])=>{if(/^kitps:(an|rx):/.test(k)&&typeof v==='string'){store.set(k,v);n++}});toast(n+' edição(ões) restaurada(s)');renderMEU(m);addHead()}catch(e){toast('Backup inválido')}}}
+  $('#impb').onclick=()=>{try{const o=JSON.parse($('#imp').value);let n=0;Object.entries(o).forEach(([k,v])=>{if(/^kitps:(an|rx|efn):/.test(k)&&typeof v==='string'){store.set(k,v);n++}});toast(n+' edição(ões) restaurada(s)');renderMEU(m);addHead()}catch(e){toast('Backup inválido')}}}
 function applyTheme(){const t=store.get('kitps:theme');if(t==='light'||t==='dark')document.documentElement.dataset.theme=t;else delete document.documentElement.dataset.theme}
 
 function render(){
