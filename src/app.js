@@ -21,6 +21,7 @@ const SICON={
  edit:'M4 20h4L19 9l-4-4L4 16z M13.5 6.5l4 4',
  airway:'M12 3v6 M8 9h8l-1 12H9z M5 13h3 M16 13h3',
  steth:'M6 3v6a5 5 0 0 0 10 0V3 M5 3h2 M15 3h2 M11 14v1.5a5 5 0 0 0 10 0V13 M21 11a2 2 0 1 0 0 .01',
+ pill:'M10.5 20.5a5 5 0 0 1-7-7l6-6a5 5 0 0 1 7 7z M7.5 10.5l6 6',
  timer:'M9 2h6 M12 5v2 M12 22a8 8 0 1 0 0-16 8 8 0 0 0 0 16z M12 10v4l2.5 2.5',
  rxt:'M12 3v7 M12 8l-3 3 M12 8l3 3 M8.5 6.5C5.5 7 4 11 4 16c0 3 1 4.5 3 4.5s3-1.5 3-3.5v-6 M15.5 6.5C18.5 7 20 11 20 16c0 3-1 4.5-3 4.5s-3-1.5-3-3.5v-6'
 };
@@ -35,7 +36,8 @@ const SECTIONS=[
  {g:'Atendimento',k:'rxb',t:'Receita montada',ic:'edit',ids:['receita']},
  {g:'Atendimento',k:'cd',t:'Condutas padrão',ic:'urg',ids:Object.keys(CD)},
  {g:'Atendimento',k:'ef',t:'Exame físico',ic:'steth',ids:EF_IDS.filter(k=>EX[k])},
- {g:'Ferramentas',k:'ex',t:'Interpretação de exames',ic:'exames',ids:['gasocalc',...Object.keys(EX).filter(k=>!/^(ef_|efp_|ecg_|rxt_)/.test(k))]},
+ {g:'Ferramentas',k:'bul',t:'Bulário do PS',ic:'pill',ids:Object.keys(EX).filter(k=>/^med_/.test(k))},
+ {g:'Ferramentas',k:'ex',t:'Interpretação de exames',ic:'exames',ids:['gasocalc',...Object.keys(EX).filter(k=>!/^(ef_|efp_|ecg_|rxt_|med_)/.test(k))]},
  {g:'Ferramentas',k:'ecg',t:'Interpretação de ECG',ic:'ecg',ids:['ecg_ps','ecg_passo','ecg_taqui','ecg_bradi','ecg_eixo','ecg_sobrec','ecg_bloq','ecg_isq','ecg_qt','ecg_padroes','fcecg','eixo','qtc','sve']},
  {g:'Ferramentas',k:'rxt',t:'Interpretação de RX de tórax',ic:'rxt',ids:['rxt_passo','rxt_pad','rxt_ex']},
  {g:'Ferramentas',k:'calc',t:'Calculadoras e escores',ic:'calc',ids:[...Object.keys(SC),...Object.keys(NC).filter(k=>!['fcecg','eixo','qtc','sve','vm'].includes(k))]},

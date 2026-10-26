@@ -47,7 +47,13 @@ const MEDS=[
   {n:'Paracetamol 500 mg + codeína 30 mg',f:['comprimido','comprimidos'],d:'1',i:'6',dd:5,o:'se dor intensa'},
   {n:'Ciclobenzaprina 5 mg',f:['comprimido','comprimidos'],d:'1',i:'24',dd:7,o:'à noite'},
   {n:'Butilbrometo de escopolamina 10 mg + dipirona 250 mg',f:['comprimido','comprimidos'],d:'1 a 2',i:'8',dd:3,o:'se cólica'},
-  {n:'Sumatriptano 50 mg',f:['comprimido','comprimidos'],d:'1',i:'u',dd:1,o:'no início da crise de enxaqueca; pode repetir após 2 h (máx. 4 comprimidos/dia)'}]],
+  {n:'Sumatriptano 50 mg',f:['comprimido','comprimidos'],d:'1',i:'u',dd:1,o:'no início da crise de enxaqueca; pode repetir após 2 h (máx. 4 comprimidos/dia)'},
+  {n:'Meloxicam 15 mg',f:['comprimido','comprimidos'],d:'1',i:'24',dd:5,o:'após uma refeição'},
+  {n:'Cetorolaco de trometamina 10 mg sublingual',f:['comprimido','comprimidos'],d:'1',i:'8',dd:5,o:'se dor forte (máx. 5 dias)'},
+  {n:'Cetoprofeno 100 mg',f:['comprimido','comprimidos'],d:'1',i:'12',dd:5,o:'após as refeições'},
+  {n:'Orfenadrina 35 mg + dipirona 300 mg + cafeína 50 mg',f:['comprimido','comprimidos'],d:'1',i:'8',dd:5,o:'se dor muscular'},
+  {n:'Colchicina 0,5 mg',f:['comprimido','comprimidos'],d:'1',i:'12',dd:7,o:'na crise de gota (diarreia: suspender)'},
+  {n:'Gabapentina 300 mg',f:['cápsula','cápsulas'],d:'1',i:'24',dd:0,o:'à noite; aumentar conforme orientação'}]],
  ['Digestivo',[
   {n:'Ondansetrona 4 mg (orodispersível)',f:['comprimido','comprimidos'],d:'1',i:'8',dd:3,o:'sobre a língua, se náusea ou vômito'},
   {n:'Metoclopramida 10 mg',f:['comprimido','comprimidos'],d:'1',i:'8',dd:3,o:'30 min antes das refeições, se náusea'},
@@ -58,7 +64,13 @@ const MEDS=[
   {n:'Simeticona 40 mg',f:['comprimido','comprimidos'],d:'1',i:'8',dd:5,o:'se gases'},
   {n:'Sais para reidratação oral',f:['envelope','envelopes'],d:'1 envelope diluído em 1 L de água filtrada',i:'sn',dd:3,o:'beber aos poucos ao longo do dia e após cada evacuação líquida',pk:'10 envelopes'},
   {n:'Racecadotrila 100 mg',f:['cápsula','cápsulas'],d:'1',i:'8',dd:3,o:'até parar a diarreia'},
-  {n:'Lactulose 667 mg/mL',f:['mL','mL'],d:'15',i:'12',dd:7,o:'ajustar para 1 a 2 evacuações pastosas por dia',pk:'1 frasco'}]],
+  {n:'Lactulose 667 mg/mL',f:['mL','mL'],d:'15',i:'12',dd:7,o:'ajustar para 1 a 2 evacuações pastosas por dia',pk:'1 frasco'},
+  {n:'Loperamida 2 mg',f:['comprimido','comprimidos'],d:'1',i:'sn',dd:2,o:'após cada evacuação líquida (máx. 8/dia); não usar se febre ou sangue nas fezes'},
+  {n:'Bisacodil 5 mg',f:['comprimido','comprimidos'],d:'1 a 2',i:'24',dd:5,o:'à noite, se intestino preso'},
+  {n:'Domperidona 10 mg',f:['comprimido','comprimidos'],d:'1',i:'8',dd:5,o:'15 a 30 minutos antes das refeições'},
+  {n:'Sulfato ferroso 40 mg Fe',f:['comprimido','comprimidos'],d:'1',i:'24',dd:90,o:'30 minutos antes do almoço, com suco de laranja'},
+  {n:'Ácido fólico 5 mg',f:['comprimido','comprimidos'],d:'1',i:'24',dd:30,o:''},
+  {n:'Tiamina 300 mg',f:['comprimido','comprimidos'],d:'1',i:'24',dd:30,o:''}]],
  ['Alergia e respiratório',[
   {n:'Loratadina 10 mg',f:['comprimido','comprimidos'],d:'1',i:'24',dd:5,o:''},
   {n:'Dexclorfeniramina 2 mg',f:['comprimido','comprimidos'],d:'1',i:'8',dd:5,o:'pode dar sono'},
@@ -67,7 +79,12 @@ const MEDS=[
   {n:'Prednisolona 3 mg/mL solução oral',f:['mL','mL'],d:'1 mg/kg = __',i:'24',dd:3,o:'pela manhã (máx. 40 mg = 13 mL)',pk:'1 frasco'},
   {n:'Salbutamol 100 mcg/jato aerossol',f:['jato','jatos'],d:'4',i:'4',dd:5,o:'com espaçador, se falta de ar ou chiado; depois espaçar para 6/6 h',pk:'1 frasco',v:'Uso inalatório'},
   {n:'Cloreto de sódio 0,9% spray nasal',f:['jato','jatos'],d:'2 em cada narina',i:'sn',dd:7,o:'várias vezes ao dia',pk:'1 frasco',v:'Uso nasal'},
-  {n:'Oseltamivir 75 mg',f:['cápsula','cápsulas'],d:'1',i:'12',dd:5,o:''}]],
+  {n:'Oseltamivir 75 mg',f:['cápsula','cápsulas'],d:'1',i:'12',dd:5,o:''},
+  {n:'Fexofenadina 180 mg',f:['comprimido','comprimidos'],d:'1',i:'24',dd:7,o:''},
+  {n:'Prednisolona 20 mg',f:['comprimido','comprimidos'],d:'1',i:'24',dd:5,o:'pela manhã'},
+  {n:'Dexametasona 4 mg',f:['comprimido','comprimidos'],d:'1',i:'24',dd:3,o:'pela manhã'},
+  {n:'Budesonida 50 mcg spray nasal',f:['jato','jatos'],d:'2',i:'12',dd:30,o:'em cada narina',pk:'1 frasco',v:'Uso nasal'},
+  {n:'Beclometasona 250 mcg spray',f:['jato','jatos'],d:'1',i:'12',dd:0,o:'com espaçador; enxaguar a boca após',pk:'1 frasco',v:'Uso inalatório'}]],
  ['Antibióticos e antifúngicos',[
   {n:'Amoxicilina 500 mg',f:['cápsula','cápsulas'],d:'1',i:'8',dd:7,o:''},
   {n:'Amoxicilina 875 mg + clavulanato 125 mg',f:['comprimido','comprimidos'],d:'1',i:'12',dd:7,o:'no início das refeições'},
@@ -85,7 +102,16 @@ const MEDS=[
   {n:'Doxiciclina 100 mg',f:['comprimido','comprimidos'],d:'1',i:'12',dd:7,o:'com bastante água, sem deitar em seguida'},
   {n:'Clindamicina 300 mg',f:['cápsula','cápsulas'],d:'1',i:'6',dd:7,o:''},
   {n:'Fluconazol 150 mg',f:['cápsula','cápsulas'],d:'1',i:'u',dd:1,o:''},
-  {n:'Aciclovir 400 mg',f:['comprimido','comprimidos'],d:'2',i:'5x',dd:7,o:'(herpes-zóster: 800 mg 5 vezes ao dia por 7 dias)'}]],
+  {n:'Aciclovir 400 mg',f:['comprimido','comprimidos'],d:'2',i:'5x',dd:7,o:'(herpes-zóster: 800 mg 5 vezes ao dia por 7 dias)'},
+  {n:'Cefuroxima 500 mg',f:['comprimido','comprimidos'],d:'1',i:'12',dd:7,o:'após as refeições'},
+  {n:'Cefadroxila 500 mg',f:['cápsula','cápsulas'],d:'1',i:'12',dd:7,o:''},
+  {n:'Claritromicina 500 mg',f:['comprimido','comprimidos'],d:'1',i:'12',dd:7,o:''},
+  {n:'Penicilina V 500.000 UI',f:['comprimido','comprimidos'],d:'1',i:'6',dd:10,o:'1 h antes ou 2 h após as refeições'},
+  {n:'Valaciclovir 1 g',f:['comprimido','comprimidos'],d:'1',i:'8',dd:7,o:''},
+  {n:'Albendazol 400 mg',f:['comprimido','comprimidos'],d:'1',i:'u',dd:1,o:'repetir em 15 dias se necessário',pk:'1 comprimido'},
+  {n:'Secnidazol 1 g',f:['comprimido','comprimidos'],d:'2',i:'u',dd:1,o:'tomar os 2 juntos; não beber álcool por 3 dias',pk:'2 comprimidos'},
+  {n:'Nistatina 100.000 UI/mL suspensão',f:['mL','mL'],d:'5',i:'6',dd:7,o:'bochechar e engolir',pk:'1 frasco'},
+  {n:'Miconazol 2% creme vaginal',f:['aplicador','aplicadores'],d:'1',i:'24',dd:7,o:'à noite, ao deitar',pk:'1 bisnaga',v:'Uso vaginal'}]],
  ['Cardiovascular e anticoagulação',[
   {n:'AAS 100 mg',f:['comprimido','comprimidos'],d:'1',i:'24',dd:0,o:'após o almoço'},
   {n:'Clopidogrel 75 mg',f:['comprimido','comprimidos'],d:'1',i:'24',dd:0,o:''},
@@ -97,24 +123,43 @@ const MEDS=[
   {n:'Hidroclorotiazida 25 mg',f:['comprimido','comprimidos'],d:'1',i:'24',dd:0,o:'pela manhã'},
   {n:'Furosemida 40 mg',f:['comprimido','comprimidos'],d:'1',i:'24',dd:0,o:'pela manhã'},
   {n:'Propranolol 40 mg',f:['comprimido','comprimidos'],d:'1',i:'12',dd:0,o:''},
-  {n:'Atorvastatina 40 mg',f:['comprimido','comprimidos'],d:'1',i:'24',dd:0,o:'à noite'}]],
+  {n:'Atorvastatina 40 mg',f:['comprimido','comprimidos'],d:'1',i:'24',dd:0,o:'à noite'},
+  {n:'Metoprolol (succinato) 50 mg',f:['comprimido','comprimidos'],d:'1',i:'24',dd:0,o:''},
+  {n:'Enalapril 10 mg',f:['comprimido','comprimidos'],d:'1',i:'12',dd:0,o:''},
+  {n:'Captopril 25 mg',f:['comprimido','comprimidos'],d:'1',i:'8',dd:0,o:'1 h antes das refeições'},
+  {n:'Espironolactona 25 mg',f:['comprimido','comprimidos'],d:'1',i:'24',dd:0,o:'pela manhã'},
+  {n:'Metformina 850 mg',f:['comprimido','comprimidos'],d:'1',i:'12',dd:0,o:'após o café e o jantar'},
+  {n:'Gliclazida MR 30 mg',f:['comprimido','comprimidos'],d:'1',i:'24',dd:0,o:'no café da manhã'},
+  {n:'Levotiroxina 50 mcg',f:['comprimido','comprimidos'],d:'1',i:'24',dd:0,o:'em jejum, 30 minutos antes do café'},
+  {n:'Alopurinol 100 mg',f:['comprimido','comprimidos'],d:'1',i:'24',dd:0,o:'não iniciar durante a crise de gota'},
+  {n:'Ácido tranexâmico 250 mg',f:['comprimido','comprimidos'],d:'4',i:'8',dd:5,o:'durante o sangramento'},
+  {n:'Nifedipino retard 20 mg',f:['comprimido','comprimidos'],d:'1',i:'12',dd:0,o:''},
+  {n:'Metildopa 250 mg',f:['comprimido','comprimidos'],d:'1',i:'8',dd:0,o:''}]],
  ['Neuro, tontura e urologia',[
   {n:'Dimenidrinato 50 mg + piridoxina 10 mg',f:['comprimido','comprimidos'],d:'1',i:'6',dd:3,o:'se tontura ou enjoo; pode dar sono'},
   {n:'Betaistina 24 mg',f:['comprimido','comprimidos'],d:'1',i:'12',dd:15,o:''},
   {n:'Diazepam 10 mg',f:['comprimido','comprimidos'],d:'1',i:'24',dd:5,o:'à noite'},
   {n:'Tansulosina 0,4 mg',f:['cápsula','cápsulas'],d:'1',i:'24',dd:14,o:'à noite (ajuda a eliminar o cálculo)'},
-  {n:'Fenazopiridina 200 mg',f:['comprimido','comprimidos'],d:'1',i:'8',dd:2,o:'a urina fica alaranjada'}]],
+  {n:'Fenazopiridina 200 mg',f:['comprimido','comprimidos'],d:'1',i:'8',dd:2,o:'a urina fica alaranjada'},
+  {n:'Cinarizina 25 mg',f:['comprimido','comprimidos'],d:'1',i:'8',dd:5,o:'se tontura; pode dar sono'},
+  {n:'Amitriptilina 25 mg',f:['comprimido','comprimidos'],d:'1',i:'24',dd:0,o:'à noite'},
+  {n:'Sertralina 50 mg',f:['comprimido','comprimidos'],d:'1',i:'24',dd:0,o:'pela manhã; efeito começa em 2 a 4 semanas',pk:'30 comprimidos'},
+  {n:'Clonazepam 2 mg',f:['comprimido','comprimidos'],d:'1',i:'24',dd:7,o:'à noite'},
+  {n:'Fluoxetina 20 mg',f:['cápsula','cápsulas'],d:'1',i:'24',dd:0,o:'pela manhã',pk:'30 cápsulas'}]],
  ['Pele, olhos, ouvido e ginecologia',[
   {n:'Mupirocina 2% pomada',f:['aplicação','aplicações'],d:'camada fina',i:'8',dd:7,o:'na lesão, após lavar com água e sabão',pk:'1 bisnaga',v:'Uso tópico'},
   {n:'Sulfadiazina de prata 1% creme',f:['aplicação','aplicações'],d:'camada fina',i:'24',dd:7,o:'após limpar a ferida; cobrir com gaze',pk:'1 bisnaga',v:'Uso tópico'},
   {n:'Cetoconazol 2% creme',f:['aplicação','aplicações'],d:'camada fina',i:'12',dd:21,o:'na lesão e 2 cm ao redor',pk:'1 bisnaga',v:'Uso tópico'},
-  {n:'Permetrina 5% loção',f:['aplicação','aplicações'],d:'em todo o corpo, do pescoço para baixo',i:'u',dd:1,o:'à noite, enxaguar após 8–12 h; repetir em 7 dias',pk:'1 frasco',v:'Uso tópico'},
+  {n:'Permetrina 5% loção',b:'permetrina',f:['aplicação','aplicações'],d:'em todo o corpo, do pescoço para baixo',i:'u',dd:1,o:'à noite, enxaguar após 8–12 h; repetir em 7 dias',pk:'1 frasco',v:'Uso tópico'},
   {n:'Ivermectina 6 mg',f:['comprimido','comprimidos'],d:'200 mcg/kg = __',i:'u',dd:1,o:'em jejum; repetir em 7 dias',pk:'__ comprimidos'},
   {n:'Tobramicina 0,3% colírio',f:['gota','gotas'],d:'1',i:'4',dd:7,o:'no(s) olho(s) afetado(s)',pk:'1 frasco',v:'Uso oftálmico'},
   {n:'Lubrificante ocular (carmelose 0,5%) colírio',f:['gota','gotas'],d:'1',i:'sn',dd:15,o:'no(s) olho(s), várias vezes ao dia',pk:'1 frasco',v:'Uso oftálmico'},
   {n:'Ciprofloxacino 0,2% + hidrocortisona 1% solução otológica',f:['gota','gotas'],d:'3',i:'12',dd:7,o:'no ouvido afetado',pk:'1 frasco',v:'Uso otológico'},
   {n:'Levonorgestrel 1,5 mg',f:['comprimido','comprimidos'],d:'1',i:'u',dd:1,o:'o quanto antes, até 5 dias após a relação',pk:'1 comprimido'},
-  {n:'Metronidazol 100 mg/g gel vaginal',f:['aplicador','aplicadores'],d:'1',i:'24',dd:7,o:'à noite, ao deitar',pk:'1 bisnaga',v:'Uso vaginal'}]]];
+  {n:'Metronidazol 100 mg/g gel vaginal',b:'metronidazol',f:['aplicador','aplicadores'],d:'1',i:'24',dd:7,o:'à noite, ao deitar',pk:'1 bisnaga',v:'Uso vaginal'},
+  {n:'Hidrocortisona 1% creme',f:['aplicação','aplicações'],d:'camada fina',i:'12',dd:7,o:'na lesão',pk:'1 bisnaga',v:'Uso tópico'},
+  {n:'Neomicina + bacitracina pomada',f:['aplicação','aplicações'],d:'camada fina',i:'8',dd:7,o:'na lesão, após lavar',pk:'1 bisnaga',v:'Uso tópico'},
+  {n:'Dexametasona + neomicina + polimixina B colírio',f:['gota','gotas'],d:'1',i:'6',dd:7,o:'no(s) olho(s) afetado(s)',pk:'1 frasco',v:'Uso oftálmico'}]]];
 const MEDL=MEDS.flatMap(([g,L])=>L.map(x=>Object.assign({g},x)));
 const IVL={'24':['1 vez ao dia',1],'12':['de 12/12 h',2],'8':['de 8/8 h',3],'6':['de 6/6 h',4],'4':['de 4/4 h',6],'5x':['5 vezes ao dia',5],'sn':['se necessário',4],'u':['em dose única',1]};
 const VERB={'Uso tópico':'Aplicar','Uso vaginal':'Aplicar','Uso oftálmico':'Pingar','Uso otológico':'Pingar','Uso nasal':'Aplicar','Uso inalatório':'Inalar'};
@@ -140,6 +185,7 @@ FN.receita={g:'geral',t:'Receita montada',code:'preencher e juntar remédios',k:
       <div class="field"><label for="rb-dd">Dias (0 = uso contínuo)</label><input id="rb-dd" inputmode="numeric"></div></div>
       <div class="field" style="margin-top:10px"><label for="rb-o">Complemento</label><input id="rb-o"></div>
       <pre class="rx" id="rb-pv" style="margin-top:10px"></pre>
+      <div id="rb-bul"></div>
       <div class="bar"><button class="btn primary small" id="rb-add" type="button">+ Adicionar à receita</button></div></article>
     <div class="card"><div class="field"><label for="rb-pac">Nome do paciente (vai na impressão)</label><input id="rb-pac" autocomplete="off" value="${esc(RXP)}"></div></div>
     <div id="rxb-list"></div>
@@ -150,7 +196,12 @@ FN.receita={g:'geral',t:'Receita montada',code:'preencher e juntar remédios',k:
     <div id="sheet" class="card atsheet rxsheet"></div></section>`;
   const F=()=>({med:$('#rb-med').value,d:$('#rb-d').value,iv:$('#rb-iv').value,dd:num($('#rb-dd').value),o:$('#rb-o').value});
   const pv=()=>{const r=rxbBuild(F());$('#rb-pv').textContent=r?r.via.toUpperCase()+'\n'+r.txt:''};
-  const load=()=>{const x=MEDL[+$('#rb-med').value];$('#rb-d').value=x.d;$('#rb-iv').value=x.i;$('#rb-dd').value=x.dd;$('#rb-o').value=x.o;pv()};
+  const bul=()=>{const x=MEDL[+$('#rb-med').value],id=x&&(x.b||bulFor(x.n)),b=id&&BULX[id];
+    if(!b){$('#rb-bul').innerHTML='';return}
+    const row=(l,v)=>v?`<li><b>${l}:</b> ${esc(v)}</li>`:'';
+    $('#rb-bul').innerHTML=`<div class="note" style="margin-top:10px;font-size:.92em"><b>${esc(b.n)}</b>: efeitos adversos e ajustes<ul style="margin:6px 0 0 18px">${row('Efeitos adversos',b.ea.split(';').map(t=>t.trim()).filter(Boolean).slice(0,6).join('; '))}${row('Renal',b.r)}${row('Hepático',b.h)}${row('Idoso',b.i)}${row('Gestação',b.ge)}${row('Amamentação',b.am)}</ul><div class="bar"><button class="btn small" type="button" data-bulgo="med_${id}">Ver ficha completa</button></div></div>`;
+    $('#rb-bul [data-bulgo]').onclick=e=>go(e.currentTarget.dataset.bulgo)};
+  const load=()=>{const x=MEDL[+$('#rb-med').value];bul();$('#rb-d').value=x.d;$('#rb-iv').value=x.i;$('#rb-dd').value=x.dd;$('#rb-o').value=x.o;pv()};
   $('#rb-med').onchange=load;['rb-d','rb-dd','rb-o'].forEach(k=>$('#'+k).oninput=pv);$('#rb-iv').onchange=pv;load();
   $('#rb-add').onclick=()=>{const r=rxbBuild(F());if(!r)return;if(RXB.some(y=>y.txt===r.txt)){toast('Já está na receita');return}RXB.push(r);saveRxb();draw();toast('Adicionado')};
   $('#rb-pac').oninput=e=>{RXP=e.target.value;try{sessionStorage.setItem('kitps:rxb-pac',RXP)}catch(_){}};
