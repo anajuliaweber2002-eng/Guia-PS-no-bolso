@@ -2061,32 +2061,51 @@ FN.iot={g:'resp',t:'Intubação em sequência rápida',code:'doses por peso',k:'
     ${pp?`<div class="result"><div class="big">${fmt(pp*6,0)} <small>mL de volume corrente (6 mL/kg de peso predito)</small></div><div class="sub">Peso predito: <b>${fmt(pp,1)} kg</b>. Ajuste inicial: VC 6–8 mL/kg, FR 16–20 (asma/DPOC 10–12), PEEP 5, FiO2 100% e reduzir para SpO2 92–96%, pressão de platô &lt; 30 cmH2O. Gasometria em 30 min.</div></div>`:''}`};
   m.querySelectorAll('input,select').forEach(e=>{e.oninput=upd;e.onchange=upd});upd()}};
 
-/* Doses pediátricas */
+/* Doses pediátricas: c = [rótulo, mg/mL, gotas/mL], r = receita (mg/kg, intervalo, complemento), f = dose por faixa de peso. */
 const PD=[
- ['Dipirona',15,25,'mg/kg/dose de 6/6 h',1000,[['500 mg/mL (gotas)',500],['50 mg/mL (solução)',50]],'Máx. 1 g/dose.'],
- ['Paracetamol',10,15,'mg/kg/dose de 6/6 h',750,[['200 mg/mL (gotas)',200],['32 mg/mL (suspensão)',32]],'Máx. 75 mg/kg/dia.'],
- ['Ibuprofeno',5,10,'mg/kg/dose de 6/6–8/8 h',400,[['50 mg/mL (gotas)',50],['100 mg/mL (gotas)',100]],'Acima de 6 meses. Evitar na dengue e desidratação.'],
- ['Amoxicilina',25,30,'mg/kg/dose de 8/8 h (75–90 mg/kg/dia na OMA/pneumonia)',1000,[['250 mg/5 mL',50],['400 mg/5 mL',80]],'Máx. 1 g/dose.'],
- ['Amoxicilina + clavulanato',22.5,45,'mg/kg/dose de 12/12 h (de amoxicilina)',875,[['400+57 mg/5 mL',80],['250+62,5 mg/5 mL (8/8 h)',50]],'Diarreia é comum.'],
- ['Azitromicina',10,10,'mg/kg/dose 1 vez ao dia por 3–5 dias',500,[['200 mg/5 mL',40]],'Máx. 500 mg/dia.'],
- ['Cefalexina',12.5,25,'mg/kg/dose de 6/6 h',1000,[['250 mg/5 mL',50]],'50–100 mg/kg/dia.'],
- ['Prednisolona',1,2,'mg/kg/dia 1 vez ao dia',40,[['3 mg/mL',3],['1 mg/mL',1]],'Asma: 3–5 dias.'],
- ['Dexametasona (laringite)',0.15,0.6,'mg/kg dose única (VO/IM/EV)',10,[['4 mg/mL (injetável)',4],['0,1 mg/mL (elixir)',0.1]],'Laringite viral: 0,15–0,6 mg/kg.'],
- ['Ondansetrona',0.15,0.15,'mg/kg/dose de 8/8 h',8,[['2 mg/mL (injetável)',2],['4 mg/5 mL (solução)',0.8]],'Acima de 6 meses.'],
- ['Diazepam (crise convulsiva)',0.3,0.5,'mg/kg (EV 0,2–0,3; retal 0,5)',10,[['5 mg/mL',5]],'Máx. 10 mg.'],
- ['Midazolam (crise, IM/intranasal)',0.2,0.2,'mg/kg',10,[['5 mg/mL',5]],'Máx. 10 mg.'],
- ['Adrenalina (anafilaxia IM)',0.01,0.01,'mg/kg IM',0.5,[['1 mg/mL',1]],'Máx. 0,3 mg (< 30 kg) / 0,5 mg.'],
- ['Salbutamol spray 100 mcg',0.5,0.5,'jato/kg (1 jato a cada 2 kg) a cada 20 min',10,[],'Mínimo 4, máximo 10 jatos, com espaçador.'],
- ['SF 0,9% (expansão)',20,20,'mL/kg em 10–20 min',1000,[],'Reavaliar após cada bolus.'],
- ['Glicose 10% (hipoglicemia)',2,5,'mL/kg EV',250,[],'Equivale a 0,2–0,5 g/kg.']];
-FN.pedi={g:'crianca',t:'Doses pediátricas',code:'por peso',k:'pediatria crianca dose peso dipirona paracetamol ibuprofeno amoxicilina azitromicina prednisolona ondansetrona',render(m){
+ {n:'Dipirona',a:15,b:25,d:'mg/kg/dose de 6/6 h',mx:1000,c:[['500 mg/mL gotas',500,20],['50 mg/mL solução oral',50]],note:'Máx. 1 g/dose. Evitar abaixo de 3 meses ou 5 kg.',r:[20,'de 6/6 h','se dor ou febre']},
+ {n:'Paracetamol',a:10,b:15,d:'mg/kg/dose de 6/6 h',mx:750,c:[['200 mg/mL gotas',200,15],['32 mg/mL suspensão',32]],note:'Máx. 75 mg/kg/dia.',r:[15,'de 6/6 h','se dor ou febre']},
+ {n:'Ibuprofeno',a:5,b:10,d:'mg/kg/dose de 6/6–8/8 h',mx:400,c:[['50 mg/mL gotas',50,10],['100 mg/mL gotas',100]],note:'Acima de 6 meses. Evitar na dengue, varicela e desidratação.',r:[10,'de 8/8 h','se dor ou febre, após alimentação']},
+ {n:'Amoxicilina',a:25,b:30,d:'mg/kg/dose de 8/8 h (75–90 mg/kg/dia na OMA/pneumonia)',mx:1000,c:[['250 mg/5 mL suspensão',50],['400 mg/5 mL suspensão',80]],note:'Máx. 1 g/dose. Faringite: 50 mg/kg/dia por 10 dias.',r:[30,'de 8/8 h','por 10 dias']},
+ {n:'Amoxicilina + clavulanato',a:22.5,b:45,d:'mg/kg/dose de 12/12 h (de amoxicilina)',mx:875,c:[['400 + 57 mg/5 mL suspensão',80],['250 + 62,5 mg/5 mL suspensão (8/8 h)',50]],note:'Diarreia é comum.',r:[45,'de 12/12 h','por 10 dias']},
+ {n:'Azitromicina',a:10,b:10,d:'mg/kg/dose 1 vez ao dia por 3–5 dias',mx:500,c:[['200 mg/5 mL suspensão',40]],note:'Máx. 500 mg/dia. Coqueluche: 10 mg/kg no 1º dia e 5 mg/kg do 2º ao 5º.',r:[10,'1 vez ao dia','por 3 dias']},
+ {n:'Cefalexina',a:12.5,b:25,d:'mg/kg/dose de 6/6 h',mx:1000,c:[['250 mg/5 mL suspensão',50]],note:'50–100 mg/kg/dia.',r:[12.5,'de 6/6 h','por 7 dias']},
+ {n:'Cefuroxima',a:15,b:15,d:'mg/kg/dose de 12/12 h',mx:500,c:[['250 mg/5 mL suspensão',50]],note:'Sinusite, OMA (alergia não grave à penicilina), ITU.',r:[15,'de 12/12 h','após as refeições, por 10 dias']},
+ {n:'Claritromicina',a:7.5,b:7.5,d:'mg/kg/dose de 12/12 h',mx:500,c:[['250 mg/5 mL suspensão',50],['125 mg/5 mL suspensão',25]],note:'Alternativa na alergia à penicilina.',r:[7.5,'de 12/12 h','por 7 dias']},
+ {n:'Sulfametoxazol + trimetoprima',a:4,b:5,d:'mg/kg/dose de trimetoprima de 12/12 h',mx:160,c:[['200 + 40 mg/5 mL suspensão (8 mg/mL de TMP)',8]],note:'Dose calculada pela trimetoprima. Acima de 2 meses.',r:[4,'de 12/12 h','por 7 dias']},
+ {n:'Metronidazol',a:5,b:10,d:'mg/kg/dose de 8/8 h (giardíase 5; amebíase 10–15)',mx:500,c:[['40 mg/mL suspensão',40]],note:'Gosto ruim; dar com alimento.',r:[5,'de 8/8 h','por 7 dias']},
+ {n:'Prednisolona',a:1,b:2,d:'mg/kg/dia 1 vez ao dia',mx:40,c:[['3 mg/mL solução oral',3],['1 mg/mL solução oral',1]],note:'Asma: 3–5 dias.',r:[1,'1 vez ao dia','pela manhã, por 5 dias']},
+ {n:'Dexametasona (laringite)',a:0.15,b:0.6,d:'mg/kg dose única (VO/IM/EV)',mx:10,c:[['4 mg/mL injetável',4],['0,1 mg/mL elixir',0.1]],note:'Laringite viral: 0,15–0,6 mg/kg.'},
+ {n:'Ondansetrona',a:0.15,b:0.15,d:'mg/kg/dose de 8/8 h',mx:8,c:[['2 mg/mL injetável',2],['4 mg/5 mL solução oral',0.8]],note:'Acima de 6 meses.',r:[0.15,'de 8/8 h','se vômitos, por até 3 dias'],ri:1},
+ {n:'Dexclorfeniramina',a:0.05,b:0.05,d:'mg/kg/dose de 8/8 h',mx:2,c:[['2 mg/5 mL solução oral',0.4]],note:'Acima de 2 anos. Dá sono.',r:[0.05,'de 8/8 h','se coceira, por 5 dias']},
+ {n:'Hidroxizina',a:0.5,b:0.7,d:'mg/kg/dose de 8/8 h (2 mg/kg/dia)',mx:25,c:[['2 mg/mL solução oral',2]],note:'Dá sono.',r:[0.5,'de 8/8 h','se coceira, por 5 dias']},
+ {n:'Loratadina',d:'5 mg (< 30 kg) ou 10 mg (≥ 30 kg) 1 vez ao dia',c:[['1 mg/mL xarope',1]],note:'Acima de 2 anos.',f:kg=>{const mg=kg<30?5:10;return {ds:mg+' mg = '+mg+' mL',rx:['Loratadina 1 mg/mL xarope',`${mg} mL 1 vez ao dia, por 5 dias`]}}},
+ {n:'Oseltamivir',d:'≥ 1 ano: ≤ 15 kg 30 mg; 15–23 kg 45 mg; 23–40 kg 60 mg; > 40 kg 75 mg, de 12/12 h por 5 dias (< 1 ano: 3 mg/kg)',c:[['6 mg/mL suspensão',6]],note:'Sem suspensão: abrir a cápsula de 30, 45 ou 75 mg e misturar em alimento pastoso.',f:kg=>{const mg=kg<=15?30:kg<=23?45:kg<=40?60:75;return {ds:`${mg} mg = ${fmt(mg/6,1)} mL (se ≥ 1 ano)`,rx:['Oseltamivir 6 mg/mL suspensão',`${fmt(mg/6,1)} mL de 12/12 h, por 5 dias`]}}},
+ {n:'Albendazol',d:'400 mg dose única (1–2 anos: 200 mg)',c:[['40 mg/mL suspensão',40]],note:'Repetir em 15 dias se necessário.',f:()=>({ds:'400 mg = 10 mL',rx:['Albendazol 40 mg/mL suspensão','10 mL em dose única; repetir em 15 dias']})},
+ {n:'Ivermectina',d:'200 mcg/kg dose única (só ≥ 15 kg)',c:[],note:'Escabiose: repetir em 7 dias.',f:kg=>{if(kg<15)return {ds:'Não usar abaixo de 15 kg'};const cp=kg<25?'½':kg<36?'1':kg<51?'1 e ½':kg<66?'2':'2 e ½';return {ds:cp+' comprimido de 6 mg',rx:['Ivermectina 6 mg',`${cp} comprimido em dose única, em jejum; repetir em 7 dias`]}}},
+ {n:'Diazepam (crise convulsiva)',a:0.3,b:0.5,d:'mg/kg (EV 0,2–0,3; retal 0,5)',mx:10,c:[['5 mg/mL',5]],note:'Máx. 10 mg.'},
+ {n:'Midazolam (crise, IM/intranasal)',a:0.2,b:0.2,d:'mg/kg',mx:10,c:[['5 mg/mL',5]],note:'Máx. 10 mg.'},
+ {n:'Adrenalina (anafilaxia IM)',a:0.01,b:0.01,d:'mg/kg IM',mx:0.5,c:[['1 mg/mL',1]],note:'Máx. 0,3 mg (< 30 kg) / 0,5 mg.'},
+ {n:'Salbutamol spray 100 mcg',a:0.5,b:0.5,d:'jato/kg (1 jato a cada 2 kg) a cada 20 min',mx:10,c:[],note:'Mínimo 4, máximo 10 jatos, com espaçador.',u:'jatos'},
+ {n:'SF 0,9% (expansão)',a:20,b:20,d:'mL/kg em 10–20 min',mx:1000,c:[],note:'Reavaliar após cada bolus.',u:'mL'},
+ {n:'Glicose 10% (hipoglicemia)',a:2,b:5,d:'mL/kg EV',mx:250,c:[],note:'Equivale a 0,2–0,5 g/kg.',u:'mL'}];
+const r1=x=>x<2?Math.round(x*10)/10:Math.round(x*2)/2;
+function pdRx(p,kg){if(p.f){const o=p.f(kg);return o.rx?`Uso oral\n1. ${o.rx[0]} ———— 1 frasco\nTomar ${o.rx[1]}.`:''}
+  if(!p.r)return '';const c=p.c[p.ri||0],mg=Math.min(p.r[0]*kg,p.mx),ml=r1(mg/c[1]);
+  const q=c[2]?`${Math.round(mg/c[1]*c[2])} gotas`:`${fmt(ml,1)} mL`;
+  return `Uso oral\n1. ${p.n} ${c[0]} ———— 1 frasco\nTomar ${q} ${p.r[1]}, ${p.r[2]}.`}
+FN.pedi={g:'crianca',t:'Doses pediátricas',code:'por peso',k:'pediatria crianca dose peso dipirona paracetamol ibuprofeno amoxicilina azitromicina prednisolona ondansetrona cefuroxima claritromicina oseltamivir loratadina albendazol ivermectina metronidazol gotas ml receita',render(m){
   m.innerHTML=`<section class="panel"><div class="ph"><h2>Doses pediátricas</h2><span class="code">por peso</span></div>
    <div class="card"><div class="grid2"><div class="field"><label for="pd-kg">Peso (kg)</label><input id="pd-kg" inputmode="decimal" value="${esc(store.get('kitps:pkg')||'15')}"></div></div></div><div id="pd-o"></div>
-   <p class="note">Confira sempre a concentração do produto disponível. O número de gotas por mL varia entre fabricantes: prefira prescrever em mL ou conferir a bula.</p></section>`;
+   <p class="note">“+ Receita” leva a dose sugerida para a Receita montada, onde dá para editar. Confira a idade mínima, a concentração do produto disponível e o número de gotas por mL, que varia entre fabricantes.</p></section>`;
   const upd=()=>{const kg=num($('#pd-kg').value);store.set('kitps:pkg',$('#pd-kg').value);if(!(kg>0)){$('#pd-o').innerHTML='';return}
-   $('#pd-o').innerHTML=`<table class="scale pdt"><tbody>${PD.map(p=>{let a=p[1]*kg,b=p[2]*kg;const cap=x=>Math.min(x,p[4]);a=cap(a);b=cap(b);const u=/mL\/kg/.test(p[3])?'mL':/jato/.test(p[3])?'jatos':'mg';
-    let ds=a===b?fmt(a,a<10?1:0):fmt(a,a<10?1:0)+'–'+fmt(b,b<10?1:0);if(u==='jatos'){const j=Math.max(4,Math.min(10,Math.round(a)));ds=String(j)}
-    return `<tr><td><b>${p[0]}</b><br><small>${String(p[1]).replace('.',',')}${p[1]!==p[2]?'–'+String(p[2]).replace('.',','):''} ${p[3]}</small></td><td><b>${ds} ${u}</b>${p[5].map(c=>`<br><small>${c[0]}: ${a===b?fmt(a/c[1],1):fmt(a/c[1],1)+'–'+fmt(b/c[1],1)} mL</small>`).join('')}<br><small>${p[6]}</small></td></tr>`}).join('')}</tbody></table>`};
+   $('#pd-o').innerHTML=`<table class="scale pdt"><tbody>${PD.map((p,i)=>{const rx=pdRx(p,kg),btn=rx?`<br><button class="btn small" type="button" data-pdrx="${i}" style="margin-top:4px">+ Receita</button>`:'';
+    if(p.f)return `<tr><td><b>${p.n}</b><br><small>${p.d}</small></td><td><b>${esc(p.f(kg).ds)}</b><br><small>${p.note}</small>${btn}</td></tr>`;
+    const a=Math.min(p.a*kg,p.mx),b=Math.min(p.b*kg,p.mx),u=p.u||'mg',f1=x=>fmt(x,x<10?1:0);
+    let ds=a===b?f1(a):f1(a)+'–'+f1(b);if(u==='jatos')ds=String(Math.max(4,Math.min(10,Math.round(a))));
+    const rg=(k,dg)=>a===b?fmt(a/k,dg):fmt(a/k,dg)+'–'+fmt(b/k,dg);
+    return `<tr><td><b>${p.n}</b><br><small>${String(p.a).replace('.',',')}${p.a!==p.b?'–'+String(p.b).replace('.',','):''} ${p.d}</small></td><td><b>${ds} ${u}</b>${p.c.map(c=>`<br><small>${c[0]}: ${rg(c[1],1)} mL${c[2]?` (${a===b?Math.round(a/c[1]*c[2]):Math.round(a/c[1]*c[2])+'–'+Math.round(b/c[1]*c[2])} gotas)`:''}</small>`).join('')}<br><small>${p.note}</small>${btn}</td></tr>`}).join('')}</tbody></table>`;
+   $('#pd-o').querySelectorAll('[data-pdrx]').forEach(b=>b.onclick=()=>rxbAdd(pdRx(PD[+b.dataset.pdrx],kg)))};
   $('#pd-kg').oninput=upd;upd()}};
 
 /* Trazido do Kit APS de bolso: exame físico (ilustrações e fotos), ECG (traçados desenhados) e RX de tórax (imagens do Campana, cap. 6). */
@@ -4757,6 +4776,95 @@ function bulFor(name){const n=norm(name);
   const w=n.split(/[ (]/)[0];if(w.length<4||/^(acido|sulfato|cloreto)$/.test(w))return null;
   const b=BUL.find(b=>norm(b[2]).split(/\s*[\/(]\s*/).some(k=>k.split(' ')[0]===w));return b?b[0]:null}
 
+/* Procedimentos do PS (passo a passo, material e complicações) e oxigenoterapia/VNI. Ficam em EX com prefixo proc_. */
+const PROC_SRC='ATLS 10ª ed. · NEJM Videos in Clinical Medicine · Roberts & Hedges · BTS 2017/2023 · ERS/ATS 2017 · AHA 2020';
+const proc=(id,g,t,k,sec,rel)=>{EX['proc_'+id]={g,t,src:PROC_SRC,k:norm(t+' '+k+' procedimento passo a passo material complicacoes'),rel:rel||[],sec}};
+
+proc('paracent','dig','Paracentese','paracentese ascite liquido ascitico pbe puncao abdominal gasa',[
+ {h:'Indicações',li:['Diagnóstica: toda ascite nova, cirrótico internado e qualquer piora clínica (febre, dor, encefalopatia, piora renal, sangramento): afastar PBE','Terapêutica (de alívio): ascite tensa, dispneia ou desconforto']},
+ {h:'Contraindicações',li:['CIVD clinicamente evidente ou fibrinólise primária','Abdome agudo cirúrgico, gestação, distensão intestinal importante e cicatriz no local (relativas)','INR alargado e plaquetopenia NÃO contraindicam: não corrigir de rotina']},
+ {h:'Material',li:['Clorexidina, campo, luvas e máscara','Lidocaína 1–2% com seringa de 10 mL e agulha 25×7 ou 30×7','Diagnóstica: agulha 40×12 ou jelco 16–18 G e seringa de 20 mL','Alívio: jelco 14–16 G, equipo ou sistema de vácuo e frascos','Tubos: bioquímica, citologia, frascos de hemocultura (inocular 10 mL à beira-leito)']},
+ {h:'Passo a passo',li:['Decúbito dorsal, cabeceira levemente elevada; esvaziar a bexiga','Local: fossa ilíaca esquerda, 2 dedos medial e 2 cranial à espinha ilíaca anterossuperior (ou linha média infraumbilical). Usar USG se disponível','Antissepsia, campo, anestesia em planos até o peritônio (aspirar líquido confirma)','Técnica em Z: tracionar a pele 2 cm antes de avançar a agulha, para o trajeto não ficar reto e reduzir vazamento','Aspirar o líquido, colher os tubos; no alívio, conectar ao sistema e drenar','Retirar, curativo compressivo; decúbito do lado oposto se vazar']},
+ {h:'Albumina na paracentese de alívio',li:['> 5 L retirados: albumina 20% 6–8 g por litro retirado (todo o volume), metade na 1ª hora e metade ao fim','< 5 L: albumina não é obrigatória (considerar se lesão renal)']},
+ {h:'Interpretação',rows:[['PBE','PMN ≥ 250/mm³ → ceftriaxona 2 g/dia + albumina 1,5 g/kg no D1 e 1 g/kg no D3'],['GASA ≥ 1,1 g/dL','Hipertensão portal (cirrose, IC, Budd-Chiari)'],['GASA < 1,1 g/dL','Carcinomatose, TB, pancreatite, síndrome nefrótica'],['Peritonite secundária','≥ 2 de: proteína > 1 g/dL, glicose < 50 mg/dL, LDH > LSN do soro; ou polimicrobiana → TC']]},
+ {h:'Complicações',li:['Vazamento persistente de ascite','Hematoma de parede, lesão de artéria epigástrica inferior (evitar a borda do reto abdominal)','Perfuração intestinal (rara)','Disfunção circulatória pós-paracentese e lesão renal (sem albumina em grande volume)']}],
+ [['cd_hepat','Cirrose descompensada']]);
+
+proc('toraco','resp','Toracocentese','toracocentese derrame pleural liquido pleural light empiema puncao pleural',[
+ {h:'Indicações',li:['Diagnóstica: derrame novo sem causa clara (> 1 cm na USG ou no RX em decúbito lateral)','Terapêutica: derrame volumoso com dispneia']},
+ {h:'Contraindicações (relativas)',li:['Derrame pequeno (< 1 cm) ou loculado sem USG','Infecção de pele no local','Coagulopatia grave não corrigida, ventilação mecânica (mais risco de pneumotórax: usar USG)']},
+ {h:'Material',li:['Clorexidina, campo, luvas','Lidocaína 1–2%, seringa de 10 mL, agulhas 25×7 e 40×12','Jelco 14–16 G ou kit de toracocentese, torneira de 3 vias, seringa de 20–60 mL, equipo e frasco','Tubos: bioquímica, citologia, cultura, pH (seringa de gasometria)']},
+ {h:'Passo a passo',li:['Paciente sentado, inclinado para frente, braços apoiados','Local: linha axilar posterior ou escapular, 1–2 espaços abaixo do fim do macicez; não abaixo do 8º–9º espaço. Marcar com USG','Antissepsia, anestesia em planos','Entrar na BORDA SUPERIOR da costela de baixo (o feixe vasculonervoso corre na borda inferior)','Aspirar líquido, colher amostras; no alívio, drenar devagar','Retirar no fim da expiração ou com o paciente em Valsalva; curativo']},
+ {h:'Quanto retirar',li:['Até 1–1,5 L por vez','Parar se tosse, dor torácica, dispneia ou desconforto: risco de edema de reexpansão']},
+ {h:'Critérios de Light (exsudato se ≥ 1)',rows:[['Proteína pleural / sérica','> 0,5'],['LDH pleural / sérica','> 0,6'],['LDH pleural','> 2/3 do LSN sérico']]},
+ {h:'Derrame parapneumônico que precisa de dreno',li:['Pus (empiema), Gram ou cultura positivos','pH < 7,2 (ou glicose < 60 mg/dL)','Loculado na USG ou na TC']},
+ {h:'Complicações',li:['Pneumotórax (RX de controle se ar aspirado, sintomas ou VM)','Edema pulmonar de reexpansão','Hemotórax, lesão de baço ou fígado (punção baixa)','Reação vasovagal']}]);
+
+proc('pl','neuro','Punção lombar','puncao lombar liquor lcr meningite hsa raquicentese',[
+ {h:'Indicações',li:['Suspeita de meningite ou encefalite','Suspeita de HSA com TC normal após 6 h','Guillain-Barré, hipertensão intracraniana idiopática (pressão de abertura)']},
+ {h:'TC antes da punção (se qualquer um)',li:['Imunossupressão (HIV, transplante)','Doença do SNC prévia (lesão expansiva, AVC)','Convulsão nova (última semana)','Papiledema','Rebaixamento de consciência','Déficit neurológico focal','Na meningite: não atrasar o antibiótico pela TC; colher hemocultura e dar dexametasona + ATB antes']},
+ {h:'Contraindicações',li:['Sinais de hipertensão intracraniana / herniação ou lesão com efeito de massa','Infecção no local','Plaquetas < 50 mil, INR > 1,5 ou anticoagulação plena (avaliar)']},
+ {h:'Material',li:['Clorexidina, campo, luvas e máscara','Lidocaína 1–2%','Agulha de raqui 20–22 G (atraumática, se disponível, reduz cefaleia)','Manômetro (pressão de abertura)','4 tubos estéreis numerados']},
+ {h:'Passo a passo',li:['Decúbito lateral em posição fetal (para medir pressão) ou sentado','Local: espaço L3–L4 ou L4–L5 (linha entre as cristas ilíacas passa em L4)','Antissepsia, anestesia','Agulha na linha média, bisel voltado para o lado (paralelo às fibras da dura), em direção à cicatriz umbilical','Avançar até sentir o “pop” da dura, retirar o mandril e ver se sai líquor','Medir pressão de abertura (normal 6–20 cmH2O, com as pernas estendidas)','Colher 3–4 tubos (8–15 mL no total); recolocar o mandril antes de retirar']},
+ {h:'Tubos',rows:[['1','Bioquímica (glicose com glicemia capilar simultânea, proteína)'],['2','Gram, cultura, antígenos / PCR'],['3','Citologia (celularidade e diferencial)'],['4','Reserva (PCR viral, VDRL, criptococo, citologia oncótica) ou 2ª contagem na suspeita de HSA']]},
+ {h:'Interpretação',rows:[['Bacteriana','Turvo, > 1000 células com neutrófilos, glicose < 40 (ou < 0,4 da sérica), proteína > 100'],['Viral','Claro, 10–500 células com linfócitos, glicose normal, proteína normal ou pouco alta'],['Tuberculosa/fúngica','Linfócitos, glicose baixa, proteína muito alta'],['HSA','Hemácias que não caem do tubo 1 ao 4 e xantocromia (após 12 h)']]},
+ {h:'Complicações',li:['Cefaleia pós-punção (piora em pé): repouso, hidratação, analgesia, cafeína; persistente → blood patch','Dor lombar, parestesia transitória','Hematoma espinhal (coagulopatia), infecção','Herniação cerebral (se HIC não suspeitada)']}],
+ [['cd_hsa','HSA']]);
+
+proc('cvc','geral','Acesso venoso central','acesso venoso central cvc cateter jugular subclavia femoral seldinger puncao venosa profunda',[
+ {h:'Indicações',li:['Drogas vasoativas, soluções irritantes (cálcio, KCl concentrado, NPT)','Acesso periférico impossível','Hemodiálise de urgência (cateter de duplo lúmen), monitorização de PVC/SvcO2']},
+ {h:'Escolha do sítio',rows:[['Jugular interna','1ª escolha com USG; compressível; menos pneumotórax que a subclávia'],['Subclávia','Menos infecção e mais confortável; não compressível; mais pneumotórax. Evitar na coagulopatia'],['Femoral','Mais rápida na PCR e na coagulopatia; mais infecção e trombose; não precisa de RX']]},
+ {h:'Material',li:['Paramentação completa: gorro, máscara, avental e luvas estéreis, campo grande','Clorexidina alcoólica 2%','Kit de CVC (agulha, fio-guia, dilatador, cateter, bisturi), seringa','USG com capa estéril','SF 0,9% para lavar as vias, fio de sutura, curativo transparente']},
+ {h:'Passo a passo (Seldinger)',li:['Checklist e time-out; paciente monitorizado','Jugular/subclávia: Trendelenburg (enche a veia, reduz embolia gasosa). Femoral: decúbito dorsal','USG: identificar veia (compressível) e artéria; puncionar em tempo real','Aspirar sangue escuro sem pulsação; retirar a seringa e ocluir o canhão','Passar o fio-guia sem resistência (vigiar arritmia no monitor)','Retirar a agulha mantendo o fio; pequena incisão na pele; dilatar só o tecido subcutâneo','Passar o cateter sobre o fio; NUNCA soltar o fio-guia','Retirar o fio, aspirar e lavar todas as vias, fixar e fazer curativo','Profundidade: jugular direita 13–15 cm, subclávia direita 15–17 cm, esquerdas +2–3 cm']},
+ {h:'Depois',li:['RX de tórax (jugular/subclávia): ponta na junção da cava superior com o átrio e sem pneumotórax','Confirmar posição venosa antes de usar: gasometria, transdução ou USG (bolhas de SF no átrio direito)']},
+ {h:'Complicações',li:['Punção arterial (comprimir 10 min; se dilatou a artéria: não retirar, chamar vascular)','Pneumotórax, hemotórax','Arritmia (fio-guia profundo)','Embolia gasosa: decúbito lateral esquerdo e Trendelenburg, O2 100%','Perda do fio-guia, infecção de corrente sanguínea, trombose']}]);
+
+proc('cardiov','cv','Cardioversão elétrica e desfibrilação','cardioversao eletrica sincronizada desfibrilacao choque fa flutter tsv tv joules',[
+ {h:'Quando',rows:[['Desfibrilação (não sincronizado)','FV e TV sem pulso; TV polimórfica instável'],['Cardioversão sincronizada','Taquiarritmia com pulso e instabilidade (hipotensão, choque, rebaixamento, dor torácica isquêmica, IC aguda)'],['Cardioversão eletiva','FA/flutter estáveis: só se < 48 h com baixo risco ou anticoagulado ≥ 3 semanas ou ETE sem trombo']]},
+ {h:'Energia (bifásico)',rows:[['FV / TV sem pulso','Carga máxima do aparelho (120–200 J; se não souber, 200 J)'],['FA','120–200 J sincronizado'],['Flutter e TSV','50–100 J sincronizado'],['TV monomórfica com pulso','100 J sincronizado'],['Criança','Desfibrilação 2 J/kg, depois 4 J/kg (máx. 10 J/kg); cardioversão 0,5–1 J/kg, depois 2 J/kg']]},
+ {h:'Material',li:['Desfibrilador com monitor, pás adesivas ou manuais com gel','Oxigênio, aspirador, material de via aérea e bolsa-válvula-máscara','Acesso venoso; sedação (etomidato 0,15 mg/kg, propofol 0,5–1 mg/kg ou midazolam + fentanil)']},
+ {h:'Passo a passo (cardioversão)',li:['Monitorizar, O2, acesso, explicar ao paciente (se consciente)','Pás: anterolateral (infraclavicular direita e ápice) ou anteroposterior; longe de marca-passo (≥ 8 cm)','Sedar e analgesiar','Ligar o modo SINCRONIZADO e conferir as marcas sobre o QRS','Escolher a energia, carregar, avisar “afastem-se” e conferir que ninguém toca o paciente nem a maca, O2 afastado','Pressionar e manter o botão até o choque sair','Reavaliar o ritmo; se precisar novo choque, aumentar a energia e reativar o sincronismo (muitos aparelhos voltam para não sincronizado)']},
+ {h:'Na desfibrilação',li:['Não sincronizar; após o choque, retomar RCP imediatamente por 2 min antes de checar ritmo']},
+ {h:'Complicações',li:['Queimadura de pele','Arritmia pós-choque (FV se choque não sincronizado na onda T)','Embolia (FA sem anticoagulação)','Depressão respiratória pela sedação']}],
+ [['acls','ACLS'],['pcr','Cronômetro da PCR']]);
+
+proc('sondas','geral','Sondagem vesical e nasogástrica','sonda vesical sondagem de demora alivio foley retencao urinaria sonda nasogastrica sng lavagem',[
+ {h:'Sonda vesical: indicações',li:['Retenção urinária aguda','Controle de diurese no paciente grave','Obstrução por coágulos (sonda de 3 vias para irrigação)','Evitar só por incontinência ou conveniência (risco de ITU)']},
+ {h:'Sonda vesical: contraindicação',li:['Suspeita de trauma de uretra: sangue no meato, hematoma perineal, próstata alta no toque → uretrografia antes']},
+ {h:'Sonda vesical: material',li:['Sonda Foley 2 vias (adulto 14–16 Fr; 18–22 Fr com hematúria; 3 vias para irrigação)','Bolsa coletora de sistema fechado','Luvas estéreis, campo, clorexidina aquosa, gaze','Gel de lidocaína 2% estéril, seringa de 10–20 mL com água destilada']},
+ {h:'Sonda vesical: passo a passo',li:['Técnica estéril; antissepsia do meato para fora','Homem: pênis a 90°, injetar 10 mL de gel de lidocaína na uretra e esperar 2–3 min','Introduzir até a bifurcação (homem) ou 5–7 cm após sair urina (mulher)','Só insuflar o balão (10 mL de água destilada) após sair urina','Tracionar até sentir resistência; homem não circuncidado: recolocar o prepúcio (evita parafimose)','Fixar na coxa (mulher) ou no abdome (homem)']},
+ {h:'Sonda nasogástrica: indicações',li:['Descompressão na obstrução intestinal e no íleo','Lavagem ou drenagem gástrica','Alimentação e medicação (preferir sonda enteral fina)']},
+ {h:'Sonda nasogástrica: passo a passo',li:['Medir: ponta do nariz → lóbulo da orelha → apêndice xifoide','Contraindicada na suspeita de fratura de base de crânio (usar via oral)','Lubrificar com lidocaína gel, paciente sentado com pescoço fletido','Introduzir pela narina para trás (não para cima); pedir para engolir','Confirmar posição: RX (padrão-ouro para sonda de alimentação); ausculta é pouco confiável; aspirado com pH ≤ 5 sugere estômago','Fixar no nariz']},
+ {h:'Complicações',li:['Vesical: falso trajeto, hematúria, ITU, parafimose, balão insuflado na uretra (dor: desinsuflar)','Hematúria ex vacuo após esvaziar grande volume (o esvaziamento rápido é seguro na maioria)','SNG: posição traqueal, epistaxe, sinusite, lesão de esôfago']}],
+ [['cd_obstr','Obstrução intestinal']]);
+
+proc('abscesso','osteo','Drenagem de abscesso','drenagem abscesso incisao celulite furunculo pele partes moles',[
+ {h:'Indicações',li:['Coleção flutuante ou confirmada na USG','Celulite sem coleção NÃO drena: antibiótico']},
+ {h:'Encaminhar ou cuidado',li:['Face (triângulo perigoso), mão, mama, perianal/perirretal (risco de fístula), região perineal: avaliar especialista','Próximo a grandes vasos (cervical, inguinal: pode ser pseudoaneurisma: USG Doppler)','Sinais sistêmicos importantes ou fasciíte necrosante (dor desproporcional, crepitação, bolhas): cirurgia de urgência']},
+ {h:'Material',li:['Clorexidina, campo, luvas','Lidocaína 1–2% (anestesia em losango ao redor, não dentro da cavidade); considerar sedação/analgesia sistêmica','Bisturi lâmina 11, pinça hemostática curva, SF 0,9% com seringa','Gaze ou dreno de Penrose/fita (abscesso grande), curativo']},
+ {h:'Passo a passo',li:['Antissepsia e anestesia','Incisão linear no ponto de maior flutuação, seguindo as linhas de tensão da pele, no comprimento da cavidade','Colher secreção para cultura se recorrência, imunossupressão ou falha','Explorar com pinça e desfazer as lojas','Irrigar com SF','Tamponamento leve ou dreno só em cavidade grande (> 5 cm); retirar em 24–48 h','Curativo, retorno em 48 h']},
+ {h:'Antibiótico após drenagem',li:['Indicar se: abscesso > 2 cm, celulite ao redor, sinais sistêmicos, imunossupressão, extremos de idade, local difícil de drenar ou falha','Opções (cobrir MRSA comunitário): SMX-TMP 800/160 mg 1–2 cp 12/12 h ou doxiciclina 100 mg 12/12 h; com celulite associada, somar cefalexina 500 mg 6/6 h; 5–10 dias']},
+ {h:'Complicações',li:['Drenagem incompleta e recidiva','Sangramento','Lesão de estruturas próximas (nervo, vaso, tendão)','Bacteremia']}],
+ [['cd_sutura','Sutura e ferimentos']]);
+
+proc('o2','resp','Oxigenoterapia: qual dispositivo usar','oxigenio oxigenoterapia cateter nasal mascara venturi reservatorio alto fluxo fio2 saturacao alvo hipoxemia',[
+ {h:'Alvo de saturação',rows:[['Maioria','SpO2 92–96% (não passar de 96%: hiperóxia piora desfecho)'],['Risco de hipercapnia (DPOC, obesidade-hipoventilação, neuromuscular, deformidade torácica)','SpO2 88–92%'],['Sem O2 se','SpO2 ≥ 94% no IAM, AVC e na maioria dos pacientes'],['Exceções (O2 alto)','Intoxicação por CO, pneumotórax (acelera reabsorção), PCR, cefaleia em salvas']]},
+ {h:'Dispositivos',rows:[['Cateter nasal','1–5 L/min → FiO2 ≈ 24–40% (≈ +4% por litro)'],['Máscara simples','5–10 L/min → FiO2 35–55% (mínimo 5 L/min)'],['Máscara de Venturi','FiO2 fixa 24–50% conforme a válvula (melhor no DPOC)'],['Máscara com reservatório (não reinalante)','10–15 L/min → FiO2 60–90% (bolsa sempre cheia)'],['Cateter nasal de alto fluxo','30–60 L/min aquecido e umidificado, FiO2 21–100%'],['VNI','Ver ficha de VNI']]},
+ {h:'Escolha rápida',li:['Hipoxemia leve: cateter nasal','DPOC: Venturi 24–28% ou cateter 1–2 L/min, gasometria em 30–60 min','Grave ou instável: máscara com reservatório e reavaliar para alto fluxo, VNI ou IOT','Insuficiência respiratória hipoxêmica (pneumonia, COVID) sem indicação de IOT: alto fluxo']},
+ {h:'Cateter nasal de alto fluxo: ajustes',li:['Início: 40–60 L/min, FiO2 para SpO2 alvo','Índice ROX = (SpO2/FiO2) / FR: ≥ 4,88 em 2, 6 e 12 h prediz sucesso; < 3,85 → considerar IOT','Desmame: reduzir primeiro a FiO2 (até ≤ 40%), depois o fluxo']},
+ {h:'Sinais de falha (escalar)',li:['FR > 30, uso de musculatura acessória, respiração paradoxal','SpO2 fora do alvo apesar de FiO2 alta','Rebaixamento de consciência, acidose respiratória progressiva','Instabilidade hemodinâmica']}],
+ [['proc_vni','VNI'],['vm','Ventilação mecânica inicial']]);
+
+proc('vni','resp','Ventilação não invasiva (VNI)','vni ventilacao nao invasiva bipap cpap dpoc edema agudo de pulmao ipap epap',[
+ {h:'Indicações com boa evidência',li:['DPOC exacerbado com acidose respiratória (pH < 7,35 e PaCO2 > 45)','Edema agudo de pulmão cardiogênico (CPAP ou BiPAP)','Imunossuprimido com insuficiência respiratória','Pós-extubação de alto risco e pré-oxigenação para IOT']},
+ {h:'Contraindicações',li:['PCR, parada respiratória ou necessidade de IOT imediata','Rebaixamento importante (exceto hipercapnia leve em DPOC, com vigilância), incapacidade de proteger a via aérea','Vômitos, hemorragia digestiva alta ativa, secreção abundante','Instabilidade hemodinâmica grave, arritmia instável','Trauma ou cirurgia facial, obstrução de via aérea superior','Pneumotórax não drenado; cirurgia recente de esôfago/estômago (relativa)']},
+ {h:'Ajustes iniciais',rows:[['CPAP (EAP)','8–10 cmH2O, FiO2 para SpO2 alvo'],['BiPAP no DPOC','IPAP 10–12 e EPAP 4–5 cmH2O; subir IPAP de 2 em 2 até VC 6–8 mL/kg e FR < 25 (IPAP máx. ≈ 20–25)'],['BiPAP no EAP','IPAP 10–15 e EPAP 5–8 cmH2O'],['FiO2','Para SpO2 88–92% (DPOC) ou 92–96% (demais)'],['Interface','Máscara oronasal no agudo; ajustar sem apertar demais (vazamento pequeno é aceitável)']]},
+ {h:'Lógica dos ajustes',li:['PaCO2 alta: aumentar a diferença IPAP − EPAP (pressão de suporte)','Hipoxemia: aumentar EPAP e/ou FiO2','Manter a pressão total < 20–25 cmH2O (aerofagia)']},
+ {h:'Reavaliação',li:['À beira-leito em 15–30 min: conforto, FR, uso de musculatura, sincronia, SpO2','Gasometria em 1–2 h: espera-se melhora do pH e da PaCO2']},
+ {h:'Falha: intubar',li:['Sem melhora do pH/PaCO2 ou da FR em 1–2 h','Piora do nível de consciência, intolerância, agitação','Instabilidade hemodinâmica, arritmia','Não atrasar a IOT: VNI prolongada sem resposta aumenta a mortalidade']},
+ {h:'Complicações',li:['Lesão de pele na ponte nasal (usar placa protetora)','Distensão gástrica, aspiração','Ressecamento de mucosas, conjuntivite','Hipotensão (pressão positiva reduz pré-carga)']}],
+ [['proc_o2','Oxigenoterapia'],['iot','Intubação'],['vm','Ventilação mecânica inicial']]);
+
 /* Receita montada (como no Kit APS): junta remédios das receitas de alta e do preenchedor, agrupa por via,
    numera e separa por tipo de receituário. Fica só nesta aba do navegador (é dado de paciente). */
 let RXB=[];try{RXB=JSON.parse(sessionStorage.getItem('kitps:rxb')||'[]')}catch(e){RXB=[]}
@@ -4980,6 +5088,227 @@ FN.receita={g:'geral',t:'Receita montada',code:'preencher e juntar remédios',k:
   $('#rxb-pr').onclick=()=>{if(!RXB.length){toast('Receita vazia');return}const p=profGet(),d=new Date(),mes=['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'];
     $('#sheet').innerHTML=rxbGroups().map(([k,idx])=>`<div class="rxpg"><div class="ath">${esc(p.unidade||'Pronto Socorro')}</div><div class="att">${k==='C'?'RECEITUÁRIO DE CONTROLE ESPECIAL':'RECEITUÁRIO'}</div><div class="rxpac"><b>Paciente:</b>${RXP?` ${esc(RXP)}`:'<span></span>'}</div><pre class="rxp">${esc(rxbText(idx))}</pre><div class="atf">${esc(p.cidade||'________________')}, ${d.getDate()} de ${mes[d.getMonth()]} de ${d.getFullYear()}.<br><br>_______________________________________<br>${esc(p.medico||'Médico(a)')}${p.crm?' · CRM '+esc(p.crm):''}</div></div>`).join('');
     setTimeout(()=>{try{window.print()}catch(e){toast('Impressão indisponível aqui')}},50)}}};
+
+/* Mais prescrições do PS e receitas de alta (out/2026). */
+Object.assign(RX,{
+rx_intern:{tipo:'h',g:'geral',t:'Prescrição de internação (modelo)',rec:RH,rel:[['rx_sint','Sintomáticos']],items:[
+ {t:'Modelo de enfermaria',rx:`1. Dieta oral livre (ou para diabético / hipossódica / zero, conforme o caso)
+2. Cabeceira elevada 30°; sinais vitais e dor de 6/6 h; glicemia capilar se diabético
+3. Acesso venoso salinizado
+4. Dipirona 1 g + água destilada 8 mL — EV lento, de 6/6 h se dor ou febre
+5. Ondansetrona 8 mg + SF 0,9% 50 mL — EV, de 8/8 h se náusea ou vômito
+6. Enoxaparina 40 mg — SC, 1 vez ao dia (profilaxia de TEV)
+7. Medicações de uso contínuo do paciente (revisar uma a uma)
+8. Comunicar se PAS < 90, FC > 120, SpO2 < 92%, FR > 24, rebaixamento ou dor torácica`,n:'Profilaxia de TEV indicada se Padua ≥ 4 e sem sangramento ativo. IBP só com indicação (HDA, AINE + corticoide, coagulopatia, VM): não é rotina.'},
+ {t:'Profilaxia de TEV',rx:`1. Enoxaparina 40 mg — SC, 1 vez ao dia
+   ClCr < 30: Enoxaparina 20 mg SC 1 vez ao dia ou Heparina não fracionada 5.000 UI SC de 12/12 h (8/8 h se obeso)
+   Peso > 120 kg: Enoxaparina 40 mg SC de 12/12 h`,n:'Contraindicações: sangramento ativo, plaquetas < 50 mil, coagulopatia, AVC hemorrágico recente. Nesses casos: compressão pneumática intermitente.'},
+ {t:'Hidratação de manutenção (adulto)',rx:`1. SF 0,9% ou Ringer lactato 500 mL — EV, de 8/8 h (≈ 25–30 mL/kg/dia)
+   + KCl 19,1% 10 mL em cada 500 mL se K normal e diurese presente`,n:'Reduzir em IC, DRC, cirrose e idoso. Glicose 50–100 g/dia se em jejum prolongado. Reavaliar diariamente: o soro de manutenção é droga.'}]},
+
+rx_sedacao:{tipo:'h',g:'resp',t:'Sedação e analgesia contínua (pós-IOT)',rec:RH,rel:[['iot','Intubação'],['rass','RASS']],items:[
+ {t:'Analgesia: fentanil contínuo',rx:`1. Fentanil 50 mcg/mL 20 mL (1.000 mcg) + SF 0,9% 80 mL — 10 mcg/mL
+   EV em BIC: 0,5–2 mcg/kg/h (70 kg: 3,5–14 mL/h), titular pela dor`,n:'Analgesia primeiro (analgossedação). Pode causar rigidez torácica em bolus rápido, íleo e tolerância.'},
+ {t:'Sedação: midazolam contínuo',rx:`1. Midazolam 5 mg/mL 30 mL (150 mg) + SF 0,9% 120 mL — 1 mg/mL
+   EV em BIC: 0,02–0,1 mg/kg/h (70 kg: 1,5–7 mL/h)`,n:'Acumula em DRC, hepatopatia, obeso e idoso; mais delirium. Preferir propofol ou dexmedetomidina quando possível.'},
+ {t:'Sedação: propofol',rx:`1. Propofol 1% (10 mg/mL) — puro
+   EV em BIC: 0,3–3 mg/kg/h (5–50 mcg/kg/min) (70 kg: 2–20 mL/h)`,n:'Hipotensão (cuidado no choque), hipertrigliceridemia (dosar a cada 48–72 h), síndrome de infusão do propofol se > 4 mg/kg/h por > 48 h.'},
+ {t:'Sedação leve: dexmedetomidina',rx:`1. Dexmedetomidina 100 mcg/mL 2 mL (200 mcg) + SF 0,9% 48 mL — 4 mcg/mL
+   EV em BIC: 0,2–1,4 mcg/kg/h, sem bolus (70 kg: 3,5–24 mL/h)`,n:'Bradicardia e hipotensão. Boa para desmame e delirium agitado; não serve para sedação profunda.'},
+ {t:'Cetamina contínua',rx:`1. Cetamina 50 mg/mL 10 mL (500 mg) + SF 0,9% 240 mL — 2 mg/mL
+   EV em BIC: 0,1–0,5 mg/kg/h (analgesia) até 1–2 mg/kg/h (sedação) (70 kg: 3,5–17 mL/h na faixa de analgesia)`,n:'Mantém PA e drive respiratório; broncodilatadora (boa na asma). Cuidado em SCA e HAS grave.'}]},
+
+rx_choque:{tipo:'h',g:'cv',t:'Choque: volume e vasopressores',rec:RH,rel:[['drogas','Drogas em infusão'],['cd_sepse','Sepse']],items:[
+ {t:'Volume inicial',rx:`1. Ringer lactato 30 mL/kg — EV em até 3 h (em bolus de 500 mL, reavaliando após cada um)`,n:'Reavaliar perfusão, lactato, diurese e sinais de congestão (USG pulmonar, VCI). Menos volume em IC, DRC dialítica e cirrose.'},
+ {t:'Noradrenalina',rx:`1. Noradrenalina 4 mg/4 mL — 4 ampolas (16 mg) + SG 5% 234 mL — 64 mcg/mL
+   EV em BIC: iniciar 0,05–0,1 mcg/kg/min e titular para PAM ≥ 65 (70 kg: 0,1 mcg/kg/min ≈ 6,5 mL/h)`,n:'1ª escolha no choque séptico. Pode iniciar em acesso periférico calibroso (proximal) enquanto passa o CVC.'},
+ {t:'Vasopressina (2ª droga)',rx:`1. Vasopressina 20 UI/mL 1 mL + SF 0,9% 100 mL — 0,2 UI/mL
+   EV em BIC: 0,03 UI/min = 9 mL/h (dose fixa)`,n:'Associar quando noradrenalina ≥ 0,25–0,5 mcg/kg/min.'},
+ {t:'Hidrocortisona (choque refratário)',rx:`1. Hidrocortisona 50 mg — EV, de 6/6 h (200 mg/dia)`,n:'Indicar se noradrenalina ≥ 0,25 mcg/kg/min por ≥ 4 h. Retirar quando suspender o vasopressor.'},
+ {t:'Dobutamina (disfunção miocárdica)',rx:`1. Dobutamina 250 mg/20 mL + SF 0,9% 230 mL — 1.000 mcg/mL
+   EV em BIC: 2,5–20 mcg/kg/min (70 kg: 2,5 mcg/kg/min ≈ 10,5 mL/h)`,n:'Se hipoperfusão persistente com débito baixo apesar de PAM adequada. Taquicardia e arritmia.'},
+ {t:'Adrenalina',rx:`1. Adrenalina 1 mg/mL — 4 ampolas (4 mg) + SG 5% 246 mL — 16 mcg/mL
+   EV em BIC: 0,05–0,5 mcg/kg/min (70 kg: 0,05 mcg/kg/min ≈ 13 mL/h)`,n:'Alternativa à noradrenalina ou associada. Eleva lactato. Na anafilaxia refratária: 0,05–0,1 mcg/kg/min.'}]},
+
+rx_insul:{tipo:'h',g:'endo',t:'Hiperglicemia e insulina na internação',rec:RH,rel:[['rx_cad','CAD'],['rx_hipo','Hipoglicemia']],items:[
+ {t:'Basal-bolus (paciente comendo)',rx:`1. Insulina NPH — SC, dose total 0,4–0,5 UI/kg/dia (idoso, DRC ou magro: 0,2–0,3), metade basal:
+   2/3 antes do café e 1/3 às 22 h
+2. Insulina regular — SC, 30 min antes das refeições: metade da dose total dividida em 3
+3. Glicemia capilar antes das refeições e às 22 h
+4. Correção com insulina regular SC conforme glicemia:
+   150–200: 2 UI | 201–250: 4 UI | 251–300: 6 UI | 301–350: 8 UI | > 350: 10 UI e avisar
+5. Glicemia < 70: protocolo de hipoglicemia`,n:'Alvo na enfermaria: 140–180 mg/dL. Só escala de correção (sliding scale) não é recomendada como esquema único. Suspender metformina se contraste, choque, IRA ou hipóxia.'},
+ {t:'Paciente em dieta zero',rx:`1. Insulina NPH — SC, 50–80% da dose basal habitual (ou 0,1–0,2 UI/kg/dia)
+2. SG 5% 500 mL — EV, de 8/8 h (ou 10% se hipoglicemia)
+3. Glicemia capilar de 4/4 h + correção com insulina regular`,n:''},
+ {t:'Hiperglicemia sem CAD/EHH no PS',rx:`1. SF 0,9% 1.000 mL — EV em 1 h, se desidratado
+2. Insulina regular — SC, 0,1 UI/kg (ou conforme escala de correção)
+3. Glicemia capilar em 2 h`,n:'Antes: afastar CAD/EHH (cetonemia, gasometria, osmolaridade) e procurar o fator desencadeante (infecção, abandono do tratamento, IAM, corticoide). Na alta: ajustar o esquema oral e retorno precoce.'}]},
+
+rx_ele2:{tipo:'h',g:'renal',t:'Magnésio, cálcio e fósforo',rec:RH,rel:[['rx_ele','Potássio e sódio']],items:[
+ {t:'Hipomagnesemia',rx:`1. Sulfato de magnésio 50% 4 mL (2 g) + SF 0,9% 100 mL — EV em 1 h
+   Grave (< 1 mg/dL, arritmia, convulsão, torsades): 2 g EV em 10–15 min
+   Leve e assintomática: Óxido / cloreto de magnésio VO`,n:'Repor magnésio antes ou junto do potássio (hipocalemia refratária). Cuidado e metade da dose na DRC.'},
+ {t:'Hipocalcemia sintomática',rx:`1. Gluconato de cálcio 10% 20 mL (2 g) + SG 5% 100 mL — EV em 10–20 min
+2. Manutenção: Gluconato de cálcio 10% 100 mL + SG 5% 900 mL — EV a 50 mL/h (0,5–1,5 mg/kg/h de cálcio elementar)
+3. Repor magnésio se baixo`,n:'Tetania, convulsão, QT longo, laringoespasmo. Corrigir cálcio pela albumina ou dosar cálcio iônico. Monitorizar em uso de digoxina.'},
+ {t:'Hipofosfatemia',rx:`1. Grave (< 1 mg/dL) ou sintomática: Fosfato de potássio EV 0,16–0,32 mmol/kg em 4–6 h, diluído em SF 0,9% 250 mL
+   (conferir a apresentação: mmol de fosfato e mEq de potássio por mL)
+2. Moderada (1–2,5 mg/dL) e via oral possível: fosfato oral (manipulado ou leite)`,n:'Comum na realimentação, CAD em tratamento e alcoolismo. Usar fosfato de sódio se K > 4. Dosar fósforo, cálcio e potássio após a reposição.'}]},
+
+rx_digps:{tipo:'h',g:'dig',t:'Dispepsia, gastrite e cólica biliar no PS',rec:RH,rel:[['cd_colecist','Colecistite']],items:[
+ {t:'Dispepsia / gastrite aguda',rx:`1. Omeprazol 40 mg + diluente — EV, agora
+2. Hidróxido de alumínio + magnésio suspensão — 20 mL VO, agora
+   (pode associar lidocaína gel viscosa 2% 10 mL VO)`,n:'Antes de “gastrite”: ECG e troponina se fator de risco (SCA inferior simula epigastralgia). Afastar pancreatite e úlcera perfurada.'},
+ {t:'Cólica biliar',rx:`1. Dipirona 1 g + água destilada 8 mL — EV lento
+2. Escopolamina 20 mg + SF 0,9% 100 mL — EV em 20 min
+   ou Cetoprofeno 100 mg + SF 0,9% 100 mL — EV em 20 min (AINE é muito eficaz na cólica biliar)
+3. Ondansetrona 8 mg + SF 0,9% 50 mL — EV, se vômitos`,n:'Dor > 6 h, febre, Murphy positivo ou leucocitose: pensar em colecistite (USG). Icterícia: coledocolitíase/colangite.'}]},
+
+rx_alta_dig:{tipo:'a',g:'dig',t:'Digestivo (alta)',rec:RS,items:[
+ {t:'Dispepsia / gastrite / refluxo',rx:`Uso oral
+1. Omeprazol 20 mg ...... 30 cápsulas
+   Tomar 1 cápsula em jejum, 30 minutos antes do café da manhã, por 30 dias.
+2. Hidróxido de alumínio + magnésio suspensão ...... 1 frasco
+   Tomar 10 mL 1 hora após as refeições e ao deitar, se azia.`,n:'Sinais de alarme para EDA: > 60 anos, perda de peso, disfagia, anemia, vômitos persistentes, sangramento. Pesquisar H. pylori se úlcera ou dispepsia persistente.'},
+ {t:'Constipação',rx:`Uso oral
+1. Lactulose 667 mg/mL ...... 1 frasco
+   Tomar 15 a 30 mL 1 vez ao dia, à noite; ajustar para 1 a 2 evacuações pastosas por dia.
+2. Bisacodil 5 mg ...... 10 comprimidos
+   Tomar 1 a 2 comprimidos à noite, se não evacuar em 3 dias.`,n:'Orientar água, fibras e atividade física. Alarme: sangramento, perda de peso, anemia, início após 50 anos.'},
+ {t:'Doença hemorroidária',rx:`Uso oral
+1. Diosmina 450 mg + hesperidina 50 mg ...... 30 comprimidos
+   Tomar 3 comprimidos de 12 em 12 horas por 4 dias, depois 2 comprimidos de 12 em 12 horas por 3 dias.
+
+Uso tópico
+2. Policresuleno + cinchocaína pomada ...... 1 bisnaga
+   Aplicar na região anal de 12 em 12 horas e após evacuar, por 7 dias.`,n:'Banho de assento com água morna 3 vezes ao dia, fibras e evitar esforço. Trombose hemorroidária < 72 h com dor forte: encaminhar para excisão.'},
+ {t:'Diverticulite não complicada',rx:`Uso oral
+1. Amoxicilina 875 mg + clavulanato 125 mg ...... 14 comprimidos
+   Tomar 1 comprimido de 12 em 12 horas por 7 dias.
+   ou Ciprofloxacino 500 mg de 12/12 h + Metronidazol 400 mg de 8/8 h por 7 dias (alergia).
+2. Dipirona 500 mg ...... 20 comprimidos
+   Tomar 1 a 2 comprimidos de 6 em 6 horas, se dor.`,rec:RA,n:'Imunocompetente sem sinais sistêmicos pode até ficar sem antibiótico (DIABOLO, AVOD). Dieta líquida no início. Retorno se febre ou piora da dor. Colonoscopia após 6–8 semanas se não tiver recente.'}]},
+
+rx_alta_gine:{tipo:'a',g:'mulher',t:'Ginecologia (alta)',rec:RS,rel:[['rx_ist','ISTs']],items:[
+ {t:'Candidíase vulvovaginal',rx:`Uso oral
+1. Fluconazol 150 mg ...... 1 cápsula
+   Tomar 1 cápsula em dose única.
+
+Uso vaginal
+2. Miconazol 2% creme vaginal ...... 1 bisnaga
+   Aplicar 1 aplicador cheio na vagina à noite, ao deitar, por 7 noites.`,rec:RA,n:'Gestante: só o creme (7 dias); fluconazol é contraindicado. Recorrente (≥ 4/ano): fluconazol 150 mg nos dias 1, 4 e 7 e depois semanal por 6 meses.'},
+ {t:'Vaginose bacteriana',rx:`Uso oral
+1. Metronidazol 400 mg ...... 14 comprimidos
+   Tomar 1 comprimido de 12 em 12 horas por 7 dias. Não beber álcool durante e até 1 dia depois.
+   ou Metronidazol 100 mg/g gel vaginal: 1 aplicador à noite por 5 noites.`,rec:RA,n:'Não precisa tratar o parceiro. Gestante: pode usar metronidazol oral.'},
+ {t:'Tricomoníase',rx:`Uso oral
+1. Metronidazol 400 mg ...... 5 comprimidos
+   Tomar 5 comprimidos juntos (2 g) em dose única.
+   Mulher: Metronidazol 400 mg de 12/12 h por 7 dias (mais eficaz).`,rec:RA,n:'Tratar a parceria sexual. Abstinência até completar o tratamento. Oferecer testes para HIV, sífilis e hepatites.'},
+ {t:'Dismenorreia',rx:`Uso oral
+1. Ibuprofeno 600 mg ...... 15 comprimidos
+   Tomar 1 comprimido de 8 em 8 horas, após as refeições, nos dias de cólica (iniciar no 1º dia).
+2. Escopolamina 10 mg + dipirona 250 mg ...... 20 comprimidos
+   Tomar 1 a 2 comprimidos de 8 em 8 horas, se cólica.`,n:'Dismenorreia secundária (início após 25 anos, dor fora da menstruação, dispareunia): investigar endometriose, mioma, DIP.'},
+ {t:'Sangramento uterino anormal (sem instabilidade)',rx:`Uso oral
+1. Ácido tranexâmico 250 mg ...... 60 comprimidos
+   Tomar 4 comprimidos (1 g) de 8 em 8 horas por até 5 dias, durante o sangramento.
+2. Ibuprofeno 600 mg ...... 15 comprimidos
+   Tomar 1 comprimido de 8 em 8 horas, após as refeições, por até 5 dias.`,n:'Antes: beta-hCG, hemoglobina e estabilidade. Ácido tranexâmico é contraindicado com história de trombose. Encaminhar para ginecologia (USG transvaginal).'}]},
+
+rx_alta_pele2:{tipo:'a',g:'osteo',t:'Micoses, parasitoses, herpes e mordeduras (alta)',rec:RS,items:[
+ {t:'Escabiose',rx:`Uso tópico
+1. Permetrina 5% loção ...... 1 frasco
+   Aplicar em todo o corpo, do pescoço para baixo, à noite; enxaguar após 8 a 12 horas. Repetir em 7 dias.
+
+Uso oral
+2. Ivermectina 6 mg ...... 4 comprimidos
+   Tomar 2 comprimidos (200 mcg/kg) em dose única, em jejum; repetir em 7 dias.
+3. Dexclorfeniramina 2 mg ...... 20 comprimidos
+   Tomar 1 comprimido de 8 em 8 horas, se coceira.`,n:'Tratar todos os contactantes ao mesmo tempo. Lavar roupas e lençóis em água quente. A coceira pode durar 2 a 4 semanas após a cura. Ivermectina: ajustar dose pelo peso e não usar < 15 kg nem na gestação.'},
+ {t:'Pediculose',rx:`Uso tópico
+1. Permetrina 1% loção ...... 1 frasco
+   Aplicar no cabelo seco, deixar 10 minutos e enxaguar. Repetir em 7 a 10 dias.`,n:'Passar pente fino. Lavar pentes, bonés e roupas de cama.'},
+ {t:'Micose de pele (tinea corporis/cruris)',rx:`Uso tópico
+1. Cetoconazol 2% creme ...... 1 bisnaga
+   Aplicar na lesão e 2 cm ao redor de 12 em 12 horas por 3 semanas (até 1 semana após sumir).`,n:'Lesões extensas, couro cabeludo ou unhas: tratamento oral (terbinafina, fluconazol). Não usar creme com corticoide.'},
+ {t:'Pitiríase versicolor',rx:`Uso tópico
+1. Cetoconazol 2% xampu ...... 1 frasco
+   Aplicar nas manchas no banho, deixar 5 minutos e enxaguar, 1 vez ao dia por 5 dias.
+
+Uso oral
+2. Fluconazol 150 mg ...... 4 cápsulas
+   Tomar 2 cápsulas (300 mg) 1 vez por semana, por 2 semanas (se extensa).`,n:'As manchas podem demorar meses para repigmentar.'},
+ {t:'Herpes labial / genital',rx:`Uso oral
+1. Aciclovir 400 mg ...... 21 comprimidos
+   Tomar 1 comprimido de 8 em 8 horas por 7 dias (1º episódio de herpes genital: 7 a 10 dias; recorrência: 5 dias).
+   ou Valaciclovir 1 g de 12 em 12 horas por 7 a 10 dias (1º episódio) / 500 mg de 12/12 h por 3 dias (recorrência).`,n:'Iniciar o quanto antes (ideal < 72 h). Herpes labial leve: aciclovir creme 5x/dia por 5 dias. Herpes genital: oferecer testes para ISTs.'},
+ {t:'Varicela no adulto',rx:`Uso oral
+1. Aciclovir 400 mg ...... 70 comprimidos
+   Tomar 2 comprimidos (800 mg) 5 vezes ao dia por 7 dias.
+2. Dexclorfeniramina 2 mg ...... 20 comprimidos
+   Tomar 1 comprimido de 8 em 8 horas, se coceira.
+3. Paracetamol 750 mg ...... 20 comprimidos
+   Tomar 1 comprimido de 6 em 6 horas, se febre ou dor. Não usar AAS nem ibuprofeno.`,n:'Iniciar em até 24 h do exantema. Gestante, imunossuprimido, pneumonia ou encefalite: internar (aciclovir EV). Afastamento até todas as lesões virarem crosta.'},
+ {t:'Mordedura de cão ou gato (profilaxia)',rx:`Uso oral
+1. Amoxicilina 875 mg + clavulanato 125 mg ...... 10 comprimidos
+   Tomar 1 comprimido de 12 em 12 horas por 5 dias.
+   Alergia: Doxiciclina 100 mg de 12/12 h + Metronidazol 400 mg de 8/8 h por 5 dias.`,rec:RA,n:'Profilaxia se: mordedura de gato, mão/face/genital, ferida profunda ou com esmagamento, imunossuprimido, asplenia, edema. Lavar bem, não suturar mão (exceto face). Avaliar raiva e tétano.'},
+ {t:'Verminoses',rx:`Uso oral
+1. Albendazol 400 mg ...... 1 comprimido
+   Tomar 1 comprimido em dose única (repetir em 15 dias se necessário).
+   Estrongiloidíase: Ivermectina 200 mcg/kg em dose única (repetir em 14 dias).
+   Giardíase: Secnidazol 1 g, 2 comprimidos em dose única (ou Metronidazol 250 mg de 8/8 h por 5 dias).`,n:'Tratar a família se oxiuríase. Evitar albendazol e ivermectina na gestação.'}]},
+
+rx_alta_cv:{tipo:'a',g:'cv',t:'Cardiovascular e diabetes (alta)',rec:RS,items:[
+ {t:'Hipertensão sem tratamento (após urgência controlada)',rx:`Uso oral
+1. Losartana 50 mg ...... 60 comprimidos
+   Tomar 1 comprimido de 12 em 12 horas, uso contínuo.
+2. Anlodipino 5 mg ...... 30 comprimidos
+   Tomar 1 comprimido 1 vez ao dia, uso contínuo.`,n:'Pseudocrise (PA alta sem lesão de órgão-alvo): não baixar rápido no PS; iniciar/ajustar oral e retorno na UBS em 1 semana. Gestante ou idade fértil sem contracepção: não usar losartana/IECA.'},
+ {t:'FA com controle de frequência',rx:`Uso oral
+1. Metoprolol (succinato) 50 mg ...... 30 comprimidos
+   Tomar 1 comprimido 1 vez ao dia, uso contínuo.
+2. Apixabana 5 mg ...... 60 comprimidos
+   Tomar 1 comprimido de 12 em 12 horas, uso contínuo.`,n:'Anticoagular se CHA2DS2-VA ≥ 2. Apixabana 2,5 mg 12/12 h se ≥ 2 de: idade ≥ 80, peso ≤ 60 kg, creatinina ≥ 1,5. Alternativa: rivaroxabana 20 mg 1x/dia no jantar (15 mg se ClCr 15–49).'},
+ {t:'IC descompensada leve (alta)',rx:`Uso oral
+1. Furosemida 40 mg ...... 30 comprimidos
+   Tomar 1 comprimido pela manhã (pode tomar mais 1 às 14 h se inchaço ou falta de ar), uso contínuo.
+2. Espironolactona 25 mg ...... 30 comprimidos
+   Tomar 1 comprimido 1 vez ao dia, uso contínuo.`,n:'Pesar todo dia: se ganhar > 2 kg em 3 dias, retornar. Restrição de sal. Potássio e creatinina em 1 semana. Otimizar IECA/BRA/sacubitril-valsartana, betabloqueador e iSGLT2 no ambulatório.'},
+ {t:'Diabetes tipo 2 recém-diagnosticado (sem descompensação)',rx:`Uso oral
+1. Metformina 850 mg ...... 60 comprimidos
+   Tomar 1 comprimido após o jantar por 1 semana; depois, 1 comprimido após o café e 1 após o jantar, uso contínuo.`,n:'Contraindicada se TFG < 30 (reduzir dose se 30–45). Glicemia > 300 ou HbA1c > 10% com sintomas: considerar insulina. Retorno na UBS.'}]}
+});
+
+/* Mais opções nas receitas de alta já existentes */
+RX.rx_ped&&RX.rx_ped.items.push(
+ {t:'Crise de asma (alta)',rx:`Uso oral
+1. Prednisolona 3 mg/mL ...... 1 frasco
+   Dar __ mL (1 a 2 mg/kg, máx. 40 mg) 1 vez ao dia, pela manhã, por 5 dias.
+
+Uso inalatório
+2. Salbutamol 100 mcg/jato aerossol ...... 1 frasco
+   Fazer __ jatos (1 jato a cada 2 kg, máx. 10) com espaçador de 4 em 4 horas por 48 horas, depois de 6 em 6 horas, se falta de ar.`,n:'Use a calculadora de doses pediátricas para o volume. Retorno se piora, cansaço ou necessidade de salbutamol antes de 3 horas.'},
+ {t:'Vômitos (gastroenterite)',rx:`Uso oral
+1. Sais para reidratação oral ...... 5 envelopes
+   Dissolver 1 envelope em 1 litro de água filtrada e oferecer aos poucos após cada evacuação ou vômito.
+2. Ondansetrona 4 mg/5 mL solução oral ...... 1 frasco
+   Dar __ mL (0,15 mg/kg) de 8 em 8 horas, se vômitos, por até 3 dias.`,n:'Acima de 6 meses. Sinais de alarme: sonolência, recusa hídrica, sem urina por 8 h, sangue nas fezes.'},
+ {t:'Urticária / alergia',rx:`Uso oral
+1. Loratadina 1 mg/mL xarope ...... 1 frasco
+   Dar 5 mL (< 30 kg) ou 10 mL (≥ 30 kg) 1 vez ao dia por 5 a 7 dias.`,n:'Acima de 2 anos. Edema de lábios, língua, falta de ar ou vômitos: anafilaxia (adrenalina IM).'});
+RX.rx_alta_sint&&RX.rx_alta_sint.items.push(
+ {t:'Alergia / urticária (adulto)',rx:`Uso oral
+1. Fexofenadina 180 mg ...... 7 comprimidos
+   Tomar 1 comprimido 1 vez ao dia por 7 dias.
+   ou Loratadina 10 mg 1 vez ao dia por 7 dias.`,n:'Urticária intensa: prednisona 40 mg/dia por 3–5 dias. Angioedema com via aérea ou anafilaxia: adrenalina.'},
+ {t:'Dor muscular / contratura',rx:`Uso oral
+1. Ciclobenzaprina 5 mg ...... 10 comprimidos
+   Tomar 1 comprimido à noite por até 10 dias.
+2. Dipirona 500 mg ...... 20 comprimidos
+   Tomar 1 a 2 comprimidos de 6 em 6 horas, se dor.`,n:'Ciclobenzaprina dá sono e boca seca; evitar no idoso (Beers) e com ISRS/tramadol.'});
 
 /* Acréscimos (out/2026): meningite, abdome agudo, IVAS, faringoamigdalite, bronquiolite, crupe, tempestade tireoidiana,
    peçonhentos, TCE e subtipos, dissecção de aorta, emergências ginecológicas e obstétricas, trauma completo. */
@@ -5505,6 +5834,7 @@ const SICON={
  edit:'M4 20h4L19 9l-4-4L4 16z M13.5 6.5l4 4',
  airway:'M12 3v6 M8 9h8l-1 12H9z M5 13h3 M16 13h3',
  steth:'M6 3v6a5 5 0 0 0 10 0V3 M5 3h2 M15 3h2 M11 14v1.5a5 5 0 0 0 10 0V13 M21 11a2 2 0 1 0 0 .01',
+ proc:'M18 2l4 4 M17 7l3-3 M19 9l-8 8-4 0 0-4 8-8z M7 17l-5 5 M14 6l4 4',
  pill:'M10.5 20.5a5 5 0 0 1-7-7l6-6a5 5 0 0 1 7 7z M7.5 10.5l6 6',
  timer:'M9 2h6 M12 5v2 M12 22a8 8 0 1 0 0-16 8 8 0 0 0 0 16z M12 10v4l2.5 2.5',
  rxt:'M12 3v7 M12 8l-3 3 M12 8l3 3 M8.5 6.5C5.5 7 4 11 4 16c0 3 1 4.5 3 4.5s3-1.5 3-3.5v-6 M15.5 6.5C18.5 7 20 11 20 16c0 3-1 4.5-3 4.5s-3-1.5-3-3.5v-6'
@@ -5519,9 +5849,10 @@ const SECTIONS=[
  {g:'Atendimento',k:'alta',t:'Receitas de alta',ic:'alta',ids:byTipo('a')},
  {g:'Atendimento',k:'rxb',t:'Receita montada',ic:'edit',ids:['receita']},
  {g:'Atendimento',k:'cd',t:'Condutas padrão',ic:'urg',ids:Object.keys(CD)},
+ {g:'Atendimento',k:'proc',t:'Procedimentos e O2',ic:'proc',ids:Object.keys(EX).filter(k=>/^proc_/.test(k))},
  {g:'Atendimento',k:'ef',t:'Exame físico',ic:'steth',ids:EF_IDS.filter(k=>EX[k])},
  {g:'Ferramentas',k:'bul',t:'Bulário do PS',ic:'pill',ids:Object.keys(EX).filter(k=>/^med_/.test(k))},
- {g:'Ferramentas',k:'ex',t:'Interpretação de exames',ic:'exames',ids:['gasocalc',...Object.keys(EX).filter(k=>!/^(ef_|efp_|ecg_|rxt_|med_)/.test(k))]},
+ {g:'Ferramentas',k:'ex',t:'Interpretação de exames',ic:'exames',ids:['gasocalc',...Object.keys(EX).filter(k=>!/^(ef_|efp_|ecg_|rxt_|med_|proc_)/.test(k))]},
  {g:'Ferramentas',k:'ecg',t:'Interpretação de ECG',ic:'ecg',ids:['ecg_ps','ecg_passo','ecg_taqui','ecg_bradi','ecg_eixo','ecg_sobrec','ecg_bloq','ecg_isq','ecg_qt','ecg_padroes','fcecg','eixo','qtc','sve']},
  {g:'Ferramentas',k:'rxt',t:'Interpretação de RX de tórax',ic:'rxt',ids:['rxt_passo','rxt_pad','rxt_ex']},
  {g:'Ferramentas',k:'calc',t:'Calculadoras e escores',ic:'calc',ids:[...Object.keys(SC),...Object.keys(NC).filter(k=>!['fcecg','eixo','qtc','sve','vm'].includes(k))]},

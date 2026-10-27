@@ -188,30 +188,49 @@ FN.iot={g:'resp',t:'Intubação em sequência rápida',code:'doses por peso',k:'
     ${pp?`<div class="result"><div class="big">${fmt(pp*6,0)} <small>mL de volume corrente (6 mL/kg de peso predito)</small></div><div class="sub">Peso predito: <b>${fmt(pp,1)} kg</b>. Ajuste inicial: VC 6–8 mL/kg, FR 16–20 (asma/DPOC 10–12), PEEP 5, FiO2 100% e reduzir para SpO2 92–96%, pressão de platô &lt; 30 cmH2O. Gasometria em 30 min.</div></div>`:''}`};
   m.querySelectorAll('input,select').forEach(e=>{e.oninput=upd;e.onchange=upd});upd()}};
 
-/* Doses pediátricas */
+/* Doses pediátricas: c = [rótulo, mg/mL, gotas/mL], r = receita (mg/kg, intervalo, complemento), f = dose por faixa de peso. */
 const PD=[
- ['Dipirona',15,25,'mg/kg/dose de 6/6 h',1000,[['500 mg/mL (gotas)',500],['50 mg/mL (solução)',50]],'Máx. 1 g/dose.'],
- ['Paracetamol',10,15,'mg/kg/dose de 6/6 h',750,[['200 mg/mL (gotas)',200],['32 mg/mL (suspensão)',32]],'Máx. 75 mg/kg/dia.'],
- ['Ibuprofeno',5,10,'mg/kg/dose de 6/6–8/8 h',400,[['50 mg/mL (gotas)',50],['100 mg/mL (gotas)',100]],'Acima de 6 meses. Evitar na dengue e desidratação.'],
- ['Amoxicilina',25,30,'mg/kg/dose de 8/8 h (75–90 mg/kg/dia na OMA/pneumonia)',1000,[['250 mg/5 mL',50],['400 mg/5 mL',80]],'Máx. 1 g/dose.'],
- ['Amoxicilina + clavulanato',22.5,45,'mg/kg/dose de 12/12 h (de amoxicilina)',875,[['400+57 mg/5 mL',80],['250+62,5 mg/5 mL (8/8 h)',50]],'Diarreia é comum.'],
- ['Azitromicina',10,10,'mg/kg/dose 1 vez ao dia por 3–5 dias',500,[['200 mg/5 mL',40]],'Máx. 500 mg/dia.'],
- ['Cefalexina',12.5,25,'mg/kg/dose de 6/6 h',1000,[['250 mg/5 mL',50]],'50–100 mg/kg/dia.'],
- ['Prednisolona',1,2,'mg/kg/dia 1 vez ao dia',40,[['3 mg/mL',3],['1 mg/mL',1]],'Asma: 3–5 dias.'],
- ['Dexametasona (laringite)',0.15,0.6,'mg/kg dose única (VO/IM/EV)',10,[['4 mg/mL (injetável)',4],['0,1 mg/mL (elixir)',0.1]],'Laringite viral: 0,15–0,6 mg/kg.'],
- ['Ondansetrona',0.15,0.15,'mg/kg/dose de 8/8 h',8,[['2 mg/mL (injetável)',2],['4 mg/5 mL (solução)',0.8]],'Acima de 6 meses.'],
- ['Diazepam (crise convulsiva)',0.3,0.5,'mg/kg (EV 0,2–0,3; retal 0,5)',10,[['5 mg/mL',5]],'Máx. 10 mg.'],
- ['Midazolam (crise, IM/intranasal)',0.2,0.2,'mg/kg',10,[['5 mg/mL',5]],'Máx. 10 mg.'],
- ['Adrenalina (anafilaxia IM)',0.01,0.01,'mg/kg IM',0.5,[['1 mg/mL',1]],'Máx. 0,3 mg (< 30 kg) / 0,5 mg.'],
- ['Salbutamol spray 100 mcg',0.5,0.5,'jato/kg (1 jato a cada 2 kg) a cada 20 min',10,[],'Mínimo 4, máximo 10 jatos, com espaçador.'],
- ['SF 0,9% (expansão)',20,20,'mL/kg em 10–20 min',1000,[],'Reavaliar após cada bolus.'],
- ['Glicose 10% (hipoglicemia)',2,5,'mL/kg EV',250,[],'Equivale a 0,2–0,5 g/kg.']];
-FN.pedi={g:'crianca',t:'Doses pediátricas',code:'por peso',k:'pediatria crianca dose peso dipirona paracetamol ibuprofeno amoxicilina azitromicina prednisolona ondansetrona',render(m){
+ {n:'Dipirona',a:15,b:25,d:'mg/kg/dose de 6/6 h',mx:1000,c:[['500 mg/mL gotas',500,20],['50 mg/mL solução oral',50]],note:'Máx. 1 g/dose. Evitar abaixo de 3 meses ou 5 kg.',r:[20,'de 6/6 h','se dor ou febre']},
+ {n:'Paracetamol',a:10,b:15,d:'mg/kg/dose de 6/6 h',mx:750,c:[['200 mg/mL gotas',200,15],['32 mg/mL suspensão',32]],note:'Máx. 75 mg/kg/dia.',r:[15,'de 6/6 h','se dor ou febre']},
+ {n:'Ibuprofeno',a:5,b:10,d:'mg/kg/dose de 6/6–8/8 h',mx:400,c:[['50 mg/mL gotas',50,10],['100 mg/mL gotas',100]],note:'Acima de 6 meses. Evitar na dengue, varicela e desidratação.',r:[10,'de 8/8 h','se dor ou febre, após alimentação']},
+ {n:'Amoxicilina',a:25,b:30,d:'mg/kg/dose de 8/8 h (75–90 mg/kg/dia na OMA/pneumonia)',mx:1000,c:[['250 mg/5 mL suspensão',50],['400 mg/5 mL suspensão',80]],note:'Máx. 1 g/dose. Faringite: 50 mg/kg/dia por 10 dias.',r:[30,'de 8/8 h','por 10 dias']},
+ {n:'Amoxicilina + clavulanato',a:22.5,b:45,d:'mg/kg/dose de 12/12 h (de amoxicilina)',mx:875,c:[['400 + 57 mg/5 mL suspensão',80],['250 + 62,5 mg/5 mL suspensão (8/8 h)',50]],note:'Diarreia é comum.',r:[45,'de 12/12 h','por 10 dias']},
+ {n:'Azitromicina',a:10,b:10,d:'mg/kg/dose 1 vez ao dia por 3–5 dias',mx:500,c:[['200 mg/5 mL suspensão',40]],note:'Máx. 500 mg/dia. Coqueluche: 10 mg/kg no 1º dia e 5 mg/kg do 2º ao 5º.',r:[10,'1 vez ao dia','por 3 dias']},
+ {n:'Cefalexina',a:12.5,b:25,d:'mg/kg/dose de 6/6 h',mx:1000,c:[['250 mg/5 mL suspensão',50]],note:'50–100 mg/kg/dia.',r:[12.5,'de 6/6 h','por 7 dias']},
+ {n:'Cefuroxima',a:15,b:15,d:'mg/kg/dose de 12/12 h',mx:500,c:[['250 mg/5 mL suspensão',50]],note:'Sinusite, OMA (alergia não grave à penicilina), ITU.',r:[15,'de 12/12 h','após as refeições, por 10 dias']},
+ {n:'Claritromicina',a:7.5,b:7.5,d:'mg/kg/dose de 12/12 h',mx:500,c:[['250 mg/5 mL suspensão',50],['125 mg/5 mL suspensão',25]],note:'Alternativa na alergia à penicilina.',r:[7.5,'de 12/12 h','por 7 dias']},
+ {n:'Sulfametoxazol + trimetoprima',a:4,b:5,d:'mg/kg/dose de trimetoprima de 12/12 h',mx:160,c:[['200 + 40 mg/5 mL suspensão (8 mg/mL de TMP)',8]],note:'Dose calculada pela trimetoprima. Acima de 2 meses.',r:[4,'de 12/12 h','por 7 dias']},
+ {n:'Metronidazol',a:5,b:10,d:'mg/kg/dose de 8/8 h (giardíase 5; amebíase 10–15)',mx:500,c:[['40 mg/mL suspensão',40]],note:'Gosto ruim; dar com alimento.',r:[5,'de 8/8 h','por 7 dias']},
+ {n:'Prednisolona',a:1,b:2,d:'mg/kg/dia 1 vez ao dia',mx:40,c:[['3 mg/mL solução oral',3],['1 mg/mL solução oral',1]],note:'Asma: 3–5 dias.',r:[1,'1 vez ao dia','pela manhã, por 5 dias']},
+ {n:'Dexametasona (laringite)',a:0.15,b:0.6,d:'mg/kg dose única (VO/IM/EV)',mx:10,c:[['4 mg/mL injetável',4],['0,1 mg/mL elixir',0.1]],note:'Laringite viral: 0,15–0,6 mg/kg.'},
+ {n:'Ondansetrona',a:0.15,b:0.15,d:'mg/kg/dose de 8/8 h',mx:8,c:[['2 mg/mL injetável',2],['4 mg/5 mL solução oral',0.8]],note:'Acima de 6 meses.',r:[0.15,'de 8/8 h','se vômitos, por até 3 dias'],ri:1},
+ {n:'Dexclorfeniramina',a:0.05,b:0.05,d:'mg/kg/dose de 8/8 h',mx:2,c:[['2 mg/5 mL solução oral',0.4]],note:'Acima de 2 anos. Dá sono.',r:[0.05,'de 8/8 h','se coceira, por 5 dias']},
+ {n:'Hidroxizina',a:0.5,b:0.7,d:'mg/kg/dose de 8/8 h (2 mg/kg/dia)',mx:25,c:[['2 mg/mL solução oral',2]],note:'Dá sono.',r:[0.5,'de 8/8 h','se coceira, por 5 dias']},
+ {n:'Loratadina',d:'5 mg (< 30 kg) ou 10 mg (≥ 30 kg) 1 vez ao dia',c:[['1 mg/mL xarope',1]],note:'Acima de 2 anos.',f:kg=>{const mg=kg<30?5:10;return {ds:mg+' mg = '+mg+' mL',rx:['Loratadina 1 mg/mL xarope',`${mg} mL 1 vez ao dia, por 5 dias`]}}},
+ {n:'Oseltamivir',d:'≥ 1 ano: ≤ 15 kg 30 mg; 15–23 kg 45 mg; 23–40 kg 60 mg; > 40 kg 75 mg, de 12/12 h por 5 dias (< 1 ano: 3 mg/kg)',c:[['6 mg/mL suspensão',6]],note:'Sem suspensão: abrir a cápsula de 30, 45 ou 75 mg e misturar em alimento pastoso.',f:kg=>{const mg=kg<=15?30:kg<=23?45:kg<=40?60:75;return {ds:`${mg} mg = ${fmt(mg/6,1)} mL (se ≥ 1 ano)`,rx:['Oseltamivir 6 mg/mL suspensão',`${fmt(mg/6,1)} mL de 12/12 h, por 5 dias`]}}},
+ {n:'Albendazol',d:'400 mg dose única (1–2 anos: 200 mg)',c:[['40 mg/mL suspensão',40]],note:'Repetir em 15 dias se necessário.',f:()=>({ds:'400 mg = 10 mL',rx:['Albendazol 40 mg/mL suspensão','10 mL em dose única; repetir em 15 dias']})},
+ {n:'Ivermectina',d:'200 mcg/kg dose única (só ≥ 15 kg)',c:[],note:'Escabiose: repetir em 7 dias.',f:kg=>{if(kg<15)return {ds:'Não usar abaixo de 15 kg'};const cp=kg<25?'½':kg<36?'1':kg<51?'1 e ½':kg<66?'2':'2 e ½';return {ds:cp+' comprimido de 6 mg',rx:['Ivermectina 6 mg',`${cp} comprimido em dose única, em jejum; repetir em 7 dias`]}}},
+ {n:'Diazepam (crise convulsiva)',a:0.3,b:0.5,d:'mg/kg (EV 0,2–0,3; retal 0,5)',mx:10,c:[['5 mg/mL',5]],note:'Máx. 10 mg.'},
+ {n:'Midazolam (crise, IM/intranasal)',a:0.2,b:0.2,d:'mg/kg',mx:10,c:[['5 mg/mL',5]],note:'Máx. 10 mg.'},
+ {n:'Adrenalina (anafilaxia IM)',a:0.01,b:0.01,d:'mg/kg IM',mx:0.5,c:[['1 mg/mL',1]],note:'Máx. 0,3 mg (< 30 kg) / 0,5 mg.'},
+ {n:'Salbutamol spray 100 mcg',a:0.5,b:0.5,d:'jato/kg (1 jato a cada 2 kg) a cada 20 min',mx:10,c:[],note:'Mínimo 4, máximo 10 jatos, com espaçador.',u:'jatos'},
+ {n:'SF 0,9% (expansão)',a:20,b:20,d:'mL/kg em 10–20 min',mx:1000,c:[],note:'Reavaliar após cada bolus.',u:'mL'},
+ {n:'Glicose 10% (hipoglicemia)',a:2,b:5,d:'mL/kg EV',mx:250,c:[],note:'Equivale a 0,2–0,5 g/kg.',u:'mL'}];
+const r1=x=>x<2?Math.round(x*10)/10:Math.round(x*2)/2;
+function pdRx(p,kg){if(p.f){const o=p.f(kg);return o.rx?`Uso oral\n1. ${o.rx[0]} ———— 1 frasco\nTomar ${o.rx[1]}.`:''}
+  if(!p.r)return '';const c=p.c[p.ri||0],mg=Math.min(p.r[0]*kg,p.mx),ml=r1(mg/c[1]);
+  const q=c[2]?`${Math.round(mg/c[1]*c[2])} gotas`:`${fmt(ml,1)} mL`;
+  return `Uso oral\n1. ${p.n} ${c[0]} ———— 1 frasco\nTomar ${q} ${p.r[1]}, ${p.r[2]}.`}
+FN.pedi={g:'crianca',t:'Doses pediátricas',code:'por peso',k:'pediatria crianca dose peso dipirona paracetamol ibuprofeno amoxicilina azitromicina prednisolona ondansetrona cefuroxima claritromicina oseltamivir loratadina albendazol ivermectina metronidazol gotas ml receita',render(m){
   m.innerHTML=`<section class="panel"><div class="ph"><h2>Doses pediátricas</h2><span class="code">por peso</span></div>
    <div class="card"><div class="grid2"><div class="field"><label for="pd-kg">Peso (kg)</label><input id="pd-kg" inputmode="decimal" value="${esc(store.get('kitps:pkg')||'15')}"></div></div></div><div id="pd-o"></div>
-   <p class="note">Confira sempre a concentração do produto disponível. O número de gotas por mL varia entre fabricantes: prefira prescrever em mL ou conferir a bula.</p></section>`;
+   <p class="note">“+ Receita” leva a dose sugerida para a Receita montada, onde dá para editar. Confira a idade mínima, a concentração do produto disponível e o número de gotas por mL, que varia entre fabricantes.</p></section>`;
   const upd=()=>{const kg=num($('#pd-kg').value);store.set('kitps:pkg',$('#pd-kg').value);if(!(kg>0)){$('#pd-o').innerHTML='';return}
-   $('#pd-o').innerHTML=`<table class="scale pdt"><tbody>${PD.map(p=>{let a=p[1]*kg,b=p[2]*kg;const cap=x=>Math.min(x,p[4]);a=cap(a);b=cap(b);const u=/mL\/kg/.test(p[3])?'mL':/jato/.test(p[3])?'jatos':'mg';
-    let ds=a===b?fmt(a,a<10?1:0):fmt(a,a<10?1:0)+'–'+fmt(b,b<10?1:0);if(u==='jatos'){const j=Math.max(4,Math.min(10,Math.round(a)));ds=String(j)}
-    return `<tr><td><b>${p[0]}</b><br><small>${String(p[1]).replace('.',',')}${p[1]!==p[2]?'–'+String(p[2]).replace('.',','):''} ${p[3]}</small></td><td><b>${ds} ${u}</b>${p[5].map(c=>`<br><small>${c[0]}: ${a===b?fmt(a/c[1],1):fmt(a/c[1],1)+'–'+fmt(b/c[1],1)} mL</small>`).join('')}<br><small>${p[6]}</small></td></tr>`}).join('')}</tbody></table>`};
+   $('#pd-o').innerHTML=`<table class="scale pdt"><tbody>${PD.map((p,i)=>{const rx=pdRx(p,kg),btn=rx?`<br><button class="btn small" type="button" data-pdrx="${i}" style="margin-top:4px">+ Receita</button>`:'';
+    if(p.f)return `<tr><td><b>${p.n}</b><br><small>${p.d}</small></td><td><b>${esc(p.f(kg).ds)}</b><br><small>${p.note}</small>${btn}</td></tr>`;
+    const a=Math.min(p.a*kg,p.mx),b=Math.min(p.b*kg,p.mx),u=p.u||'mg',f1=x=>fmt(x,x<10?1:0);
+    let ds=a===b?f1(a):f1(a)+'–'+f1(b);if(u==='jatos')ds=String(Math.max(4,Math.min(10,Math.round(a))));
+    const rg=(k,dg)=>a===b?fmt(a/k,dg):fmt(a/k,dg)+'–'+fmt(b/k,dg);
+    return `<tr><td><b>${p.n}</b><br><small>${String(p.a).replace('.',',')}${p.a!==p.b?'–'+String(p.b).replace('.',','):''} ${p.d}</small></td><td><b>${ds} ${u}</b>${p.c.map(c=>`<br><small>${c[0]}: ${rg(c[1],1)} mL${c[2]?` (${a===b?Math.round(a/c[1]*c[2]):Math.round(a/c[1]*c[2])+'–'+Math.round(b/c[1]*c[2])} gotas)`:''}</small>`).join('')}<br><small>${p.note}</small>${btn}</td></tr>`}).join('')}</tbody></table>`;
+   $('#pd-o').querySelectorAll('[data-pdrx]').forEach(b=>b.onclick=()=>rxbAdd(pdRx(PD[+b.dataset.pdrx],kg)))};
   $('#pd-kg').oninput=upd;upd()}};
