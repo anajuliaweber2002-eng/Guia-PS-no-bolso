@@ -36,15 +36,15 @@ const SECTIONS=[
  {g:'Atendimento',k:'alta',t:'Receitas de alta',ic:'alta',ids:byTipo('a')},
  {g:'Atendimento',k:'rxb',t:'Receita montada',ic:'edit',ids:['receita']},
  {g:'Atendimento',k:'cd',t:'Condutas padrão',ic:'urg',ids:Object.keys(CD)},
- {g:'Atendimento',k:'proc',t:'Procedimentos e O2',ic:'proc',ids:Object.keys(EX).filter(k=>/^proc_/.test(k))},
+ {g:'Atendimento',k:'proc',t:'Procedimentos, O2 e POCUS',ic:'proc',ids:Object.keys(EX).filter(k=>/^proc_/.test(k))},
  {g:'Atendimento',k:'ef',t:'Exame físico',ic:'steth',ids:EF_IDS.filter(k=>EX[k])},
- {g:'Ferramentas',k:'bul',t:'Bulário do PS',ic:'pill',ids:Object.keys(EX).filter(k=>/^med_/.test(k))},
- {g:'Ferramentas',k:'ex',t:'Interpretação de exames',ic:'exames',ids:['gasocalc',...Object.keys(EX).filter(k=>!/^(ef_|efp_|ecg_|rxt_|med_|proc_)/.test(k))]},
+ {g:'Ferramentas',k:'bul',t:'Bulário e guias de remédios',ic:'pill',ids:[...Object.keys(EX).filter(k=>/^guia_/.test(k)),...Object.keys(EX).filter(k=>/^med_/.test(k))]},
+ {g:'Ferramentas',k:'ex',t:'Interpretação de exames',ic:'exames',ids:['gasocalc',...Object.keys(EX).filter(k=>!/^(ef_|efp_|ecg_|rxt_|med_|proc_|guia_)/.test(k))]},
  {g:'Ferramentas',k:'ecg',t:'Interpretação de ECG',ic:'ecg',ids:['ecg_ps','ecg_passo','ecg_taqui','ecg_bradi','ecg_eixo','ecg_sobrec','ecg_bloq','ecg_isq','ecg_qt','ecg_padroes','fcecg','eixo','qtc','sve']},
  {g:'Ferramentas',k:'rxt',t:'Interpretação de RX de tórax',ic:'rxt',ids:['rxt_passo','rxt_pad','rxt_ex']},
  {g:'Ferramentas',k:'calc',t:'Calculadoras e escores',ic:'calc',ids:[...Object.keys(SC),...Object.keys(NC).filter(k=>!['fcecg','eixo','qtc','sve','vm'].includes(k))]},
  {g:'Ferramentas',k:'inf',t:'Infusões, IOT e pediatria',ic:'drip',ids:['drogas','iot','pedi']},
- {g:'Ferramentas',k:'plant',t:'Ferramentas do plantão',ic:'timer',ids:['pcr','plantao','atestado','conv','vm']},
+ {g:'Ferramentas',k:'plant',t:'Ferramentas do plantão',ic:'timer',ids:['pcr','plantao','kitex','atestado','conv','vm']},
  {g:'Meu kit',k:'meu',t:'Minhas edições e dados',ic:'edit',ids:['meu']}
 ];
 const SECM=Object.fromEntries(SECTIONS.map(s=>[s.k,s]));

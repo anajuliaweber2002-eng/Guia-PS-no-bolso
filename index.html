@@ -4865,6 +4865,222 @@ proc('vni','resp','Ventilação não invasiva (VNI)','vni ventilacao nao invasiv
  {h:'Complicações',li:['Lesão de pele na ponte nasal (usar placa protetora)','Distensão gástrica, aspiração','Ressecamento de mucosas, conjuntivite','Hipotensão (pressão positiva reduz pré-carga)']}],
  [['proc_o2','Oxigenoterapia'],['iot','Intubação'],['vm','Ventilação mecânica inicial']]);
 
+/* Parte 2 (out/2026) */
+proc('ombro','osteo','Redução de luxação de ombro','luxacao ombro glenoumeral reducao cunningham fares milch stimson kocher trauma',[
+ {h:'Antes de reduzir',li:['RX em 2 incidências (AP verdadeiro + perfil escapular ou axilar): confirmar luxação anterior (≈ 95%) e afastar fratura associada','Fratura do colo do úmero: NÃO reduzir no PS (ortopedia). Fratura do tubérculo maior ou Bankart pequena: pode reduzir','Exame neurovascular antes e depois: nervo axilar (sensibilidade do “distintivo” no deltoide lateral), pulso radial','Luxação posterior: suspeitar em convulsão e choque elétrico (braço em rotação interna fixa)']},
+ {h:'Analgesia',li:['Bloqueio intra-articular: lidocaína 1% 20 mL na depressão lateral abaixo do acrômio (aspira hemartrose antes)','Ou sedação e analgesia: fentanil 1 mcg/kg + propofol 0,5–1 mg/kg / cetamina 1 mg/kg / etomidato','Técnicas sem sedação (Cunningham, FARES) funcionam bem em paciente cooperativo e relaxado']},
+ {h:'Técnicas (anterior)',rows:[['Cunningham (sem sedação)','Paciente sentado, cotovelo fletido a 90° com o braço junto ao corpo; mão do paciente no ombro do médico; massagear bíceps, deltoide e trapézio e pedir para relaxar e encolher os ombros para trás'],['FARES','Decúbito dorsal, braço estendido, tração leve contínua com oscilações verticais curtas (5–10 cm, 2–3/s), abduzindo lentamente; a redução ocorre entre 70° e 110°; rotação externa ao passar de 90°'],['Rotação externa (Hennepin)','Decúbito dorsal, cotovelo fletido a 90° junto ao corpo; rodar externamente bem devagar (pausar se espasmo) até 70–110°'],['Milch','Partindo da rotação externa: abduzir até acima da cabeça e empurrar a cabeça umeral'],['Stimson','Decúbito ventral, braço pendente com peso de 2–5 kg no punho por 20–30 min'],['Tração-contratração','Lençol em volta do tórax (auxiliar) e tração no eixo do braço (médico); mais força, mais sedação']]},
+ {h:'Depois',li:['Exame neurovascular de novo','RX pós-redução','Tipoia por 1–3 semanas (menos tempo no idoso, pelo risco de rigidez)','Analgesia; encaminhar para ortopedia em 1 semana (jovem: alto risco de recidiva)']},
+ {h:'Complicações',li:['Lesão do nervo axilar, do plexo ou da artéria axilar','Fratura iatrogênica (Kocher com força: evitar)','Recidiva, lesão do manguito rotador (idoso)','Depressão respiratória pela sedação']}],
+ [['cd_fratura','Fraturas e luxações'],['proc_bloq','Bloqueios anestésicos']]);
+
+proc('bloq','osteo','Bloqueios anestésicos (digital, hematoma e femoral)','bloqueio anestesico digital dedo hematoma fratura punho colles femoral fascia iliaca fratura de femur lidocaina bupivacaina',[
+ {h:'Doses máximas de anestésico local',rows:[['Lidocaína sem vasoconstritor','4,5 mg/kg (máx. 300 mg). 1% = 10 mg/mL; 2% = 20 mg/mL'],['Lidocaína com vasoconstritor','7 mg/kg (máx. 500 mg)'],['Bupivacaína','2,5 mg/kg (máx. 175 mg); 0,5% = 5 mg/mL. Duração 4–8 h'],['Ropivacaína','3 mg/kg (máx. 200–300 mg)']]},
+ {h:'Bloqueio digital',li:['Indicação: sutura, unha encravada, redução de luxação de dedo, drenagem de paroníquia','Material: lidocaína 1–2% (vasoconstritor em dedo saudável é seguro, apesar do mito), agulha 30×7 ou 27 G, seringa de 5 mL','Técnica em anel: entrar na base do dedo, lateral ao osso, pelo dorso; injetar 1 mL no dorso e avançar até a face palmar, injetar mais 1 mL; repetir no outro lado (total 3–4 mL)','Técnica transtecal (palmar): agulha na prega palmar da base do dedo, sobre o tendão flexor, injetar 2–3 mL','Esperar 5–10 min; testar sensibilidade antes de começar']},
+ {h:'Bloqueio do hematoma (fratura distal do rádio)',li:['Indicação: redução de fratura de Colles/Smith sem sedação','Antissepsia rigorosa (transforma fratura fechada em aberta se contaminar)','Palpar o traço de fratura no dorso do punho; introduzir agulha 25×7 até o foco','Aspirar sangue escuro (confirma estar no hematoma) e injetar 10–15 mL de lidocaína 1% sem vasoconstritor (máx. 4,5 mg/kg)','Aguardar 10 min e reduzir; tala gessada e RX pós-redução']},
+ {h:'Bloqueio femoral / fáscia ilíaca (fratura de fêmur e quadril)',li:['Indicação: fratura do colo ou da diáfise do fêmur, sobretudo no idoso (reduz opioide e delirium)','Fáscia ilíaca (mais seguro, sem USG): ponto 1 cm caudal à junção do terço lateral com os 2/3 mediais da linha entre a EIAS e o tubérculo púbico; agulha romba perpendicular; sentir 2 “pops” (fáscia lata e fáscia ilíaca); aspirar e injetar 20–40 mL de anestésico (ex.: ropivacaína 0,2–0,375% ou lidocaína 1% 20 mL + bupivacaína 0,25% 20 mL, dentro da dose máxima)','Femoral guiado por USG: transdutor linear na prega inguinal; nervo lateral à artéria femoral, sob a fáscia ilíaca; injetar 10–20 mL ao redor do nervo','Sempre aspirar antes e a cada 5 mL injetados']},
+ {h:'Toxicidade sistêmica por anestésico local',li:['Sinais: gosto metálico, zumbido, parestesia perioral, agitação → convulsão → arritmia, hipotensão, PCR','Parar a injeção, O2, benzodiazepínico se convulsão','Emulsão lipídica 20%: 1,5 mL/kg em bolus em 1 min, depois 0,25 mL/kg/min; pode repetir o bolus 1–2 vezes','Na PCR: RCP prolongada, adrenalina em doses menores (≤ 1 mcg/kg), evitar lidocaína como antiarrítmico']}],
+ [['proc_ombro','Luxação de ombro'],['cd_fratura','Fraturas e luxações'],['cd_sutura','Suturas e anestésicos']]);
+
+proc('io','geral','Acesso intraósseo','acesso intraosseo io tibia umero ez io pcr choque crianca puncao ossea',[
+ {h:'Indicações',li:['PCR, choque ou emergência quando o acesso venoso periférico falha (2 tentativas ou 90 s)','Criança e adulto; tudo que corre na veia corre no osso (drogas, cristaloide, sangue, DVA)']},
+ {h:'Contraindicações',li:['Fratura no osso escolhido','Punção prévia no mesmo osso nas últimas 48 h','Infecção no local, osteogênese imperfeita, prótese no local']},
+ {h:'Locais',rows:[['Tíbia proximal','2 cm abaixo da tuberosidade da tíbia e 1–2 cm medial, na face plana (criança: 1–2 cm abaixo e medial)'],['Úmero proximal (adulto)','Tubérculo maior: mão do paciente sobre o umbigo (rotação interna); 1 cm acima do colo cirúrgico. Maior fluxo, bom na PCR'],['Tíbia distal','2–3 cm acima do maléolo medial'],['Fêmur distal (criança pequena)','2–3 cm acima do côndilo lateral, na linha média']]},
+ {h:'Material',li:['Dispositivo motorizado (EZ-IO): agulha rosa 15 mm (3–39 kg), azul 25 mm (≥ 40 kg), amarela 45 mm (úmero ou obeso)','Ou agulha manual de IO (Jamshidi / Cook)','Clorexidina, extensor, seringa com SF 10 mL, lidocaína 2% sem vasoconstritor (paciente consciente)']},
+ {h:'Passo a passo',li:['Antissepsia; estabilizar o membro sem colocar a mão atrás do local','Agulha perpendicular ao osso; com motor, encostar no osso: deve sobrar ≥ 5 mm (1 marca preta) visível','Perfurar até perder a resistência (entrou na medular); retirar o mandril','Confirmar: agulha firme sozinha, aspiração de medula (nem sempre), flush de SF 10 mL sem edema','Consciente: lidocaína 2% 40 mg (2 mL) lento em 2 min, aguardar 1 min, mais 20 mg; criança 0,5 mg/kg','Flush de 10 mL em bolus antes de usar; infundir sob pressão (bolsa pressurizada)','Fixar; trocar por acesso venoso assim que possível (máx. 24 h)']},
+ {h:'Complicações',li:['Extravasamento e síndrome compartimental (vigiar a panturrilha)','Deslocamento da agulha','Osteomielite (rara; menor se < 24 h)','Fratura, lesão da placa de crescimento (rara com técnica correta)']}],
+ [['acls','ACLS'],['pcr','Cronômetro da PCR']]);
+
+proc('pericard','cv','Pericardiocentese','pericardiocentese tamponamento cardiaco derrame pericardico puncao subxifoide beck',[
+ {h:'Indicações',li:['Tamponamento cardíaco com instabilidade (hipotensão, choque, AESP)','Diagnóstica em derrame de causa incerta (eletiva, com cardiologia)','Trauma com hemopericárdio: o tratamento é toracotomia/janela pericárdica; a punção é ponte se não houver cirurgião']},
+ {h:'Reconhecer o tamponamento',li:['Tríade de Beck: hipotensão, turgência jugular, bulhas abafadas','Pulso paradoxal (queda da PAS > 10 mmHg na inspiração), taquicardia','ECG: baixa voltagem, alternância elétrica','POCUS: derrame + colapso diastólico do VD/AD + VCI pletórica sem variação']},
+ {h:'Ponte enquanto prepara',li:['Volume (500 mL de cristaloide) aumenta a pré-carga','Evitar IOT e pressão positiva se possível (pode precipitar PCR); se intubar, preparar para colapso']},
+ {h:'Material',li:['Monitorização, USG (ideal), clorexidina, campo, lidocaína 1%','Agulha de raqui 18 G longa ou jelco 14–16 G longo, ou kit de pericardiocentese com fio-guia e pigtail','Seringa de 20–60 mL, torneira de 3 vias, bolsa coletora','Material de reanimação']},
+ {h:'Passo a passo',li:['Paciente com cabeceira a 30–45°','Guiada por USG (preferida): escolher a janela com maior coleção e mais perto da pele, geralmente apical ou paraesternal, longe do pulmão e da artéria torácica interna (≥ 1 cm da borda esternal); seguir a agulha em tempo real','Subxifoide às cegas (sem USG, PCR): entrar entre o apêndice xifoide e o rebordo costal esquerdo, 30–45° com a pele, em direção ao ombro esquerdo, aspirando sempre','Ao aspirar líquido: confirmar posição (bolhas de SF agitado no saco pericárdico no USG)','Retirar 50–100 mL já melhora muito a hemodinâmica; passar fio-guia e pigtail para drenagem contínua','Sangue que não coagula na seringa = pericárdico; sangue que coagula = provável punção de câmara']},
+ {h:'Complicações',li:['Punção de ventrículo (mais o direito), laceração de coronária','Arritmias (ECG mostra elevação do ST se a agulha toca o epicárdio: recuar)','Pneumotórax, punção hepática ou gástrica','Edema pulmonar pós-descompressão (raro)']}],
+ [['cd_peric','Pericardite e tamponamento'],['proc_pocus','POCUS']]);
+
+proc('crico','resp','Cricotireoidostomia','cricotireoidostomia via aerea cirurgica nao intubo nao oxigeno cico bisturi bougie frontal',[
+ {h:'Indicação',li:['“Não intubo, não oxigeno” (CICO): falha de IOT e de ventilação com máscara e dispositivo supraglótico, com SpO2 caindo','Trauma facial grave, obstrução alta que impede IOT e ventilação','Não atrasar: decidir cedo é o que salva']},
+ {h:'Contraindicações',li:['Criança < 10–12 anos: preferir punção com agulha (cricotireoidotomia por agulha) e ventilação a jato/bolsa','Transecção de laringe ou traqueia, fratura de laringe (relativas: considerar traqueostomia)']},
+ {h:'Material (técnica bisturi-bougie-tubo)',li:['Bisturi lâmina 10 (ou 20)','Bougie','Tubo orotraqueal 6,0 com cuff','Seringa para o cuff, fixação, capnografia, bolsa-válvula']},
+ {h:'Passo a passo (DAS 2015: bisturi-bougie-tubo)',li:['Extensão cervical; operador do lado dominante','Identificar a membrana cricotireóidea com a mão não dominante (“aperto laríngeo”): entre a cartilagem tireoide e a cricoide','Se palpável: incisão TRANSVERSA pela pele e membrana de uma vez, com a lâmina perpendicular e o corte voltado para o operador','Girar a lâmina 90° (corte para os pés) e tracionar lateralmente para abrir','Deslizar o bougie pela borda da lâmina até a traqueia (sentir os anéis)','Passar o TOT 6,0 sobre o bougie (só o balão além da membrana), insuflar o cuff, retirar o bougie','Ventilar e confirmar com capnografia; fixar','Membrana não palpável (obeso, edema): incisão VERTICAL de 8–10 cm na linha média, dissecção romba com os dedos até achar a membrana, depois seguir os mesmos passos']},
+ {h:'Cricotireoidotomia por agulha',li:['Jelco 14 G acoplado a seringa com SF, 45° caudal através da membrana, aspirar ar','Ventilar com O2 a 15 L/min por conexão em Y (1 s on, 4 s off) ou ventilação a jato','Ponte de no máximo 30–45 min (retém CO2); providenciar via aérea definitiva']},
+ {h:'Complicações',li:['Sangramento (vasos tireoidianos e jugulares anteriores)','Falso trajeto subcutâneo, enfisema','Lesão de cartilagem, estenose subglótica tardia','Converter para traqueostomia formal em 24–72 h']}],
+ [['iot','Intubação']]);
+
+proc('pocus','geral','POCUS: eFAST, BLUE e RUSH','pocus usg ultrassom beira leito efast fast trauma blue pulmao linhas b deslizamento pleural rush choque vci tamponamento',[
+ {h:'Transdutores',rows:[['Convexo (curvo)','Abdome, FAST, VCI'],['Setorial (phased array)','Coração, pode fazer FAST e pulmão'],['Linear','Pleura (deslizamento), vasos, punções']]},
+ {h:'eFAST (trauma)',rows:[['Hepatorrenal (Morison)','QSD: líquido entre fígado e rim; olhar também o polo inferior do rim e a goteira (onde aparece primeiro)'],['Esplenorrenal','QSE, mais posterior e alto: líquido acima do baço (subfrênico) e entre baço e rim'],['Pélvica','Suprapúbica, longitudinal e transversal: líquido atrás da bexiga (homem) ou no fundo de saco (mulher)'],['Subxifoide (cardíaca)','Derrame pericárdico / tamponamento'],['Pleural (estendido)','Linear ou convexo no 2º–3º EIC hemiclavicular: deslizamento pleural; ausente + ponto pulmonar = pneumotórax. Base: líquido acima do diafragma = hemotórax']]},
+ {h:'Interpretação do eFAST',li:['Positivo + instável: cirurgia/laparotomia (abdome) ou drenagem/toracotomia (tórax)','Negativo + instável: procurar outra fonte (pelve, retroperitônio, tórax, ossos longos, rua) e repetir o FAST','Estável: TC','Detecta a partir de ≈ 200 mL na Morison; não vê retroperitônio nem lesão de víscera oca']},
+ {h:'Sinais pulmonares',rows:[['Linhas A','Linhas horizontais repetidas: pulmão normalmente aerado (ou pneumotórax, se sem deslizamento)'],['Linhas B','Verticais, do pleural até o fundo da tela, apagam as A e se movem: ≥ 3 por campo = síndrome intersticial (congestão, pneumonia, SDRA)'],['Deslizamento pleural','Presente afasta pneumotórax naquele ponto. Modo M: “praia” (normal) × “código de barras” (pneumotórax)'],['Ponto pulmonar','Transição entre deslizamento e ausência: 100% específico de pneumotórax'],['Consolidação','Pulmão com aspecto de fígado, broncograma aéreo dinâmico (pneumonia)'],['Derrame','Espaço anecoico acima do diafragma; sinal do sinusoide no modo M']]},
+ {h:'Protocolo BLUE (dispneia aguda)',rows:[['Perfil A + TVP','TEP'],['Perfil A sem TVP + PLAPS','Pneumonia'],['Perfil A sem TVP, sem PLAPS','Asma / DPOC'],['Perfil B (linhas B bilaterais com deslizamento)','Edema pulmonar cardiogênico'],['Perfil B’ (linhas B sem deslizamento)','Pneumonia'],['Perfil A/B (B só de um lado)','Pneumonia'],['Perfil C (consolidação anterior)','Pneumonia'],['Perfil A’ (sem deslizamento) + ponto pulmonar','Pneumotórax']]},
+ {h:'RUSH (choque): bomba, tanque e canos',rows:[['Bomba (coração)','Derrame pericárdico/tamponamento; contratilidade do VE (hiperdinâmico = distributivo/hipovolêmico; ruim = cardiogênico); VD dilatado (VD ≥ VE) = TEP ou sobrecarga de VD'],['Tanque (volume)','VCI < 2 cm com colapso > 50% = baixa pré-carga (responde a volume); VCI > 2 cm sem colapso = pressão alta (cardiogênico, obstrutivo, sobrecarga). Também: FAST (sangramento), linhas B (congestão), derrame pleural'],['Canos (vasos)','Aorta abdominal > 3 cm = aneurisma (ruptura?); flap na aorta torácica/abdominal = dissecção; TVP por compressão em 2 pontos (femoral e poplítea)']]},
+ {h:'Padrões de choque no RUSH',rows:[['Hipovolêmico','Coração hiperdinâmico, VCI pequena e colabável, FAST ou aorta positivos'],['Cardiogênico','VE com contratilidade ruim, VCI dilatada, linhas B'],['Obstrutivo','Tamponamento, VD dilatado (TEP), TVP, pneumotórax'],['Distributivo','Coração hiperdinâmico (cedo), VCI normal ou pequena, procurar foco (pneumonia, líquido livre infectado)']]},
+ {h:'Limites',li:['POCUS complementa, não exclui: exame negativo com alta suspeita pede TC ou repetição','Depende do operador: registre as janelas avaliadas e a qualidade']}],
+ [['proc_pericard','Pericardiocentese'],['cd_ttorax','Trauma de tórax'],['cd_tabd','Trauma abdominal'],['cd_sepse','Sepse e choque']]);
+
+/* Guias de remédios (gestação/amamentação, idoso, antibiótico por germe) em EX guia_* e kits de pedidos de exame (FN.kitex). */
+EX.guia_gest={g:'mulher',t:'Gestação e amamentação: o que pode no PS',src:'FDA/PLLR · LactMed (NIH) 2024 · e-lactancia · Briggs 12ª ed. · FEBRASGO',k:norm('gestacao gestante gravida amamentacao lactacao lactante pode usar remedio seguro contraindicado teratogenico'),rel:[['cd_itugest','ITU na gestante'],['rx_hiperem','Hiperêmese']],sec:[
+ {h:'Como usar',li:['Na gestação, preferir remédios com longa experiência, na menor dose e pelo menor tempo','Doença materna não tratada (febre, hipoxemia, crise convulsiva, sepse) faz mais mal ao feto que a maioria dos remédios','Na amamentação, quase tudo é compatível: só suspender o aleitamento com motivo real']},
+ {h:'Por classe',rows:[
+  ['Analgésicos','Gestação: paracetamol é 1ª escolha; dipirona evitar no 1º e 3º trimestres (uso pontual aceito). Amamentação: paracetamol e dipirona (uso eventual) compatíveis'],
+  ['AINE','Gestação: evitar; contraindicado ≥ 20 semanas (oligoâmnio, fechamento do canal arterial). Amamentação: ibuprofeno é o preferido'],
+  ['Opioides','Gestação: uso curto aceito (morfina, tramadol com cautela); uso crônico → abstinência neonatal. Amamentação: dose mínima por pouco tempo; evitar codeína e tramadol em uso prolongado (sedação do bebê)'],
+  ['Antieméticos','Gestação: piridoxina + doxilamina 1ª linha; dimenidrinato, metoclopramida e ondansetrona (após 10 semanas; dados de fenda palatina pequenos) aceitos. Amamentação: compatíveis'],
+  ['Antiácidos e IBP','Gestação: antiácidos, omeprazol e pantoprazol seguros. Amamentação: compatíveis'],
+  ['Antibióticos seguros','Penicilinas, cefalosporinas, azitromicina, clindamicina, fosfomicina, nitrofurantoína (evitar a termo e no 1º trimestre se houver alternativa), metronidazol. Amamentação: todos compatíveis'],
+  ['Antibióticos a evitar','Gestação: quinolonas, tetraciclinas/doxiciclina (após 15 semanas), aminoglicosídeos (ototoxicidade), SMX-TMP no 1º trimestre (folato) e a termo (kernicterus). Amamentação: doxiciclina por ≤ 3 semanas e quinolona pontual são aceitas'],
+  ['Antivirais e antifúngicos','Oseltamivir e aciclovir seguros. Fluconazol oral: evitar (doses altas teratogênicas); usar creme vaginal. Amamentação: compatíveis'],
+  ['Corticoides','Prednisona/prednisolona seguras (pouca passagem placentária). Betametasona/dexametasona para maturação pulmonar. Amamentação: compatíveis (dose alta: esperar 4 h)'],
+  ['Asma','Salbutamol, ipratrópio, budesonida e prednisona seguros: tratar a crise normalmente'],
+  ['Anti-hipertensivos','Gestação: metildopa, nifedipino e labetalol/hidralazina na crise. Contraindicados: IECA, BRA (losartana), aliscireno, espironolactona. Amamentação: enalapril, captopril, nifedipino, metildopa, labetalol compatíveis'],
+  ['Anticoagulantes','Gestação: heparina e enoxaparina. Contraindicados: varfarina (embriopatia) e DOACs. Amamentação: varfarina e enoxaparina compatíveis; evitar DOACs'],
+  ['Anticonvulsivantes','Crise: benzodiazepínico e sulfato de magnésio (eclâmpsia). Evitar valproato (malformação e QI). Levetiracetam e lamotrigina são os mais seguros'],
+  ['Psicofármacos','Sertralina é a preferida na gestação e amamentação. Benzodiazepínico pontual aceito. Haloperidol na agitação. Lítio: com especialista'],
+  ['Anti-histamínicos','Loratadina, cetirizina e dexclorfeniramina aceitos. Amamentação: preferir loratadina (1ª geração dá sono no bebê)'],
+  ['Antiparasitários','Gestação: evitar albendazol, mebendazol e ivermectina (1º trimestre sobretudo); permetrina é segura. Amamentação: compatíveis'],
+  ['Contraste e exames','Contraste iodado e gadolínio: usar se necessário; não suspender a amamentação. TC e RX com proteção: dose fetal < 50 mGy não aumenta malformação'],
+  ['Vacinas','Gestação: dTpa, influenza, COVID, hepatite B são seguras; evitar vacinas de vírus vivo (tríplice viral, varicela, febre amarela salvo risco alto)']]},
+ {h:'Suspender a amamentação só se',li:['Quimioterápicos, radiofármacos (pelo tempo indicado), amiodarona, lítio sem monitorização','Uso de drogas ilícitas','Metronidazol em dose única de 2 g: esperar 12–24 h (o regime de 7 dias é compatível)']}]};
+
+EX.guia_idoso={g:'geral',t:'Idoso no PS: remédios a evitar (Beers) e alternativas',src:'AGS Beers Criteria 2023 · STOPP/START v3 (2023)',k:norm('idoso geriatria beers stopp remedio inapropriado evitar alternativa delirium queda'),rel:[['cd_delir','Delirium'],['qat4','4AT']],sec:[
+ {h:'Princípios',li:['Começar com dose baixa e subir devagar; calcular o ClCr (Cockcroft-Gault), não só a creatinina','Antes de prescrever: o sintoma pode ser efeito de remédio (cascata de prescrição)','Os maiores causadores de internação por remédio no idoso: anticoagulantes, antiagregantes, insulina e hipoglicemiantes, AINE e sedativos']},
+ {h:'Evitar → usar no lugar',rows:[
+  ['Anti-histamínicos de 1ª geração (prometazina, dexclorfeniramina, hidroxizina, dimenidrinato)','Anticolinérgicos: delirium, retenção urinária, queda. → Loratadina, fexofenadina; para náusea: ondansetrona'],
+  ['Benzodiazepínicos (diazepam, clonazepam, alprazolam) e zolpidem','Delirium, queda, fratura, sedação prolongada (diazepam tem meia-vida longa). → Insônia: higiene do sono, trazodona ou melatonina; abstinência alcoólica é exceção'],
+  ['Antipsicóticos para agitação de rotina','Mais AVC e morte na demência. → Tratar a causa, medidas não farmacológicas; se necessário, haloperidol ou quetiapina em dose baixa por pouco tempo'],
+  ['AINE por uso prolongado (ibuprofeno, naproxeno, diclofenaco, cetorolaco)','Sangramento GI, lesão renal, piora de IC e HAS. → Paracetamol, tópicos (diclofenaco gel); se AINE, ≤ 5 dias + IBP'],
+  ['Relaxantes musculares (ciclobenzaprina, carisoprodol, orfenadrina)','Anticolinérgicos e sedativos, pouca eficácia. → Calor local, paracetamol, fisioterapia'],
+  ['Metoclopramida','Parkinsonismo e discinesia. → Ondansetrona (cuidado com QT); domperidona também prolonga QT'],
+  ['Opioides: tramadol e meperidina','Tramadol: hiponatremia, hipoglicemia, convulsão, serotoninérgico; meperidina: neurotóxica. → Morfina ou oxicodona em dose baixa + laxativo'],
+  ['Sulfonilureias (glibenclamida, glimepirida)','Hipoglicemia grave e prolongada. → Metformina, iDPP-4, iSGLT2; se precisar, gliclazida'],
+  ['Insulina só em escala de correção (sliding scale)','Hiper e hipoglicemia. → Basal (± bolus) com metas menos rígidas (140–180)'],
+  ['IBP por mais de 8 semanas sem indicação','C. difficile, fratura, hipomagnesemia. → Desprescrever se não há indicação'],
+  ['Nitrofurantoína com ClCr < 30 ou uso prolongado','Ineficaz e tóxica (pulmão, fígado). → Fosfomicina ou cefalexina'],
+  ['Digoxina > 0,125 mg/dia','Toxicidade. → Controle de FC com betabloqueador; se usar digoxina, dose baixa e nível sérico'],
+  ['Amiodarona como 1ª linha na FA','Toxicidade de tireoide, pulmão e fígado. → Controle de frequência'],
+  ['Varfarina iniciando agora','Mais sangramento que DOAC. → Apixabana (preferida) ou rivaroxabana/dabigatrana conforme ClCr'],
+  ['Rivaroxabana/dabigatrana em ClCr baixo','Acúmulo. → Apixabana com ajuste de dose'],
+  ['AAS para prevenção primária','Risco de sangramento maior que o benefício. → Não iniciar; manter só na prevenção secundária'],
+  ['Antidepressivos tricíclicos (amitriptilina) e paroxetina','Anticolinérgicos, hipotensão, queda. → Sertralina, escitalopram (vigiar sódio), mirtazapina'],
+  ['Alfa-bloqueadores para HAS (doxazosina) e anti-hipertensivos centrais (clonidina, metildopa)','Hipotensão ortostática, queda, bradicardia. → Outras classes'],
+  ['Escopolamina e oxibutinina','Anticolinérgicos. → Para bexiga hiperativa: mirabegrona; para cólica, dose única e reavaliar']]},
+ {h:'Cuidado especial (não evitar, mas vigiar)',li:['Diuréticos, ISRS, carbamazepina, tramadol, mirtazapina: hiponatremia (sódio em 1–2 semanas)','Combinações perigosas: opioide + benzodiazepínico; 3 ou mais sedativos (queda); IECA/BRA + espironolactona + SMX-TMP (hipercalemia); varfarina + antibiótico (INR)']}]};
+
+EX.guia_germe={g:'inf',t:'Antibiótico por germe (cultura na mão)',src:'Sanford Guide 2024 · IDSA AMR Guidance 2024 · ANVISA · CLSI',k:norm('antibiotico germe cultura antibiograma bacteria mrsa esbl kpc pseudomonas acinetobacter enterococo vre estafilococo estreptococo gram negativo descalonamento'),rel:[['rx_sepse','Sepse: antibiótico por foco'],['cd_atbrenal','Antibióticos: ajuste renal']],sec:[
+ {h:'Regras gerais',li:['Descalonar: com a cultura, trocar para o antibiótico de menor espectro ativo','Contaminante comum em 1 de 2 hemoculturas: estafilococo coagulase-negativo, Corynebacterium, Bacillus, Cutibacterium','S. aureus na hemocultura NUNCA é contaminante: repetir hemoculturas, ecocardiograma, tratar ≥ 14 dias','Seguir o antibiograma e a CCIH local: esta tabela é ponto de partida']},
+ {h:'Gram-positivos',rows:[
+  ['S. aureus sensível à oxacilina (MSSA)','Oxacilina ou cefazolina EV; VO: cefalexina. Melhor que vancomicina'],
+  ['MRSA','Vancomicina (AUC 400–600) ou linezolida (pneumonia, pele); daptomicina na bacteremia (não no pulmão); VO: SMX-TMP, doxiciclina, linezolida'],
+  ['Estafilococo coagulase-negativo','Só tratar se várias amostras positivas ou prótese/cateter. Geralmente resistente à oxacilina: vancomicina'],
+  ['Streptococcus pyogenes (grupo A) e outros beta-hemolíticos','Penicilina ou amoxicilina; + clindamicina se fasciíte ou choque tóxico'],
+  ['Streptococcus pneumoniae','Penicilina/amoxicilina se sensível; ceftriaxona; meningite: ceftriaxona + vancomicina até o antibiograma'],
+  ['Streptococcus viridans / grupo bovis','Penicilina ou ceftriaxona (endocardite: com especialista). S. gallolyticus (bovis): colonoscopia'],
+  ['Enterococcus faecalis','Ampicilina/amoxicilina (± ceftriaxona na endocardite); ITU: nitrofurantoína, fosfomicina. Cefalosporinas não pegam'],
+  ['Enterococcus faecium / VRE','Linezolida ou daptomicina (dose alta)'],
+  ['Listeria','Ampicilina (± gentamicina); alergia: SMX-TMP']]},
+ {h:'Gram-negativos',rows:[
+  ['E. coli / Klebsiella / Proteus sensíveis','Conforme o sítio: ceftriaxona, cefalexina/cefuroxima VO, SMX-TMP, ciprofloxacino, nitrofurantoína/fosfomicina (ITU baixa)'],
+  ['Enterobactéria ESBL','Carbapenêmico (ertapenem se estável; meropeném se grave). ITU baixa: nitrofurantoína, fosfomicina; VO conforme antibiograma (SMX-TMP, ciprofloxacino). Evitar piperacilina-tazobactam e cefepima'],
+  ['Enterobacter, Citrobacter freundii, Serratia (AmpC)','Cefepima (se CIM baixa) ou carbapenêmico; evitar ceftriaxona mesmo se “sensível” em infecção grave'],
+  ['KPC (carbapenemase)','Ceftazidima-avibactam; meropeném-vaborbactam. Com infectologia'],
+  ['Metalo-beta-lactamase (NDM)','Ceftazidima-avibactam + aztreonam; cefiderocol. Com infectologia'],
+  ['Pseudomonas aeruginosa','Cefepima, piperacilina-tazobactam, ceftazidima, meropeném, ciprofloxacino/levofloxacino (única VO). Multirresistente: ceftolozano-tazobactam, ceftazidima-avibactam'],
+  ['Acinetobacter baumannii','Ampicilina-sulbactam (dose alta) se sensível; carbapenêmico se sensível; resistente: polimixina B ± outros, cefiderocol. Com infectologia'],
+  ['Stenotrophomonas maltophilia','SMX-TMP (dose alta); levofloxacino, minociclina'],
+  ['Haemophilus influenzae','Amoxicilina-clavulanato, ceftriaxona, azitromicina'],
+  ['Neisseria meningitidis','Ceftriaxona ou penicilina cristalina; quimioprofilaxia dos contactantes'],
+  ['Neisseria gonorrhoeae','Ceftriaxona 1 g IM (+ azitromicina 1 g conforme o MS)']]},
+ {h:'Anaeróbios e outros',rows:[
+  ['Bacteroides e anaeróbios abdominais','Metronidazol, amoxicilina-clavulanato, piperacilina-tazobactam, carbapenêmico (clindamicina: muita resistência)'],
+  ['Clostridioides difficile','Vancomicina VO 125 mg 6/6 h ou fidaxomicina por 10 dias; fulminante: vancomicina VO 500 mg 6/6 h + metronidazol EV'],
+  ['Candida (hemocultura)','Equinocandina (micafungina, caspofungina); trocar para fluconazol se sensível e estável; retirar o cateter, fundo de olho, ecocardiograma'],
+  ['Mycoplasma, Chlamydia, Legionella (atípicos)','Azitromicina, doxiciclina ou levofloxacino']]}]};
+
+/* Kits de pedidos de exame por síndrome (FN) */
+const KITEX=[
+ ['Dor torácica',`ECG em até 10 min (repetir em 15–30 min e se mudar a dor)
+Troponina de alta sensibilidade 0 h e 1–3 h (conforme o protocolo do serviço)
+Hemograma, ureia, creatinina, sódio, potássio, magnésio
+Glicemia, coagulograma (TP/INR, TTPa)
+RX de tórax
+[D-dímero se probabilidade baixa/intermediária de TEP (Wells/PERC)]
+[Angio-TC de aorta se suspeita de dissecção; angio-TC de tórax se TEP]
+[CK-MB se troponina convencional; BNP/NT-proBNP se dispneia]`],
+ ['Sepse',`Lactato arterial ou venoso (repetir em 2–4 h se > 2)
+Hemoculturas: 2 pares de sítios diferentes ANTES do antibiótico
+Culturas do foco: urocultura, cultura de secreção / escarro / líquido
+Hemograma, PCR, ureia, creatinina, sódio, potássio
+Bilirrubinas, TGO, TGP, coagulograma (TP/INR, TTPa), plaquetas
+Gasometria arterial
+Glicemia
+EAS (urina tipo 1)
+RX de tórax
+[Procalcitonina, se disponível]
+[Imagem do foco: USG/TC de abdome, TC de crânio + punção lombar]`],
+ ['AVC agudo',`Glicemia capilar IMEDIATA
+TC de crânio sem contraste (porta-imagem ≤ 25 min) [+ angio-TC de crânio e cervical se candidato à trombectomia]
+Hemograma com plaquetas
+Coagulograma (TP/INR, TTPa)
+Ureia, creatinina, sódio, potássio
+Troponina
+ECG
+[Tempo de trombina / anti-Xa se uso de DOAC]
+[Beta-hCG em mulher em idade fértil]
+Obs.: não atrasar a trombólise esperando exames, exceto glicemia (e plaquetas/INR se suspeita de alteração)`],
+ ['Abdome agudo',`Hemograma, PCR
+Ureia, creatinina, sódio, potássio
+Amilase e lipase
+Bilirrubinas, TGO, TGP, fosfatase alcalina, GGT
+Glicemia, gasometria venosa com lactato
+EAS (urina tipo 1)
+Beta-hCG (mulher em idade fértil)
+Coagulograma (se possível cirurgia), tipagem sanguínea
+ECG (> 50 anos ou dor epigástrica)
+Imagem conforme a suspeita: USG de abdome (vesícula, apendicite em criança/gestante, ginecológico) / TC de abdome com contraste / RX de tórax em pé (pneumoperitônio)`],
+ ['Intoxicação exógena',`Glicemia capilar
+ECG (QRS, QTc)
+Gasometria arterial com lactato, ânion gap
+Sódio, potássio, cloro, ureia, creatinina
+Osmolaridade sérica medida (gap osmolar: álcoois tóxicos)
+Paracetamol sérico (4 h após a ingestão) e salicilato
+Etanol sérico
+CK, TGO, TGP, bilirrubinas
+Coagulograma (TP/INR)
+Beta-hCG (mulher em idade fértil)
+Nível sérico se disponível: lítio, digoxina, fenobarbital, carbamazepina, valproato
+[Colinesterase eritrocitária/plasmática se organofosforado/carbamato]
+[Carboxi-hemoglobina e metemoglobina na gasometria]
+Ligar para o CIATox: 0800 722 6001`],
+ ['Dispneia aguda',`Gasometria arterial
+Hemograma, ureia, creatinina, sódio, potássio
+BNP ou NT-proBNP
+Troponina
+D-dímero [se probabilidade baixa/intermediária de TEP]
+ECG
+RX de tórax
+[PCR, procalcitonina, hemoculturas se pneumonia; teste de influenza/COVID]
+[POCUS pulmonar e cardíaco]`],
+ ['Rebaixamento de consciência',`Glicemia capilar IMEDIATA
+Gasometria arterial com lactato
+Sódio, potássio, cálcio, magnésio, ureia, creatinina
+Hemograma, TGO, TGP, bilirrubinas, amônia (se hepatopata)
+Coagulograma
+TSH / T4 livre
+Etanol, toxicológico, paracetamol
+Hemoculturas e EAS/urocultura se febre
+ECG
+TC de crânio sem contraste
+[Punção lombar se febre/meningismo, após TC]
+[EEG se suspeita de estado de mal não convulsivo]`]];
+FN.kitex={g:'geral',t:'Kits de pedidos de exame',code:'por síndrome',k:'kit pedido de exames solicitar exames dor toracica sepse avc abdome agudo intoxicacao dispneia rebaixamento laboratorio',render(m){
+  m.innerHTML=`<section class="panel"><div class="ph"><h2>Kits de pedidos de exame</h2><span class="code">por síndrome</span></div>
+   <p class="note">Edite no campo antes de copiar (a edição não fica salva). Itens entre colchetes são condicionais: apague os que não se aplicam.</p>
+   ${KITEX.map(([t,x],i)=>`<article class="card"><h3>${esc(t)}</h3><textarea class="soap" id="kx${i}" spellcheck="false" style="min-height:160px">${esc(x)}</textarea><div class="bar"><button class="btn primary small" type="button" data-kx="${i}">Copiar</button><button class="btn small" type="button" data-kxf="${i}">Copiar sem colchetes</button></div></article>`).join('')}</section>`;
+  m.querySelectorAll('[data-kx]').forEach(b=>b.onclick=()=>copy($('#kx'+b.dataset.kx).value));
+  m.querySelectorAll('[data-kxf]').forEach(b=>b.onclick=()=>copy($('#kx'+b.dataset.kxf).value.split('\n').filter(l=>!/^\[.*\]$/.test(l.trim())).join('\n')))}};
+
 /* Receita montada (como no Kit APS): junta remédios das receitas de alta e do preenchedor, agrupa por via,
    numera e separa por tipo de receituário. Fica só nesta aba do navegador (é dado de paciente). */
 let RXB=[];try{RXB=JSON.parse(sessionStorage.getItem('kitps:rxb')||'[]')}catch(e){RXB=[]}
@@ -6030,15 +6246,15 @@ const SECTIONS=[
  {g:'Atendimento',k:'alta',t:'Receitas de alta',ic:'alta',ids:byTipo('a')},
  {g:'Atendimento',k:'rxb',t:'Receita montada',ic:'edit',ids:['receita']},
  {g:'Atendimento',k:'cd',t:'Condutas padrão',ic:'urg',ids:Object.keys(CD)},
- {g:'Atendimento',k:'proc',t:'Procedimentos e O2',ic:'proc',ids:Object.keys(EX).filter(k=>/^proc_/.test(k))},
+ {g:'Atendimento',k:'proc',t:'Procedimentos, O2 e POCUS',ic:'proc',ids:Object.keys(EX).filter(k=>/^proc_/.test(k))},
  {g:'Atendimento',k:'ef',t:'Exame físico',ic:'steth',ids:EF_IDS.filter(k=>EX[k])},
- {g:'Ferramentas',k:'bul',t:'Bulário do PS',ic:'pill',ids:Object.keys(EX).filter(k=>/^med_/.test(k))},
- {g:'Ferramentas',k:'ex',t:'Interpretação de exames',ic:'exames',ids:['gasocalc',...Object.keys(EX).filter(k=>!/^(ef_|efp_|ecg_|rxt_|med_|proc_)/.test(k))]},
+ {g:'Ferramentas',k:'bul',t:'Bulário e guias de remédios',ic:'pill',ids:[...Object.keys(EX).filter(k=>/^guia_/.test(k)),...Object.keys(EX).filter(k=>/^med_/.test(k))]},
+ {g:'Ferramentas',k:'ex',t:'Interpretação de exames',ic:'exames',ids:['gasocalc',...Object.keys(EX).filter(k=>!/^(ef_|efp_|ecg_|rxt_|med_|proc_|guia_)/.test(k))]},
  {g:'Ferramentas',k:'ecg',t:'Interpretação de ECG',ic:'ecg',ids:['ecg_ps','ecg_passo','ecg_taqui','ecg_bradi','ecg_eixo','ecg_sobrec','ecg_bloq','ecg_isq','ecg_qt','ecg_padroes','fcecg','eixo','qtc','sve']},
  {g:'Ferramentas',k:'rxt',t:'Interpretação de RX de tórax',ic:'rxt',ids:['rxt_passo','rxt_pad','rxt_ex']},
  {g:'Ferramentas',k:'calc',t:'Calculadoras e escores',ic:'calc',ids:[...Object.keys(SC),...Object.keys(NC).filter(k=>!['fcecg','eixo','qtc','sve','vm'].includes(k))]},
  {g:'Ferramentas',k:'inf',t:'Infusões, IOT e pediatria',ic:'drip',ids:['drogas','iot','pedi']},
- {g:'Ferramentas',k:'plant',t:'Ferramentas do plantão',ic:'timer',ids:['pcr','plantao','atestado','conv','vm']},
+ {g:'Ferramentas',k:'plant',t:'Ferramentas do plantão',ic:'timer',ids:['pcr','plantao','kitex','atestado','conv','vm']},
  {g:'Meu kit',k:'meu',t:'Minhas edições e dados',ic:'edit',ids:['meu']}
 ];
 const SECM=Object.fromEntries(SECTIONS.map(s=>[s.k,s]));
