@@ -5709,7 +5709,7 @@ P:
 
 /* Insuficiência respiratória aguda (out/2026): anamnese, conduta, prescrição e índice ROX. */
 Object.assign(AN,{
-an_irpa:{g:'resp',t:'Insuficiência respiratória aguda',code:'J96.0 · J96.00 · J96.01',rel:[['cd_irpa','Conduta IRpA'],['rx_irpa','Prescrição'],['proc_o2','Oxigenoterapia'],['proc_vni','VNI'],['rox','Índice ROX']],body:an('Falta de ar',
+an_irpa:{g:'resp',t:'Insuficiência respiratória aguda',code:'J96.0 · J96.00 · J96.01',rel:[['cd_irpa','Conduta IRpA'],['irpagrav','Gravidade da IRpA'],['rx_irpa','Prescrição'],['proc_o2','Oxigenoterapia'],['proc_vni','VNI'],['rox','Índice ROX']],body:an('Falta de ar',
 `Paciente com dispneia de início [súbito / progressivo] há [ ] [horas / dias], [em repouso / aos mínimos esforços], com [tosse (seca / produtiva, escarro __) / febre / dor torácica (pleurítica / opressiva) / hemoptise / sibilância / ortopneia / edema de MMII / dor em panturrilha].
 Fatores: [infecção / má adesão / excesso de sal-líquido / imobilização, cirurgia ou viagem recente / uso de opioide ou sedativo / aspiração / trauma / exposição a fumaça].
 Antecedentes: [DPOC (O2 domiciliar __ L/min) / asma / IC (FE __) / doença neuromuscular / obesidade / apneia do sono / TEP prévio / neoplasia / imunossupressão]. Tabagismo [ ] maços-ano. IOT prévia: [ ].
@@ -5721,7 +5721,7 @@ ${EF_CV}
 Turgência jugular: [ ]. ${EF_MMII}
 POCUS: [linhas A / linhas B bilaterais / consolidação / derrame / ausência de deslizamento]; VD [ ]; VCI [ ].
 Gasometria (FiO2 __): pH [ ], PaO2 [ ], PaCO2 [ ], HCO3 [ ], lactato [ ]. P/F [ ]. Gradiente A-a [ ].`,
-`1. Insuficiência respiratória aguda [tipo 1 (hipoxêmica) / tipo 2 (hipercápnica) / mista]
+`1. Insuficiência respiratória aguda [tipo 1 (hipoxêmica) / tipo 2 (hipercápnica) / mista], [leve / moderada / grave]
 2. Provável causa: [pneumonia / EAP / DPOC exacerbado / asma / TEP / SDRA / pneumotórax / derrame / hipoventilação (sedativo, neuromuscular)]`,
 `- Monitorização, cabeceira elevada, O2 para SpO2 [92–96% / 88–92% se risco de hipercapnia]
 - [Cateter nasal / Venturi __% / máscara com reservatório / cateter de alto fluxo __ L/min, FiO2 __ / VNI IPAP __ EPAP __]
@@ -5731,8 +5731,12 @@ Gasometria (FiO2 __): pH [ ], PaO2 [ ], PaCO2 [ ], HCO3 [ ], lactato [ ]. P/F [ 
 });
 
 Object.assign(CD,{
-cd_irpa:{g:'resp',t:'Insuficiência respiratória aguda',src:'ERS/ATS 2017 (VNI) · ERS 2022 (IRpA hipoxêmica) · ESICM 2023 (SDRA) · BTS 2017 (O2) · Lichtenstein (BLUE)',k:'insuficiencia respiratoria aguda irpa hipoxemia hipercapnia tipo 1 tipo 2 alto fluxo vni iot rox sdra berlim p/f',rel:[['rx_irpa','Prescrição'],['an_irpa','Anamnese'],['proc_o2','Oxigenoterapia'],['proc_vni','VNI'],['proc_pocus','POCUS'],['rox','Índice ROX'],['vm','Ventilação mecânica'],['iot','Intubação']],sec:[
+cd_irpa:{g:'resp',t:'Insuficiência respiratória aguda',src:'ERS/ATS 2017 (VNI) · ERS 2022 (IRpA hipoxêmica) · ESICM 2023 (SDRA) · BTS 2017 (O2) · Lichtenstein (BLUE)',k:'insuficiencia respiratoria aguda irpa hipoxemia hipercapnia tipo 1 tipo 2 alto fluxo vni iot rox sdra berlim p/f',rel:[['rx_irpa','Prescrição'],['an_irpa','Anamnese'],['proc_o2','Oxigenoterapia'],['proc_vni','VNI'],['proc_pocus','POCUS'],['rox','Índice ROX'],['irpagrav','Calculadora de gravidade'],['vm','Ventilação mecânica'],['iot','Intubação']],sec:[
  {h:'Definição e tipos',rows:[['Tipo 1 (hipoxêmica)','PaO2 < 60 mmHg (SpO2 < 90%) com PaCO2 normal ou baixa. Pneumonia, EAP, SDRA, TEP, atelectasia, derrame'],['Tipo 2 (hipercápnica)','PaCO2 > 45 mmHg com pH < 7,35. DPOC, asma grave, obesidade-hipoventilação, neuromuscular (GBS, miastenia), sedativos/opioides, rebaixamento'],['Mista','Ex.: DPOC com pneumonia, EAP grave com fadiga'],['Gradiente A-a','PAO2 = FiO2 × 713 − PaCO2/0,8; A-a = PAO2 − PaO2. Normal ≈ idade/4 + 4. Normal na hipoventilação pura; aumentado em doença pulmonar']]},
+ {h:'Gravidade: leve, moderada e grave (a pior característica define)',rows:[
+  ['Leve','FR 20–25; SpO2 90–94% em ar ambiente ou no alvo com cateter ≤ 4 L/min; fala frases completas; sem musculatura acessória; alerta; P/F 200–300; pH normal. → O2 baixo fluxo, tratar a causa, reavaliar em 1 h'],
+  ['Moderada','FR 25–30; SpO2 85–89% em ar ambiente ou precisa de > 4 L/min / máscara; frases curtas; musculatura acessória; ansioso ou agitado; P/F 100–200; pH 7,25–7,34 com PaCO2 alta. → Alto fluxo ou VNI, sala de emergência, gasometria em 1 h, avaliar UTI'],
+  ['Grave','FR > 30 ou bradipneia (< 10); SpO2 < 85% ou fora do alvo com O2 em alta FiO2; fala só palavras ou não fala; respiração paradoxal, tiragem, cianose; sonolento, confuso ou Glasgow ≤ 8; instabilidade hemodinâmica; P/F < 100; pH < 7,25. → Preparar IOT, UTI']]},
  {h:'Primeiros minutos',li:['ABC, monitorização, acesso, cabeceira elevada','O2 já: alvo SpO2 92–96% (88–92% se risco de hipercapnia)','Gasometria arterial, lactato, ECG, RX de tórax, POCUS pulmonar e cardíaco (BLUE)','Sinais de IOT imediata (abaixo) → não atrasar','Procurar causas reversíveis rápidas: pneumotórax hipertensivo (punção), broncoespasmo (salbutamol + ipratrópio), EAP (nitrato + VNI), opioide (naloxona), obstrução alta / anafilaxia (adrenalina), tamponamento']},
  {h:'Pistas da causa',rows:[['Linhas B bilaterais + VCI pletórica + B3/estertores','EAP cardiogênico'],['Febre, consolidação, linhas B focais','Pneumonia'],['Sibilância, tórax silencioso, hipercapnia','Asma / DPOC'],['Perfil A + TVP, VD dilatado, taquicardia sem outra causa','TEP'],['Ausência de deslizamento + ponto pulmonar','Pneumotórax'],['Fator de risco (sepse, pancreatite, aspiração, trauma) + infiltrado bilateral + P/F ≤ 300','SDRA'],['Hipercapnia com pulmão normal','Hipoventilação central ou neuromuscular (medir CVF / Pimáx; sedativo?)']]},
  {h:'Escalonamento do suporte',rows:[['SpO2 baixa, sem esforço importante','Cateter nasal 1–5 L/min'],['DPOC/hipercapnia','Venturi 24–28% e gasometria em 30–60 min; VNI se pH < 7,35 e PaCO2 > 45'],['Hipoxêmica com esforço (pneumonia, COVID, SDRA leve)','Cateter de alto fluxo 40–60 L/min, FiO2 para alvo; ROX em 2, 6 e 12 h'],['EAP cardiogênico','CPAP 8–10 ou BiPAP + nitrato'],['Imunossuprimido','Alto fluxo ou VNI precoce'],['Falha ou critérios de IOT','Intubação e ventilação protetora']]},
@@ -5768,6 +5772,24 @@ NC.rox={g:'resp',t:'Índice ROX (alto fluxo)',code:'Roca 2019',f:[{k:'spo2',l:'S
  calc:v=>{if(!(v.spo2>0&&v.fio2>=21&&v.fr>0))return null;const f=v.fio2>1?v.fio2/100:v.fio2,r=(v.spo2/f)/v.fr,lim={'2':2.85,'6':3.47,'12':3.85}[v.h||'12'];
   const cls=r>=4.88?'ok':r<lim?'alert':'',txt=r>=4.88?'Baixo risco de falha do alto fluxo: manter e reavaliar.':r<lim?`Abaixo de ${String(lim).replace('.',',')} em ${v.h||12} h: alto risco de falha, discutir IOT.`:'Zona intermediária: reavaliar em 1–2 h.';
   return {cls,big:fmt(r,2),sub:[txt,'ROX = (SpO2/FiO2) ÷ FR. ≥ 4,88 em 2, 6 ou 12 h prediz sucesso.'],line:`ROX ${fmt(r,2)} (${v.h||12} h de alto fluxo).`}}};
+
+NC.irpagrav={g:'resp',t:'Gravidade da insuficiência respiratória aguda',code:'leve · moderada · grave',f:[
+ {k:'fr',l:'FR (irpm)'},{k:'spo2',l:'SpO2 (%)'},
+ {k:'o2',l:'Oxigênio em uso',o:[['0','Ar ambiente'],['1','Cateter ≤ 4 L/min'],['2','> 4 L/min, máscara ou Venturi'],['3','Reservatório, alto fluxo ou VNI']]},
+ {k:'fala',l:'Fala',o:[['0','Frases completas'],['1','Frases curtas'],['2','Palavras ou não fala']]},
+ {k:'esf',l:'Esforço',o:[['0','Sem musculatura acessória'],['1','Musculatura acessória'],['2','Tiragem, respiração paradoxal ou cianose']]},
+ {k:'cons',l:'Consciência',o:[['0','Alerta'],['1','Ansioso ou agitado'],['2','Sonolento, confuso ou Glasgow ≤ 8']]},
+ {k:'hd',l:'Hemodinâmica',o:[['0','Estável'],['2','Hipotensão ou choque']]},
+ {k:'pf',l:'P/F (opcional)'},{k:'ph',l:'pH (opcional)'}],
+ calc:v=>{const fr=v.fr,sp=v.spo2,o2=+(v.o2||0);if(!(fr>0&&sp>0))return null;const why=[];let g=0;const up=(n,t)=>{if(n>0)why.push(t);if(n>g)g=n};
+  up(fr>30||fr<10?2:fr>25?1:0,`FR ${fr}`);
+  up(sp<85?2:(o2>=3&&sp<90)?2:(sp<90||o2===2)?1:0,`SpO2 ${sp}%`+(o2?' com O2':''));
+  if(o2===3)up(1,'O2 em alta FiO2');
+  up(+(v.fala||0),'fala');up(+(v.esf||0),'esforço respiratório');up(+(v.cons||0),'consciência');up(+(v.hd||0),'instabilidade hemodinâmica');
+  if(v.pf>0)up(v.pf<100?2:v.pf<200?1:0,`P/F ${v.pf}`);
+  if(v.ph>0)up(v.ph<7.25?2:v.ph<7.35?1:0,`pH ${String(v.ph).replace('.',',')}`);
+  const L=[['ok','Leve','O2 de baixo fluxo, tratar a causa e reavaliar em 1 h.'],['','Moderada','Sala de emergência, alto fluxo ou VNI, gasometria em 1 h, avaliar UTI.'],['alert','Grave','Preparar IOT e acionar UTI.']][g];
+  return {cls:L[0],big:L[1],sub:[L[2],why.length?'Definido por: '+why.join(', ')+'.':'Nenhum critério de moderada ou grave.','Classificação prática: a pior característica define a gravidade. Reavaliar após cada mudança de suporte.'],line:`IRpA ${L[1].toLowerCase()}${why.length?' ('+why.join(', ')+')':''}.`}}};
 
 /* Acréscimos (out/2026): meningite, abdome agudo, IVAS, faringoamigdalite, bronquiolite, crupe, tempestade tireoidiana,
    peçonhentos, TCE e subtipos, dissecção de aorta, emergências ginecológicas e obstétricas, trauma completo. */
