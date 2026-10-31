@@ -5745,6 +5745,7 @@ cd_irpa:{g:'resp',t:'Insuficiência respiratória aguda',src:'ERS/ATS 2017 (VNI)
   ['Leve','FR 20–25; SpO2 90–94% em ar ambiente ou no alvo com cateter ≤ 4 L/min; fala frases completas; sem musculatura acessória; alerta; P/F 200–300; pH normal. → O2 baixo fluxo, tratar a causa, reavaliar em 1 h'],
   ['Moderada','FR 25–30; SpO2 85–89% em ar ambiente ou precisa de > 4 L/min / máscara; frases curtas; musculatura acessória; ansioso ou agitado; P/F 100–200; pH 7,25–7,34 com PaCO2 alta. → Alto fluxo ou VNI, sala de emergência, gasometria em 1 h, avaliar UTI'],
   ['Grave','FR > 30 ou bradipneia (< 10); SpO2 < 85% ou fora do alvo com O2 em alta FiO2; fala só palavras ou não fala; respiração paradoxal, tiragem, cianose; sonolento, confuso ou Glasgow ≤ 8; instabilidade hemodinâmica; P/F < 100; pH < 7,25. → Preparar IOT, UTI']]},
+ {h:'Relação P/F (PaO2/FiO2)',rows:[['Como calcular','PaO2 (mmHg) ÷ FiO2 em decimal. Ex.: PaO2 80 em FiO2 40% → 80 ÷ 0,4 = 200'],['Normal','> 400 (PaO2 ≈ 100 em ar ambiente: 100 ÷ 0,21 ≈ 476)'],['Leve','200–300'],['Moderada','100–199'],['Grave','< 100'],['Sem gasometria','SpO2/FiO2 (válido se SpO2 ≤ 97%): ≈ 315 equivale a P/F 300, ≈ 235 a P/F 200, ≈ 148 a P/F 100'],['FiO2 estimada','Cateter: 21% + 4% por L/min; Venturi: a da válvula; reservatório 60–90% (imprecisa); alto fluxo e VNI: a ajustada'],['Cuidado','O P/F muda com a PEEP e a FiO2: anote o suporte junto. Em baixo fluxo a FiO2 é estimativa, então o P/F é aproximado']]},
  {h:'Primeiros minutos',li:['ABC, monitorização, acesso, cabeceira elevada','O2 já: alvo SpO2 92–96% (88–92% se risco de hipercapnia)','Gasometria arterial, lactato, ECG, RX de tórax, POCUS pulmonar e cardíaco (BLUE)','Sinais de IOT imediata (abaixo) → não atrasar','Procurar causas reversíveis rápidas: pneumotórax hipertensivo (punção), broncoespasmo (salbutamol + ipratrópio), EAP (nitrato + VNI), opioide (naloxona), obstrução alta / anafilaxia (adrenalina), tamponamento']},
  {h:'Pistas da causa',rows:[['Linhas B bilaterais + VCI pletórica + B3/estertores','EAP cardiogênico'],['Febre, consolidação, linhas B focais','Pneumonia'],['Sibilância, tórax silencioso, hipercapnia','Asma / DPOC'],['Perfil A + TVP, VD dilatado, taquicardia sem outra causa','TEP'],['Ausência de deslizamento + ponto pulmonar','Pneumotórax'],['Fator de risco (sepse, pancreatite, aspiração, trauma) + infiltrado bilateral + P/F ≤ 300','SDRA'],['Hipercapnia com pulmão normal','Hipoventilação central ou neuromuscular (medir CVF / Pimáx; sedativo?)']]},
  {h:'Escalonamento do suporte',rows:[['SpO2 baixa, sem esforço importante','Cateter nasal 1–5 L/min'],['DPOC/hipercapnia','Venturi 24–28% e gasometria em 30–60 min; VNI se pH < 7,35 e PaCO2 > 45'],['Hipoxêmica com esforço (pneumonia, COVID, SDRA leve)','Cateter de alto fluxo 40–60 L/min, FiO2 para alvo; ROX em 2, 6 e 12 h'],['EAP cardiogênico','CPAP 8–10 ou BiPAP + nitrato'],['Imunossuprimido','Alto fluxo ou VNI precoce'],['Falha ou critérios de IOT','Intubação e ventilação protetora']]},
@@ -5788,16 +5789,19 @@ NC.irpagrav={g:'resp',t:'Gravidade da insuficiência respiratória aguda',code:'
  {k:'esf',l:'Esforço',o:[['0','Sem musculatura acessória'],['1','Musculatura acessória'],['2','Tiragem, respiração paradoxal ou cianose']]},
  {k:'cons',l:'Consciência',o:[['0','Alerta'],['1','Ansioso ou agitado'],['2','Sonolento, confuso ou Glasgow ≤ 8']]},
  {k:'hd',l:'Hemodinâmica',o:[['0','Estável'],['2','Hipotensão ou choque']]},
- {k:'pf',l:'P/F (opcional)'},{k:'ph',l:'pH (opcional)'}],
+ {k:'pao2',l:'PaO2 em mmHg (opcional)'},{k:'fio2',l:'FiO2 em % (opcional; cateter ≈ 21 + 4 × L/min)'},{k:'ph',l:'pH (opcional)'}],
  calc:v=>{const fr=v.fr,sp=v.spo2,o2=+(v.o2||0);if(!(fr>0&&sp>0))return null;const why=[];let g=0;const up=(n,t)=>{if(n>0)why.push(t);if(n>g)g=n};
   up(fr>30||fr<10?2:fr>25?1:0,`FR ${fr}`);
   up(sp<85?2:(o2>=3&&sp<90)?2:(sp<90||o2===2)?1:0,`SpO2 ${sp}%`+(o2?' com O2':''));
   if(o2===3)up(1,'O2 em alta FiO2');
   up(+(v.fala||0),'fala');up(+(v.esf||0),'esforço respiratório');up(+(v.cons||0),'consciência');up(+(v.hd||0),'instabilidade hemodinâmica');
-  if(v.pf>0)up(v.pf<100?2:v.pf<200?1:0,`P/F ${v.pf}`);
+  let pf=null,sf=null;const fi=v.fio2>1?v.fio2/100:v.fio2;
+  if(v.pao2>0&&fi>=0.21){pf=Math.round(v.pao2/fi);up(pf<100?2:pf<200?1:0,`P/F ${pf}`)}
+  else if(fi>=0.21&&sp<=97){sf=Math.round(sp/fi);up(sf<148?2:sf<235?1:0,`SpO2/FiO2 ${sf}`)}
   if(v.ph>0)up(v.ph<7.25?2:v.ph<7.35?1:0,`pH ${String(v.ph).replace('.',',')}`);
   const L=[['ok','Leve','O2 de baixo fluxo, tratar a causa e reavaliar em 1 h.'],['','Moderada','Sala de emergência, alto fluxo ou VNI, gasometria em 1 h, avaliar UTI.'],['alert','Grave','Preparar IOT e acionar UTI.']][g];
-  return {cls:L[0],big:L[1],sub:[L[2],why.length?'Definido por: '+why.join(', ')+'.':'Nenhum critério de moderada ou grave.','Classificação prática: a pior característica define a gravidade. Reavaliar após cada mudança de suporte.'],line:`IRpA ${L[1].toLowerCase()}${why.length?' ('+why.join(', ')+')':''}.`}}};
+  const pfl=pf!=null?`P/F = ${pf} (${pf<100?'grave':pf<200?'moderada':pf<=300?'leve':'acima de 300: sem critério pelo P/F'}).`:sf!=null?`Sem gasometria: SpO2/FiO2 = ${sf} (≈ P/F ${Math.max(0,Math.round((sf-64)/0.84))}; válido com SpO2 ≤ 97%).`:'Informe PaO2 e FiO2 para calcular o P/F.';
+  return {cls:L[0],big:L[1],sub:[L[2],pfl,why.length?'Definido por: '+why.join(', ')+'.':'Nenhum critério de moderada ou grave.','Classificação prática: a pior característica define a gravidade. Reavaliar após cada mudança de suporte.'],line:`IRpA ${L[1].toLowerCase()}${why.length?' ('+why.join(', ')+')':''}.${pf!=null?' P/F '+pf+'.':''}`}}};
 
 /* Acréscimos (out/2026): meningite, abdome agudo, IVAS, faringoamigdalite, bronquiolite, crupe, tempestade tireoidiana,
    peçonhentos, TCE e subtipos, dissecção de aorta, emergências ginecológicas e obstétricas, trauma completo. */
