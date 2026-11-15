@@ -144,7 +144,8 @@ function renderSC(m,id){
     :s.q.map((q,i)=>`<fieldset class="q"><legend><b>${i+1}.</b> ${esc(q.q)}</legend><div class="opts"${q.o.some(o=>o[0].length>28)?' style="grid-template-columns:1fr"':''}>${q.o.map((o,j)=>`<label class="opt"><input type="radio" name="sc-${i}" value="${j}"><span><i>${o[1]}</i>${esc(o[0])}</span></label>`).join('')}</div></fieldset>`).join('');
   m.innerHTML=`<section class="panel"><div class="ph"><h2>${esc(s.t)}</h2><span class="code">${esc(s.code)}</span></div>
     ${resultBox('sc-r')}${body}${copyBtn()}<div class="bar"><button class="btn small" id="clr" type="button">Limpar respostas</button></div>
-    ${s.note?`<p class="note">${esc(s.note)}</p>`:''}</section>`;
+    ${s.tbl?`<div class="card"><div class="lbl">${esc(s.tbl.h)}</div><table class="scale" id="sc-tb"><tbody>${s.tbl.rows.map(r=>`<tr data-a="${r[2]}" data-b="${r[3]}"><td>${esc(r[0])}</td><td>${esc(r[1])}</td></tr>`).join('')}</tbody></table></div>`:''}
+    ${s.note?`<p class="note">${esc(s.note)}</p>`:''}${relHTML(s.rel)}</section>`;
   let line='';
   const upd=()=>{let t=0,ans=0;const v=[],pos=[];
     if(s.kind==='ck')s.ck.forEach((c,i)=>{if($('#sc-'+i).checked){t+=c[1];pos.push(c[0])}});
@@ -153,8 +154,9 @@ function renderSC(m,id){
     if(s.kind==='q'&&!ans){r.className='result';r.innerHTML='<div class="sub">Marque as respostas.</div>';line='';return}
     t=Math.round(t*10)/10;const [cls,tit,txt]=s.lv(t,v),u=s.unit!=null?s.unit:(Math.abs(t)===1?' ponto':' pontos'),tt=String(t).replace('.',',');
     r.className='result '+cls;r.innerHTML=`<div class="big">${s.unit===''?'':tt}<small>${esc(u)}</small></div><div class="sub"><b>${esc(tit)}</b>${n&&ans<n?` · faltam ${n-ans} de ${n} respostas`:''}</div>${txt?`<div class="sub">${esc(txt)}</div>`:''}`;
-    line=`${s.t}: ${s.unit===''?'':tt+u+' '}(${tit}).${pos.length?' Itens: '+pos.join('; ')+'.':''}`};
-  m.querySelectorAll('input').forEach(i=>i.onchange=upd);upd();bindCopy(()=>line);
+    line=`${s.t}: ${s.unit===''?'':tt+u+' '}(${tit}).${pos.length?' Itens: '+pos.join('; ')+'.':''}`;
+    m.querySelectorAll('#sc-tb tr').forEach(tr=>tr.classList.toggle('on',t>=+tr.dataset.a&&t<=+tr.dataset.b))};
+  m.querySelectorAll('input').forEach(i=>i.onchange=upd);upd();bindCopy(()=>line);bindGo(m);
   $('#clr').onclick=()=>{m.querySelectorAll('input').forEach(i=>i.checked=false);upd()}}
 
 function renderNC(m,id){
